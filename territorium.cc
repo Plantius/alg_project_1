@@ -12,11 +12,11 @@ Territorium::Territorium ()
 
 // TODO: implementeer deze constructor, voorzover nodig
   hoogte=5;
-  breedye=5;
-  kansNietBeschikbaar=25;
-  KeuzeAantalGeel=2;
-  KeuzeAantalBlauw=2;
-  MaxDimensie=20;
+  breedte=5;
+  NietBeschikbaar=25;
+  keuzeAantalGeel=2;
+  keuzeAantalBlauw=2;
+  //MaxDimensie=20;
 
 }  // default constructor
 
@@ -34,17 +34,17 @@ if (nwHoogte >= 1 && nwHoogte <= MaxDimensie){
   hoogte = nwHoogte;
 }
 
-else if (nwBreedte >= 1 && nwBreedte MaxDimensie){
+else if (nwBreedte >= 1 && nwBreedte <= MaxDimensie){
   breedte= nwBreedte;
 }
 
 // kloppen de variabel namen?
-else if (kansNietBeschikbaar >= 0 && kansNietBEschikbaar <= 100){
-  kansNietBeschikbaar = kansNietBeschikbaar;
+else if (kansNietBeschikbaar >= 0 && kansNietBeschikbaar <= 100){
+  NietBeschikbaar = kansNietBeschikbaar;
 }
 
 else if (nwKeuzeAantalGeel >=1){
-  KeuzeAantalGeel = nwKeuzeAantalGeel;
+  keuzeAantalGeel = nwKeuzeAantalGeel;
 }
 
 else if (nwKeuzeAantalBlauw >=1){
@@ -60,8 +60,17 @@ bool Territorium::leesInBord (const char* invoernaam)
 
 // TODO: implementeer deze memberfunctie
 
+// Eerst kijken of die geopend kan worden: nog niet goed
+  ifstream input;
+  input.open(invoernaam.c_str(), ios::in);
+  if(ios::fail()== true){
+    return false;
+  }
 
+  //invoernaam = _invoernaam;
   return false;
+
+  // Staat het bord goed?
 
 }  // leesInBord
 
