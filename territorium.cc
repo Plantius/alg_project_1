@@ -99,12 +99,15 @@ void Territorium::drukAf ()
 {
 
 // TODO: implementeer deze memberfunctie
-for (int i=0; i++; i < hoogte){
-  for (int j=0; j++; j < breedte){
-    cout << "niet klaar" << endl;
+for (int i=0; i++; i < hoogte){<
+    cout << hoogte -i << ":";
   }
+  for (int j=0; j++; j < breedte){
+    cout << bord[i][j] ;
+  }
+  cout << endl;
 }
-
+cout << endl;
 
 
 }  // drukAf
