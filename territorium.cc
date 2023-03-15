@@ -13,10 +13,9 @@ Territorium::Territorium ()
 // TODO: implementeer deze constructor, voorzover nodig
   hoogte=5;
   breedte=5;
-  NietBeschikbaar=25;
+  hoeveelNietBeschikbaar=25;
   keuzeAantalGeel=2;
   keuzeAantalBlauw=2;
-  //MaxDimensie=20;
 
 }  // default constructor
 
@@ -40,7 +39,7 @@ else if (nwBreedte >= 1 && nwBreedte <= MaxDimensie){
 
 // kloppen de variabel namen?
 else if (kansNietBeschikbaar >= 0 && kansNietBeschikbaar <= 100){
-  NietBeschikbaar = kansNietBeschikbaar;
+  hoeveelNietBeschikbaar = kansNietBeschikbaar;
 }
 
 else if (nwKeuzeAantalGeel >=1){
@@ -59,18 +58,19 @@ bool Territorium::leesInBord (const char* invoernaam)
 {
 
 // TODO: implementeer deze memberfunctie
-
-// Eerst kijken of die geopend kan worden: nog niet goed
-  ifstream input;
-  input.open(invoernaam.c_str(), ios::in);
-  if(ios::fail()== true){
-    return false;
-  }
-
-  //invoernaam = _invoernaam;
+ifstream file(invoernaam);
+if (file.good()){
+  cout << "Deze file is leesbaar." << endl;
+  return true;
+}
+else{
+  cout << "Deze file is niet leesbaar." << endl;
   return false;
+}
 
-  // Staat het bord goed?
+file.close();
+
+// Staat het bord goed?
 
 }  // leesInBord
 
