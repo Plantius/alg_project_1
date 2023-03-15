@@ -161,8 +161,8 @@ class Territorium
     int breedte, hoogte,  // van het bord
         keuzeAantalGeel,  // aantal vakjes waaruit Geel/Blauw steeds
         keuzeAantalBlauw, // kan kiezen voor nieuwe zet
-        aanBeurt;       // speler die aan de beurt is
-        hoeveelNietBeschikbaar // percentage hoeveel niet beschikbare vakjes
+        aanBeurt,       // speler die aan de beurt is
+        hoeveelNietBeschikbaar; // percentage hoeveel niet beschikbare vakjes
 
     // TODO: uw eigen memberfuncties en -variabelen
 

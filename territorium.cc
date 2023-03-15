@@ -80,8 +80,16 @@ bool Territorium::eindstand ()
 {
 
 // TODO: implementeer deze memberfunctie
+char variabel;
 
-  return false;
+for (int i= 0; i++; i<= hoogte){
+  for (int j=0; j++; j<= breedte){
+    if (bord[i][j]<0){
+      return false;
+    }
+  }
+}
+return true;
 
 } // eindstand
 
@@ -91,6 +99,13 @@ void Territorium::drukAf ()
 {
 
 // TODO: implementeer deze memberfunctie
+for (int i=0; i++; i < hoogte){
+  for (int j=0; j++; j < breedte){
+    cout << "niet klaar" << endl;
+  }
+}
+
+
 
 }  // drukAf
 
