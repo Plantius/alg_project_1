@@ -56,11 +56,31 @@ else if (nwKeuzeAantalBlauw >=1){
 
 bool Territorium::leesInBord (const char* invoernaam)
 {
-
+int getal;
+int getalcount = 0;
 // TODO: implementeer deze memberfunctie
 ifstream file(invoernaam);
 if (file.good()){
-  cout << "Deze file is leesbaar." << endl;
+  while (file.good()){
+    file >> getal;
+    if (getalcount == 0){
+      hoogte = getal;
+    } if (getalcount == 1){
+      breedte = getal;
+    } if(getalcount == hoogte*breedte + 2){
+      keuzeAantalGeel = getal;
+    } if(getalcount == hoogte*breedte + 3){
+      keuzeAantalBlauw = getal;
+    } if (getalcount > 1 && getalcount < hoogte*breedte + 2){
+      if ( getalcount < breedte + 2){
+        bord[][]
+      }
+    }
+
+
+    cout << getalcount << " | " << getal << endl;
+    getalcount++;
+  }
   return true;
 }
 else{
@@ -89,7 +109,7 @@ bool Territorium::eindstand ()
 
 void Territorium::drukAf ()
 {
-
+cout << "gamer" << endl;
 // TODO: implementeer deze memberfunctie
 
 }  // drukAf
