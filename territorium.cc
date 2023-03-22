@@ -58,7 +58,7 @@ else if (nwKeuzeAantalBlauw >=1){
 bool Territorium::leesInBord (const char* invoernaam)
 {
 int getal;
-int getalcount = 0, hoogte_tel = 0;
+int getalcount = 0, hoogte_tel = 0, breedte_tel = 0;
 // TODO: implementeer deze memberfunctie
 ifstream file(invoernaam);
 if (file.good()){
@@ -73,17 +73,17 @@ if (file.good()){
     } if(getalcount == hoogte*breedte + 3){
       keuzeAantalBlauw = getal;
     } if (getalcount > 1 && getalcount < hoogte*breedte + 2){
-        bord[hoogte_tel][getalcount-2] = getal;
-        cout << getal << " ";
-        if ((getalcount-1) % breedte == 0 && (getalcount-2 != 0)){
+        bord[hoogte_tel][breedte_tel] = getal;
+        
+        if (breedte_tel == breedte - 1) {
+          breedte_tel = 0;
           hoogte_tel++;
-          cout << endl;
-        } 
-    }
+        }else{
+          breedte_tel++;
+        }
+     }
     getalcount++;
   }
-  cout << hoogte << ", " << breedte << endl;
-  cout << keuzeAantalGeel << ", " << keuzeAantalBlauw << endl;
   return true;
 }
 else{
@@ -105,8 +105,8 @@ bool Territorium::eindstand ()
 // TODO: implementeer deze memberfunctie
 char variabel;
 
-for (int i= 0; i <= hoogte; i++){
-  for (int j=0; j <= breedte; j++){
+for (int i= 0; i < hoogte; i++){
+  for (int j=0; j < breedte; j++){
     if (bord[i][j]<0){
       return false;
     }
@@ -122,7 +122,7 @@ void Territorium::drukAf ()
 {
   // TODO: implementeer deze memberfunctie
   for (int i=0; i < hoogte; i++){
-      cout << i << " " << "|" << " ";
+    cout << i << " " << "|" << " ";
     for (int j=0; j < breedte; j++){
       cout << bord[i][j] << " " ;
 
@@ -148,7 +148,7 @@ void Territorium::drukAf ()
   //  welke vakjes nog mogelijk
   if (aanBeurt == 0){
     while(int g < keuzeAantalGeel){
-      
+
     }
   }
 
