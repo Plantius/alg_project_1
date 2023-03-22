@@ -117,19 +117,17 @@ return true;
 
 //*************************************************************************
 
-void Territorium::drukAf ()
-{
-cout << "gamer" << endl;
-// TODO: implementeer deze memberfunctie
-for (int i=0; i++; i < hoogte){
-    cout << hoogte -i << ":";
-  }
-  for (int j=0; j++; j < breedte){
-    cout << bord[i][j] ;
+void Territorium::drukAf (){
+  cout << "gamer" << endl;
+  // TODO: implementeer deze memberfunctie
+  for (int i=0; i++; i < hoogte){
+      cout << hoogte -i << ":";
+    for (int j=0; j++; j < breedte){
+      cout << bord[i][j] ;
+    }
+    cout << endl;
   }
   cout << endl;
-}
-cout << endl;
 
 
 }  // drukAf
