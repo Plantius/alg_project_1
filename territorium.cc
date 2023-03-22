@@ -74,7 +74,7 @@ if (file.good()){
       keuzeAantalBlauw = getal;
     } if (getalcount > 1 && getalcount < hoogte*breedte + 2){
         bord[hoogte_tel][breedte_tel] = getal;
-        
+
         if (breedte_tel == breedte - 1) {
           breedte_tel = 0;
           hoogte_tel++;
@@ -103,7 +103,6 @@ bool Territorium::eindstand ()
 {
 
 // TODO: implementeer deze memberfunctie
-char variabel;
 
 for (int i= 0; i < hoogte; i++){
   for (int j=0; j < breedte; j++){
