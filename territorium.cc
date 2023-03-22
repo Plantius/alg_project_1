@@ -119,7 +119,7 @@ void Territorium::drukAf ()
 {
 cout << "gamer" << endl;
 // TODO: implementeer deze memberfunctie
-for (int i=0; i++; i < hoogte){<
+for (int i=0; i++; i < hoogte){
     cout << hoogte -i << ":";
   }
   for (int j=0; j++; j < breedte){
