@@ -125,9 +125,16 @@ void Territorium::drukAf ()
       cout << i << " " << "|" << " ";
     for (int j=0; j < breedte; j++){
       cout << bord[i][j] << " " ;
-    }
+
+      if ((i == (hoogte/2) && hoogte >1 ) && (j == breedte -1 && breedte >1)){
+        cout << "Speler aan de beurt: " << aanBeurt;
+      } // if
+
+    } // for
     cout << " " << endl;
-  }
+  } // for
+
+  // breedte nummering
   cout << "    ";
   for (int z=0; z < breedte; z++){
     cout << "\u2014" << " ";
@@ -138,6 +145,12 @@ void Territorium::drukAf ()
   }
   cout << endl;
 
+  //  welke vakjes nog mogelijk
+  if (aanBeurt == 0){
+    while(int g < keuzeAantalGeel){
+      
+    }
+  }
 
 }  // drukAf
 
