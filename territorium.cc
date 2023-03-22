@@ -4,6 +4,7 @@
 #include "standaard.h"
 #include <fstream>   // voor inlezen van bord
 #include <iostream>
+using namespace std;
 
 //*************************************************************************
 
@@ -57,7 +58,7 @@ else if (nwKeuzeAantalBlauw >=1){
 bool Territorium::leesInBord (const char* invoernaam)
 {
 int getal;
-int getalcount = 0;
+int getalcount = 0, hoogte_tel = 0;
 // TODO: implementeer deze memberfunctie
 ifstream file(invoernaam);
 if (file.good()){
@@ -72,19 +73,20 @@ if (file.good()){
     } if(getalcount == hoogte*breedte + 3){
       keuzeAantalBlauw = getal;
     } if (getalcount > 1 && getalcount < hoogte*breedte + 2){
-      if ( getalcount < breedte + 2){
-        bord[][]
-      }
+        bord[hoogte_tel][getalcount-2] = getal;
+
+        if (getalcount-2 & breedte == 0){
+          hoogte_tel++;
+        }
     }
 
-
-    cout << getalcount << " | " << getal << endl;
+    std::cout << getalcount << " | " << getal << endl;
     getalcount++;
   }
   return true;
 }
 else{
-  cout << "Deze file is niet leesbaar." << endl;
+  std::cout << "Deze file is niet leesbaar." << endl;
   return false;
 }
 
