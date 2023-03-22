@@ -125,11 +125,6 @@ void Territorium::drukAf ()
     cout << i << " " << "|" << " ";
     for (int j=0; j < breedte; j++){
       cout << bord[i][j] << " " ;
-
-      if ((i == (hoogte/2) && hoogte >1 ) && (j == breedte -1 && breedte >1)){
-        cout << "Speler aan de beurt: " << aanBeurt;
-      } // if
-
     } // for
     cout << " " << endl;
   } // for
@@ -145,12 +140,39 @@ void Territorium::drukAf ()
   }
   cout << endl;
 
-  //  welke vakjes nog mogelijk
-  if (aanBeurt == 0){
-    while(int g < keuzeAantalGeel){
 
-    }
+  // speler beurt:
+  cout << "Speler aan de beurt: ";
+  if (aanBeurt==0){
+    cout << "geel" << endl; ;
   }
+  else{
+    cout << "blauw" << endl;
+  }
+
+  //  welke vakjes nog mogelijk
+  cout << "Mogelijke keuzes: ";
+  int g=0;
+  if (aanBeurt == 0){
+      for (int i=0; i < hoogte ; i++){
+        for (int j=0; j < breedte; j++){
+          if (bord[i][j] < 0 && g < keuzeAantalGeel){
+            cout << "(" << i << "," << j << ") ";
+            g++;
+          }
+        }
+      }
+  }
+   if (aanBeurt == 1){
+      for (int i=0; i < hoogte ; i++){
+        for (int j=0; j < breedte; j++){
+          if (bord[i][j] < 0 && g < keuzeAantalBlauw){
+            cout << "(" << i << "," << j << ") ";
+            g++;
+          }
+        }
+      }
+  } cout << endl;
 
 }  // drukAf
 
