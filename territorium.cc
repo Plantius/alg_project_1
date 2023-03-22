@@ -74,19 +74,16 @@ if (file.good()){
       keuzeAantalBlauw = getal;
     } if (getalcount > 1 && getalcount < hoogte*breedte + 2){
         bord[hoogte_tel][getalcount-2] = getal;
-
-        if (getalcount-2 & breedte == 0){
+        if ((getalcount-2) % breedte == 0){
           hoogte_tel++;
         }
     }
-
-    std::cout << getalcount << " | " << getal << endl;
     getalcount++;
   }
   return true;
 }
 else{
-  std::cout << "Deze file is niet leesbaar." << endl;
+  cout << "Deze file is niet leesbaar." << endl;
   return false;
 }
 
@@ -104,8 +101,8 @@ bool Territorium::eindstand ()
 // TODO: implementeer deze memberfunctie
 char variabel;
 
-for (int i= 0; i++; i<= hoogte){
-  for (int j=0; j++; j<= breedte){
+for (int i= 0; i <= hoogte; i++){
+  for (int j=0; j <= breedte; j++){
     if (bord[i][j]<0){
       return false;
     }
@@ -119,17 +116,16 @@ return true;
 
 void Territorium::drukAf ()
 {
-cout << "gamer" << endl;
-// TODO: implementeer deze memberfunctie
-for (int i=0; i++; i < hoogte){
-    cout << hoogte -i << ":";
-  }
-  for (int j=0; j++; j < breedte){
-    cout << bord[i][j] ;
+  cout << "gamer" << endl;
+  // TODO: implementeer deze memberfunctie
+  for (int i=0; i < hoogte; i++){
+      cout << hoogte -i << ":";
+    for (int j=0; j < breedte; j++){
+      cout << bord[i][j] ;
+    }
+    cout << endl;
   }
   cout << endl;
-}
-cout << endl;
 
 
 }  // drukAf
