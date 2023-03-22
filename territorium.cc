@@ -74,12 +74,16 @@ if (file.good()){
       keuzeAantalBlauw = getal;
     } if (getalcount > 1 && getalcount < hoogte*breedte + 2){
         bord[hoogte_tel][getalcount-2] = getal;
-        if ((getalcount-2) % breedte == 0){
+        cout << getal << " ";
+        if ((getalcount-1) % breedte == 0 && (getalcount-2 != 0)){
           hoogte_tel++;
-        }
+          cout << endl;
+        } 
     }
     getalcount++;
   }
+  cout << hoogte << ", " << breedte << endl;
+  cout << keuzeAantalGeel << ", " << keuzeAantalBlauw << endl;
   return true;
 }
 else{
@@ -119,7 +123,7 @@ void Territorium::drukAf ()
   cout << "gamer" << endl;
   // TODO: implementeer deze memberfunctie
   for (int i=0; i < hoogte; i++){
-      cout << hoogte -i << ":";
+      cout << hoogte - i << ": ";
     for (int j=0; j < breedte; j++){
       cout << bord[i][j] ;
     }
