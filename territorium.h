@@ -72,6 +72,8 @@ class Territorium
     // uit welke vakjes mag speler aan beurt kiezen) af op het scherm.
     void drukAf ();
 
+    void vakjesMogelijk();
+
     // Bepaal de j-de mogelijke zet van de huidige speler.
     // Controleer eerst of j>=1, of de speler wel uit minstens j zetten kan
     // kiezen, en of er nog j vakjes leeg zijn.
