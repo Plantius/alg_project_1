@@ -234,7 +234,7 @@ pair<int,int> Territorium::bepaalZet (int j)
           g++;
         }//if
         else if(g == j){
-          return make_pair(volgorde[i-1].first, volgorde[i-1].second);
+          return make_pair(volgorde[i].first, volgorde[i].second);
         }
     }
   }
@@ -244,7 +244,7 @@ pair<int,int> Territorium::bepaalZet (int j)
           g++;
         }//if
         else if(g == j){
-          return make_pair(volgorde[i-1].first, volgorde[i-1].second);
+          return make_pair(volgorde[i].first, volgorde[i].second);
         }
     }      
   }
