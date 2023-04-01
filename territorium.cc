@@ -226,6 +226,7 @@ void Territorium::drukAf ()
 pair<int,int> Territorium::bepaalZet (int j)
 {
   // TODO: implementeer deze memberfunctie
+  // moet alleen er nog voor zorgen dat niet de volgende keuze wordt genomen
   int g=0;
   if (aanBeurt==0 && j>=1 && j<= keuzeAantalGeel){ // geel 
     for (int i=0; i < volgorde_eind ; i++){
@@ -233,7 +234,7 @@ pair<int,int> Territorium::bepaalZet (int j)
           g++;
         }//if
         else if(g == j){
-          return make_pair(volgorde[i].first,volgorde[i].second);
+          return make_pair(volgorde[i-1].first, volgorde[i-1].second);
         }
     }
   }
@@ -243,7 +244,7 @@ pair<int,int> Territorium::bepaalZet (int j)
           g++;
         }//if
         else if(g == j){
-          return make_pair(volgorde[i].first,volgorde[i].second);
+          return make_pair(volgorde[i-1].first, volgorde[i-1].second);
         }
     }      
   }
