@@ -166,8 +166,9 @@ class Territorium
         keuzeAantalGeel,  // aantal vakjes waaruit Geel/Blauw steeds
         keuzeAantalBlauw, // kan kiezen voor nieuwe zet
         aanBeurt,       // speler die aan de beurt is
-        hoeveelNietBeschikbaar,
-        volgorde_eind; // percentage hoeveel niet beschikbare vakjes
+        hoeveelNietBeschikbaar, // percentage hoeveel niet beschikbare vakjes
+        volgorde_eind,
+        keuzesGeel, keuzesBlauw;
 
     // TODO: uw eigen memberfuncties en -variabelen
     void vakjesMogelijk();

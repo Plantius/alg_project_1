@@ -17,6 +17,7 @@ Territorium::Territorium ()
   hoeveelNietBeschikbaar=25;
   keuzeAantalGeel=2;
   keuzeAantalBlauw=2;
+  keuzesGeel = 0, keuzesBlauw = 0;
 
 }  // default constructor
 
@@ -163,20 +164,23 @@ void Territorium::vakjesMogelijk(){
   int g=0;
 
   if (aanBeurt == 0){
-      for (int i=0; i < volgorde_eind ; i++){
+      for (int i = (keuzesBlauw + keuzesGeel); i < volgorde_eind ; i++){
         if (volgorde[i] != make_pair(-1, -1) && g < keuzeAantalGeel){
           cout << "(" << volgorde[i].first << "," << volgorde[i].second << ") ";
           g++;
         }
       }
+    keuzesGeel+=keuzeAantalGeel;
   } if (aanBeurt == 1){
-      for (int i=0; i < volgorde_eind ; i++){
+      for (int i = (keuzesBlauw + keuzesGeel); i < volgorde_eind ; i++){
         if (volgorde[i] != make_pair(-1, -1) && g < keuzeAantalBlauw){
           cout << "(" << volgorde[i].first << "," << volgorde[i].second << ") ";
           g++;
         }
       }
+    keuzesBlauw+=keuzeAantalBlauw;
   } cout << endl;
+  cout << keuzesGeel << ", " << keuzesBlauw << endl;
 }
 
 //*************************************************************************
