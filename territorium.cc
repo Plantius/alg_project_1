@@ -86,8 +86,13 @@ void Territorium::vulVolgorde(){
   }
 }
 
-void Territorium::verwijderKeuze(){
-  
+void Territorium::verwijderKeuze(int keuze){
+  // Verwijdert de gemaakte keuze uit de volgorde array 
+  for (int i = keuze; i < (volgorde_eind+1);i++){
+    volgorde[i] = volgorde[i+1];
+  }
+  volgorde[volgorde_eind-1] = make_pair(-1, -1);
+  volgorde_eind--;
 }
 
 bool Territorium::leesInBord (const char* invoernaam)
@@ -156,6 +161,7 @@ void Territorium::vakjesMogelijk(){
   //  welke vakjes nog mogelijk
   cout << "Mogelijke keuzes: ";
   int g=0;
+
   if (aanBeurt == 0){
       for (int i=0; i < volgorde_eind ; i++){
         if (volgorde[i] != make_pair(-1, -1) && g < keuzeAantalGeel){

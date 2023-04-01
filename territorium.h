@@ -173,7 +173,7 @@ class Territorium
     void vakjesMogelijk();
 
     void vulVolgorde();
-    void verwijderKeuze();
+    void verwijderKeuze(int keuze);
 
 };
 
