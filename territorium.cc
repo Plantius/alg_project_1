@@ -164,7 +164,7 @@ bool Territorium::eindstand ()
 
 for (int i= 0; i < hoogte; i++){
   for (int j=0; j < breedte; j++){
-    if (bord[i][j]<0){
+    if (bord[i][j] <= 0){
       return false;
     }
   }
