@@ -115,6 +115,34 @@ return true;
 
 } // eindstand
 
+
+void vakjesMogelijk(){
+  
+  //  welke vakjes nog mogelijk
+  cout << "Mogelijke keuzes: ";
+  int g=0;
+  if (aanBeurt == 0){
+      for (int i=0; i < hoogte ; i++){
+        for (int j=0; j < breedte; j++){
+          if (bord[i][j] < 0 && g < keuzeAantalGeel){
+            cout << "(" << i << "," << j << ") ";
+            g++;
+          }
+        }
+      }
+  }
+   if (aanBeurt == 1){
+      for (int i=0; i < hoogte ; i++){
+        for (int j=0; j < breedte; j++){
+          if (bord[i][j] < 0 && g < keuzeAantalBlauw){
+            cout << "(" << i << "," << j << ") ";
+            g++;
+          }
+        }
+      }
+  } cout << endl;
+}
+
 //*************************************************************************
 
 void Territorium::drukAf ()
@@ -155,31 +183,10 @@ void Territorium::drukAf ()
     cout << "blauw" << endl;
   }
 
-  //  welke vakjes nog mogelijk
-  cout << "Mogelijke keuzes: ";
-  int g=0;
-  if (aanBeurt == 0){
-      for (int i=0; i < hoogte ; i++){
-        for (int j=0; j < breedte; j++){
-          if (bord[i][j] < 0 && g < keuzeAantalGeel){
-            cout << "(" << i << "," << j << ") ";
-            g++;
-          }
-        }
-      }
-  }
-   if (aanBeurt == 1){
-      for (int i=0; i < hoogte ; i++){
-        for (int j=0; j < breedte; j++){
-          if (bord[i][j] < 0 && g < keuzeAantalBlauw){
-            cout << "(" << i << "," << j << ") ";
-            g++;
-          }
-        }
-      }
-  } cout << endl;
+  vakjesMogelijk();
 
 }  // drukAf
+
 
 //*************************************************************************
 
