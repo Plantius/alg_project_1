@@ -128,7 +128,7 @@ void Territorium::drukAf ()
       } else if (bord[i][j] < 0 && bord[i][j] > -10){
         cout << " " << bord[i][j] << " " ;
       } else {
-        cout << " " << bord[i][j] << "  " ;
+        cout << "  " << bord[i][j] << " " ;
       }
     } // for
     cout << " " << endl;
@@ -137,11 +137,11 @@ void Territorium::drukAf ()
   // breedte nummering
   cout << "    ";
   for (int z=0; z < breedte; z++){
-    cout << " \u2014 " << " ";
+    cout << "\u2014\u2014\u2014" << " ";
   }
   cout << endl << "    ";
   for (int k=0; k < breedte; k++){
-    cout << " " <<  k << "  "; 
+    cout << " " << k << "  "; 
   }
   cout << endl;
 
