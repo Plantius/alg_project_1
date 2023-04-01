@@ -55,6 +55,41 @@ else if (nwKeuzeAantalBlauw >=1){
 
 //*************************************************************************
 
+void Territorium::vulVolgorde(){
+  int temp[MaxDimensie*MaxDimensie];
+  pair<int, int> tempPair;
+  int temp_item;
+  int end = 0;
+  
+  for (int i = 0; i< hoogte; i++){
+    for (int j = 0; j< breedte; j++){
+      if (bord[i][j] < 0 && end < MaxDimensie*MaxDimensie){
+        temp[end] = bord[i][j];
+        volgorde[end] = make_pair(i, j);
+        end++;
+      }
+    }
+  }
+
+  // Sorteert de volgorde array in oplopende volgorde
+  for (int i = 0; i < end; i++){
+    for (int j = i + 1; j < end; j++){
+      if (temp[i] < temp[j]){
+        temp_item = temp[i];
+        tempPair = volgorde[i];
+        temp[i] = temp[j];
+        volgorde[i] = volgorde[j];
+        temp[j] = temp_item;
+        volgorde[j] = tempPair;
+      }
+    }
+  }
+  for (int k = 0; k < end; k++){
+    cout << "("<< volgorde[k].first << "," << volgorde[k].second << ")"<< " ";
+  } 
+  cout << endl << endl;
+}
+
 bool Territorium::leesInBord (const char* invoernaam)
 {
 int getal;
@@ -74,7 +109,6 @@ if (file.good()){
       keuzeAantalBlauw = getal;
     } if (getalcount > 1 && getalcount < hoogte*breedte + 2){
         bord[hoogte_tel][breedte_tel] = getal;
-
         if (breedte_tel == breedte - 1) {
           breedte_tel = 0;
           hoogte_tel++;
@@ -84,6 +118,7 @@ if (file.good()){
      }
     getalcount++;
   }
+  vulVolgorde();
   return true;
 }
 else{
@@ -173,18 +208,15 @@ void Territorium::drukAf ()
   }
   cout << endl;
 
-
   // speler beurt:
   cout << "Speler aan de beurt: ";
   if (aanBeurt==0){
     cout << "geel" << endl; ;
-  }
-  else{
+  } else{
     cout << "blauw" << endl;
   }
 
   vakjesMogelijk();
-
 }  // drukAf
 
 

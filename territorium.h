@@ -158,6 +158,10 @@ class Territorium
     int bord[MaxDimensie][MaxDimensie];  // [rij][kolom]: inhoud van bord;
           // rijen genummerd van 0..hoogte-1, van beneden naar boven
           // kolommen genummerd van 0..breedte-1, van links naar rechts;
+
+    // Array voor de vulvolgorde
+    pair<int, int> volgorde[MaxDimensie*MaxDimensie];
+
     int breedte, hoogte,  // van het bord
         keuzeAantalGeel,  // aantal vakjes waaruit Geel/Blauw steeds
         keuzeAantalBlauw, // kan kiezen voor nieuwe zet
@@ -166,6 +170,8 @@ class Territorium
 
     // TODO: uw eigen memberfuncties en -variabelen
     void vakjesMogelijk();
+
+    void vulVolgorde();
 
 };
 
