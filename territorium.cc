@@ -194,36 +194,33 @@ pair<int,int> Territorium::bepaalZet (int j)
 {
   // TODO: implementeer deze memberfunctie
   int g=0;
-  if (aanbeurt==0 && j>=1 && j<= keuzeAantalGeel){ // geel 
+  if (aanBeurt==0 && j>=1 && j<= keuzeAantalGeel){ // geel 
     for (int i=0; i < hoogte ; i++){
       for (int z=0; z < breedte; z++){
         if (bord[i][z] < 0){
           g++;
         }//if
         else if(g == j){
-          j_paar = make_pair(i,z);
-          return j_paar; 
+          return make_pair(i,z);
         }
        }
     }
   }
-  else if (aanbeurt==1 && j>=1 && j <= keuzeAantalBlauw){
+  else if (aanBeurt==1 && j>=1 && j <= keuzeAantalBlauw){
     for (int i=0; i < hoogte ; i++){
       for (int z=0; z < breedte; z++){
         if (bord[i][z] < 0){
           g++;
         }//if
         else if(g == j){
-          j_paar = make_pair(i,z);
-          return j_paar;
+          return make_pair(i,z);
         }
        }
     }         
   }
   else{
-    return make_pair('x','x');
+    return make_pair(11,11);
   }
-
 }  // bepaalZet
 
 //*************************************************************************
