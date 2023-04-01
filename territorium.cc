@@ -116,7 +116,7 @@ return true;
 } // eindstand
 
 
-void vakjesMogelijk(){
+void Territorium::vakjesMogelijk(){
   
   //  welke vakjes nog mogelijk
   cout << "Mogelijke keuzes: ";
@@ -169,7 +169,7 @@ void Territorium::drukAf ()
   }
   cout << endl << "    ";
   for (int k=0; k < breedte; k++){
-    cout << " " << k << "  "; 
+    cout << "  " << k << " "; 
   }
   cout << endl;
 
@@ -254,4 +254,3 @@ int Territorium::bepaalGoedeScore ()
   return 0;
 
 }  // bepaalGoedeScore
-
