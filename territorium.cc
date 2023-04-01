@@ -117,8 +117,44 @@ return true;
 
 //*************************************************************************
 
-void Territorium::vakjesMogelijk ()
+void Territorium::drukAf ()
 {
+  // TODO: implementeer deze memberfunctie
+  for (int i=0; i < hoogte; i++){
+    cout << i << " " << "|" << " ";
+    for (int j=0; j < breedte; j++){
+      if (bord[i][j] > 9 || bord[i][j] < -9){
+        cout << bord[i][j] << " " ;
+      } else if (bord[i][j] < 0 && bord[i][j] > -10){
+        cout << " " << bord[i][j] << " " ;
+      } else {
+        cout << " " << bord[i][j] << "  " ;
+      }
+    } // for
+    cout << " " << endl;
+  } // for
+
+  // breedte nummering
+  cout << "    ";
+  for (int z=0; z < breedte; z++){
+    cout << " \u2014 " << " ";
+  }
+  cout << endl << "    ";
+  for (int k=0; k < breedte; k++){
+    cout << " " <<  k << "  "; 
+  }
+  cout << endl;
+
+
+  // speler beurt:
+  cout << "Speler aan de beurt: ";
+  if (aanBeurt==0){
+    cout << "geel" << endl; ;
+  }
+  else{
+    cout << "blauw" << endl;
+  }
+
   //  welke vakjes nog mogelijk
   cout << "Mogelijke keuzes: ";
   int g=0;
@@ -142,42 +178,6 @@ void Territorium::vakjesMogelijk ()
         }
       }
   } cout << endl;
-
-}
-
-void Territorium::drukAf ()
-{
-  // TODO: implementeer deze memberfunctie
-  for (int i=0; i < hoogte; i++){
-    cout << i << " " << "|" << " ";
-    for (int j=0; j < breedte; j++){
-      cout << bord[i][j] << " " ;
-    } // for
-    cout << " " << endl;
-  } // for
-
-  // breedte nummering
-  cout << "    ";
-  for (int z=0; z < breedte; z++){
-    cout << "\u2014" << " ";
-  }
-  cout << endl << "    ";
-  for (int k=0; k < breedte; k++){
-    cout << k << " "; 
-  }
-  cout << endl;
-
-
-  // speler beurt:
-  cout << "Speler aan de beurt: ";
-  if (aanBeurt==0){
-    cout << "geel" << endl; ;
-  }
-  else{
-    cout << "blauw" << endl;
-  }
-
-  vakjesMogelijk();
 
 }  // drukAf
 
