@@ -228,28 +228,24 @@ pair<int,int> Territorium::bepaalZet (int j)
   // TODO: implementeer deze memberfunctie
   int g=0;
   if (aanBeurt==0 && j>=1 && j<= keuzeAantalGeel){ // geel 
-    for (int i=0; i < hoogte ; i++){
-      for (int z=0; z < breedte; z++){
-        if (bord[i][z] < 0){
+    for (int i=0; i < volgorde_eind ; i++){
+        if (volgorde[i] != make_pair(-1, -1) && g < keuzeAantalGeel){
           g++;
         }//if
         else if(g == j){
-          return make_pair(i,z);
+          return make_pair(volgorde[i].first,volgorde[i].second);
         }
-       }
     }
   }
   else if (aanBeurt==1 && j>=1 && j <= keuzeAantalBlauw){
-    for (int i=0; i < hoogte ; i++){
-      for (int z=0; z < breedte; z++){
-        if (bord[i][z] < 0){
+    for (int i=0; i < volgorde_eind ; i++){
+        if (volgorde[i] != make_pair(-1, -1) && g < keuzeAantalBlauw){
           g++;
         }//if
         else if(g == j){
-          return make_pair(i,z);
+          return make_pair(volgorde[i].first,volgorde[i].second);
         }
-       }
-    }         
+    }      
   }
   else{
     return make_pair(11,11);
