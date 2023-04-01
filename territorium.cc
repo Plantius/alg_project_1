@@ -192,7 +192,6 @@ void Territorium::drukAf ()
 
 pair<int,int> Territorium::bepaalZet (int j)
 {
-
   // TODO: implementeer deze memberfunctie
   int g=0;
   if (aanbeurt==0 && j>=1 && j<= keuzeAantalGeel){ // geel 
@@ -222,7 +221,7 @@ pair<int,int> Territorium::bepaalZet (int j)
     }         
   }
   else{
-    return make_pair(x,x);
+    return make_pair('x','x');
   }
 
 }  // bepaalZet
