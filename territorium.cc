@@ -179,7 +179,7 @@ void Territorium::vakjesMogelijk(){
   //  welke vakjes nog mogelijk
   cout << "Mogelijke keuzes: ";
   int g=0;
-
+  int h = -1, b = -1;
   if (aanBeurt == 0){
       for (int i = (keuzesBlauw + keuzesGeel); i < volgorde_eind ; i++){
         if (volgorde[i] != make_pair(-1, -1) && g < keuzeAantalGeel){
@@ -187,7 +187,10 @@ void Territorium::vakjesMogelijk(){
           g++;
         }
       }
-    keuzesGeel+=keuzeAantalGeel;
+
+    if (doeZet(h, b)){
+      keuzesGeel+=keuzeAantalGeel;
+    }
   } if (aanBeurt == 1){
       for (int i = (keuzesBlauw + keuzesGeel); i < volgorde_eind ; i++){
         if (volgorde[i] != make_pair(-1, -1) && g < keuzeAantalBlauw){
@@ -195,15 +198,17 @@ void Territorium::vakjesMogelijk(){
           g++;
         }
       }
-    keuzesBlauw+=keuzeAantalBlauw;
-  } cout << endl;
+    if (doeZet(h, b)){  
+      keuzesBlauw+=keuzeAantalBlauw;
+    }
+  } cout << keuzesBlauw << ", " << keuzesGeel << endl;
+
 }
 
 //*************************************************************************
 
 void Territorium::drukAf ()
 {
-  cout << hoeveelNietBeschikbaar << ", " << hoogte << ", " << breedte << ", " << keuzeAantalGeel << ", " <<  keuzeAantalBlauw << endl;
   // TODO: implementeer deze memberfunctie
   for (int i=0; i < hoogte; i++){
     cout << i << " | " ;
