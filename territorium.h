@@ -171,6 +171,8 @@ class Territorium
         keuzesGeel, keuzesBlauw;
 
     // TODO: uw eigen memberfuncties en -variabelen
+    void vulBord();
+
     void vakjesMogelijk();
 
     void vulVolgorde();

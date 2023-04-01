@@ -29,32 +29,48 @@ Territorium::Territorium (int nwHoogte, int nwBreedte,
                  int nwKeuzeAantalGeel, int nwKeuzeAantalBlauw)
 {
 
-// TODO: implementeer deze constructor
+  // TODO: implementeer deze constructor
 
-if (nwHoogte >= 1 && nwHoogte <= MaxDimensie){
-  hoogte = nwHoogte;
-}
+  if (nwHoogte >= 1 && nwHoogte <= MaxDimensie){
+    hoogte = nwHoogte;
+  }
 
-else if (nwBreedte >= 1 && nwBreedte <= MaxDimensie){
-  breedte= nwBreedte;
-}
+  if (nwBreedte >= 1 && nwBreedte <= MaxDimensie){
+    breedte= nwBreedte;
+  }
 
-// kloppen de variabel namen?
-else if (kansNietBeschikbaar >= 0 && kansNietBeschikbaar <= 100){
-  hoeveelNietBeschikbaar = kansNietBeschikbaar;
-}
+  // kloppen de variabel namen?
+  if (kansNietBeschikbaar >= 0 && kansNietBeschikbaar <= 100){
+    hoeveelNietBeschikbaar = kansNietBeschikbaar;
+  }
 
-else if (nwKeuzeAantalGeel >=1){
-  keuzeAantalGeel = nwKeuzeAantalGeel;
-}
+  if (nwKeuzeAantalGeel >=1){
+    keuzeAantalGeel = nwKeuzeAantalGeel;
+  }
 
-else if (nwKeuzeAantalBlauw >=1){
-  keuzeAantalBlauw = nwKeuzeAantalBlauw;
-}
+  if (nwKeuzeAantalBlauw >=1){
+    keuzeAantalBlauw = nwKeuzeAantalBlauw;
+  }
 
+  vulBord();
+  vulVolgorde();
 }  // constructor met parameters
 
 //*************************************************************************
+
+void Territorium::vulBord(){
+  int k = -1;
+  for (int i = 0; i < hoogte; i++){
+    for (int j = 0; j < breedte; j++){
+      if (randomGetal(0, 100) < hoeveelNietBeschikbaar){
+        bord[i][j] = 3;
+      }else {
+        bord[i][j] = k;
+        k--;
+      }
+    }
+  }
+}
 
 void Territorium::vulVolgorde(){
   int temp[MaxDimensie*MaxDimensie];
@@ -125,6 +141,7 @@ if (file.good()){
     getalcount++;
   }
   vulVolgorde();
+  file.close();
   return true;
 }
 else{
@@ -180,16 +197,16 @@ void Territorium::vakjesMogelijk(){
       }
     keuzesBlauw+=keuzeAantalBlauw;
   } cout << endl;
-  cout << keuzesGeel << ", " << keuzesBlauw << endl;
 }
 
 //*************************************************************************
 
 void Territorium::drukAf ()
 {
+  cout << hoeveelNietBeschikbaar << ", " << hoogte << ", " << breedte << ", " << keuzeAantalGeel << ", " <<  keuzeAantalBlauw << endl;
   // TODO: implementeer deze memberfunctie
   for (int i=0; i < hoogte; i++){
-    cout << i << " " << "|" << " ";
+    cout << i << " | " ;
     for (int j=0; j < breedte; j++){
       if (bord[i][j] > 9 || bord[i][j] < -9){
         cout << bord[i][j] << " " ;
