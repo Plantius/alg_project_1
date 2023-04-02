@@ -18,6 +18,7 @@ Territorium::Territorium ()
   keuzeAantalGeel=2;
   keuzeAantalBlauw=2;
   keuzesGeel = 0, keuzesBlauw = 0;
+  zetten = 0;
 
 }  // default constructor
 
@@ -115,8 +116,10 @@ void Territorium::verwijderKeuze(int keuze){
   // Verwijdert de gemaakte keuze uit de volgorde array 
   for (int i = keuze; i < (volgorde_eind+1);i++){
     volgordeCoord[i] = volgordeCoord[i+1];
+    volgorde[i] = volgorde[i+1];
   }
   volgordeCoord[volgorde_eind-1] = make_pair(-1, -1);
+  volgorde[volgorde_eind-1] = 0;
   volgorde_eind--;
 }
 
@@ -290,12 +293,13 @@ pair<int,int> Territorium::bepaalZet (int j)
 
 bool Territorium::doeZet (int rij, int kolom)
 {
-  cout << rij << kolom << ", " << aanBeurt << endl;
+  cout << rij << kolom << ", " << aanBeurt << "|" << zetten << endl;
   // TODO: implementeer deze memberfunctie
   if (aanBeurt == 0 && rij != -1 && kolom != -1){
     for (int i = 0; i < keuzeAantalGeel; i++){
-      if (bord[rij][kolom] == volgorde[i+keuzesBlauw+keuzesGeel] && inArray(volgordeCoord[i+keuzesBlauw+keuzesGeel], vakjeKeuzes, keuzeAantalGeel)){
-        verwijderKeuze(i+keuzesBlauw+keuzesGeel);
+      if (bord[rij][kolom] == volgorde[i+keuzesBlauw+keuzesGeel-zetten] && inArray(volgordeCoord[i+keuzesBlauw+keuzesGeel-zetten], vakjeKeuzes, keuzeAantalGeel)){
+        verwijderKeuze(i+keuzesBlauw+keuzesGeel-zetten);
+        zetten++;
         keuzesGeel+=keuzeAantalGeel;
         cout << keuzesGeel << ", "  << true << endl;
         aanBeurt = !aanBeurt;
@@ -307,8 +311,9 @@ bool Territorium::doeZet (int rij, int kolom)
     }
   }else if (aanBeurt == 1 && rij != -1 && kolom != -1){
     for (int i = 0; i < keuzeAantalBlauw; i++){
-      if (bord[rij][kolom] == volgorde[i+keuzesBlauw+keuzesGeel] && inArray(volgordeCoord[i+keuzesBlauw+keuzesGeel], vakjeKeuzes, keuzeAantalBlauw)){
-        verwijderKeuze(i+keuzesBlauw+keuzesGeel);
+      if (bord[rij][kolom] == volgorde[i+keuzesBlauw+keuzesGeel-zetten] && inArray(volgordeCoord[i+keuzesBlauw+keuzesGeel-zetten], vakjeKeuzes, keuzeAantalBlauw)){
+        verwijderKeuze(i+keuzesBlauw+keuzesGeel-zetten);
+        zetten++;
         keuzesBlauw+=keuzeAantalBlauw;
         cout << keuzesBlauw << ", "  << true << endl;
         aanBeurt = !aanBeurt;

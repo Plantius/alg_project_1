@@ -170,10 +170,11 @@ class Territorium
         aanBeurt,       // speler die aan de beurt is
         hoeveelNietBeschikbaar, // percentage hoeveel niet beschikbare vakjes
         volgorde_eind,
-        keuzesGeel, keuzesBlauw;
+        keuzesGeel, keuzesBlauw,
+        zetten;
 
     // TODO: uw eigen memberfuncties en -variabelen
-    bool inArray(pair<int, int> element, pair<int, int> arr[], int size);
+    bool inArray(pair<int, int> element, pair<int, int> arr[], int size); // Checkt of een element in een array zit
     void vulBord();
 
     void vakjesMogelijk();
