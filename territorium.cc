@@ -349,8 +349,8 @@ int score;
 
   // berekent eerst de stand van de spelers
   if (eindstand()){
-    for (int r =0; r++;){
-      for (int k=0; k++;){
+    for (int r =0; r <= hoogte ; r++){
+      for (int k=0; k <= breedte; k++){
         if(bord[r][k]==1 && aanBeurt==0){
           geelstand++;
         }
@@ -387,7 +387,7 @@ int score;
     }
 
     // de recursie 
-    for (int j =0; j++){
+    for (int j =0; j <= g; j++){
       doeZet (vakjeKeuzes[j].first, vakjeKeuzes[j].second);
       aantalStanden++;
       score = - besteScore (besteZet, aantalStanden);
