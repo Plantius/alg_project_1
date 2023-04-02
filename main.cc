@@ -84,8 +84,8 @@ void roepBesteScoreAan (Territorium *ter1)
 { clock_t t1, t2;
   pair<int,int> besteZet;
   int score;
-  long long aantalStanden;  // aantal bekeken standen bij aanroep besteScore
-
+  long long aantalStanden=0;  // aantal bekeken standen bij aanroep besteScore
+  // heb =0 gedaan want stond dat ik dat er bij mocht zetten vgm
   t1 = clock ();
   score = ter1 -> besteScore (besteZet, aantalStanden);
   t2 = clock ();

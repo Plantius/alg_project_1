@@ -345,6 +345,36 @@ int Territorium::besteScore (pair<int,int> &besteZet,
 {
 
 // TODO: implementeer deze memberfunctie
+  if (eindstand()){
+    return 0;
+  }
+  else{ // alle mogelijke zetten z
+    for (int i =0; i++ ; i < keuzeAantalGeel){
+      // kijken welke keuzes iedereen heeft
+      int g=0;
+      if (aanBeurt == 0){ // geel
+          for (int i=keuzesGeel+keuzesBlauw-zetten; i < volgorde_eind ; i++){
+            if (volgordeCoord[i] != make_pair(-1, -1) && g < keuzeAantalGeel){
+                            vakjeKeuzes[g] = volgordeCoord[i];
+              g++;
+            }
+          }
+      } if (aanBeurt == 1){ // blauw
+          for (int i=keuzesGeel+keuzesBlauw-zetten; i < volgorde_eind ; i++){
+            if (volgordeCoord[i] != make_pair(-1, -1) && g < keuzeAantalBlauw){
+              vakjeKeuzes[g] = volgordeCoord[i];
+              g++;
+            }
+          }
+      }
+    }
+    for (int j =0; j++){
+      doeZet (vakjesKeuze[j]);
+      //score = - besteScore ();
+      unDoeZet (vakjesKeuze[j]);
+     // onthoud beste score en bijbehorende zet
+    }
+  }
 
   return 0;
 
