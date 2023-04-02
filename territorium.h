@@ -160,8 +160,8 @@ class Territorium
           // kolommen genummerd van 0..breedte-1, van links naar rechts;
 
     // Array voor de vulvolgorde
-    pair<int, int> volgorde[MaxDimensie*MaxDimensie];
-
+    pair<int, int> volgordeCoord[MaxDimensie*MaxDimensie];
+    int volgorde[MaxDimensie*MaxDimensie];
     int breedte, hoogte,  // van het bord
         keuzeAantalGeel,  // aantal vakjes waaruit Geel/Blauw steeds
         keuzeAantalBlauw, // kan kiezen voor nieuwe zet
