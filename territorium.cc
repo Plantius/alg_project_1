@@ -17,6 +17,7 @@ Territorium::Territorium ()
   hoeveelNietBeschikbaar=25;
   keuzeAantalGeel=2;
   keuzeAantalBlauw=2;
+  keuzesGeel = 0, keuzesBlauw = 0;
 
 }  // default constructor
 
@@ -187,7 +188,6 @@ void Territorium::vakjesMogelijk(){
   cout << "Mogelijke keuzes: ";
 
   int g=0;
-  int h = -1, b = -1;
   if (aanBeurt == 0){
       for (int i=keuzesGeel+keuzesBlauw; i < volgorde_eind ; i++){
         if (volgordeCoord[i] != make_pair(-1, -1) && g < keuzeAantalGeel){
@@ -204,7 +204,11 @@ void Territorium::vakjesMogelijk(){
           g++;
         }
       }
-  } cout << keuzesBlauw << ", " << keuzesGeel << endl;
+  } cout << endl;
+  for (int i = 0; i < volgorde_eind+4; i++){
+    cout << i<<"(" << volgordeCoord[i].first << "," << volgordeCoord[i].second << ") ";
+  }
+  cout << endl << "Kb: "<<keuzesBlauw << ", " << "Kg: "<< keuzesGeel << endl;
 
 }
 
@@ -291,12 +295,12 @@ bool Territorium::doeZet (int rij, int kolom)
   if (aanBeurt == 0 && rij != -1 && kolom != -1){
     for (int i = 0; i < keuzeAantalGeel; i++){
       if (bord[rij][kolom] == volgorde[i+keuzesBlauw+keuzesGeel] && inArray(volgordeCoord[i+keuzesBlauw+keuzesGeel], vakjeKeuzes, keuzeAantalGeel)){
-    
+        verwijderKeuze(i+keuzesBlauw+keuzesGeel);
         keuzesGeel+=keuzeAantalGeel;
         cout << keuzesGeel << ", "  << true << endl;
         aanBeurt = !aanBeurt;
         return true;
-      } else {
+      } else if (bord[rij][kolom] > 0){
         cout << keuzesGeel << ", "  << false << endl;
         return false;
       }
@@ -304,12 +308,12 @@ bool Territorium::doeZet (int rij, int kolom)
   }else if (aanBeurt == 1 && rij != -1 && kolom != -1){
     for (int i = 0; i < keuzeAantalBlauw; i++){
       if (bord[rij][kolom] == volgorde[i+keuzesBlauw+keuzesGeel] && inArray(volgordeCoord[i+keuzesBlauw+keuzesGeel], vakjeKeuzes, keuzeAantalBlauw)){
-    
+        verwijderKeuze(i+keuzesBlauw+keuzesGeel);
         keuzesBlauw+=keuzeAantalBlauw;
         cout << keuzesBlauw << ", "  << true << endl;
         aanBeurt = !aanBeurt;
         return true;
-      } else {
+      } else if (bord[rij][kolom] > 0){
         cout << keuzesBlauw << ", "  << false << endl;
         return false;
       }
