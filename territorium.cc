@@ -294,10 +294,17 @@ pair<int,int> Territorium::bepaalZet (int j)
 bool Territorium::doeZet (int rij, int kolom)
 {
   cout << rij << kolom << ", " << aanBeurt << "|" << zetten << endl;
+  if ((keuzesBlauw + keuzesGeel) >= volgorde_eind){
+    keuzesBlauw = 0;
+    keuzesGeel = 0;
+    zetten = 0;
+  }
   // TODO: implementeer deze memberfunctie
   if (aanBeurt == 0 && rij != -1 && kolom != -1){
     for (int i = 0; i < keuzeAantalGeel; i++){
       if (bord[rij][kolom] == volgorde[i+keuzesBlauw+keuzesGeel-zetten] && inArray(volgordeCoord[i+keuzesBlauw+keuzesGeel-zetten], vakjeKeuzes, keuzeAantalGeel)){
+        bord[rij][kolom] = 1;
+
         verwijderKeuze(i+keuzesBlauw+keuzesGeel-zetten);
         zetten++;
         keuzesGeel+=keuzeAantalGeel;
@@ -312,6 +319,8 @@ bool Territorium::doeZet (int rij, int kolom)
   }else if (aanBeurt == 1 && rij != -1 && kolom != -1){
     for (int i = 0; i < keuzeAantalBlauw; i++){
       if (bord[rij][kolom] == volgorde[i+keuzesBlauw+keuzesGeel-zetten] && inArray(volgordeCoord[i+keuzesBlauw+keuzesGeel-zetten], vakjeKeuzes, keuzeAantalBlauw)){
+        bord[rij][kolom] = 2;
+
         verwijderKeuze(i+keuzesBlauw+keuzesGeel-zetten);
         zetten++;
         keuzesBlauw+=keuzeAantalBlauw;
