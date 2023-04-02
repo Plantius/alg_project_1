@@ -224,18 +224,18 @@ void Territorium::vakjesMogelijk(){
       for (int i=keuzesGeel+keuzesBlauw-zetten_ronde; i < volgorde_eind ; i++){
         if (volgordeCoord[i] != make_pair(-1, -1) && g < keuzeAantalBlauw){
           cout << "(" << volgordeCoord[i].first << "," << volgordeCoord[i].second << ") ";
-          vakjeKeuzes[g] = volgordeCoord[i];  
+          vakjeKeuzes[g] = volgordeCoord[i];
           g++;
         }
       }
-  }  
-  cout << endl;
+  } cout << endl;
   for (int i = 0; i < volgorde_eind+4; i++){
     cout << i<<"(" << volgordeCoord[i].first << "," << volgordeCoord[i].second << ") ";
   } cout << endl;
   for (int i = 0; i < volgorde_eind+4; i++){
     cout << volgorde[i] << " ";
   }
+  cout << endl << "Kb: "<<keuzesBlauw << ", " << "Kg: "<< keuzesGeel << endl;
 }
 
 //*************************************************************************
@@ -352,6 +352,7 @@ bool Territorium::zetSpeler(int speler, int keuzeAantal, int rij, int kolom){
         }
         return true;
       } else if (bord[rij][kolom] > 0){
+        cout << keuzesBlauw << ", "  << false << endl;
         return false;
       }
   }
@@ -393,11 +394,33 @@ bool Territorium::unDoeZet ()
 int Territorium::besteScore (pair<int,int> &besteZet,
                              long long &aantalStanden)
 {
-
 // TODO: implementeer deze memberfunctie
+
+int blauwstand=0;
+int geelstand=0;
+int bestescore=0;
+int score;
+
+  // berekent eerst de stand van de spelers
   if (eindstand()){
-    return 0;
-  }
+    for (int r =0; r <= hoogte ; r++){
+      for (int k=0; k <= breedte; k++){
+        if(bord[r][k]==1 && aanBeurt==0){
+          geelstand++;
+        }
+        else if (bord[r][k]==2 && aanBeurt==1){
+          blauwstand++;
+        }
+      }
+    }
+    if (aanBeurt==0){
+      return geelstand;
+    }
+    else{
+      return blauwstand;
+    }
+  }// als er geen eindstand is, worden alle zetten gespeeld
+
   else{ // alle mogelijke zetten z
     for (int i =0; i++ ; i < keuzeAantalGeel){
       // kijken welke keuzes iedereen heeft
@@ -424,10 +447,8 @@ int Territorium::besteScore (pair<int,int> &besteZet,
       unDoeZet ();
      // onthoud beste score en bijbehorende zet
     }
-  }
-
-  return 0;
-
+  } // else
+  return score;
 }  // besteScore
 
 //*************************************************************************
