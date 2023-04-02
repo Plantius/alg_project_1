@@ -114,7 +114,7 @@ void Territorium::vulVolgorde(){
 
 void Territorium::verwijderKeuze(int keuze){
   // Verwijdert de gemaakte keuze uit de volgorde array 
-  for (int i = keuze; i < (volgorde_eind+1);i++){
+  for (int i = keuze; i < volgorde_eind ;i++){
     volgordeCoord[i] = volgordeCoord[i+1];
     volgorde[i] = volgorde[i+1];
   }
@@ -203,15 +203,15 @@ void Territorium::vakjesMogelijk(){
       for (int i=keuzesGeel+keuzesBlauw-zetten; i < volgorde_eind ; i++){
         if (volgordeCoord[i] != make_pair(-1, -1) && g < keuzeAantalBlauw){
           cout << "(" << volgordeCoord[i].first << "," << volgordeCoord[i].second << ") ";
-          vakjeKeuzes[g] = volgordeCoord[i];
+          vakjeKeuzes[g] = volgordeCoord[i];  
           g++;
         }
       }
-  } cout << endl;
+  }  
+  cout << endl;
   for (int i = 0; i < volgorde_eind+4; i++){
     cout << i<<"(" << volgordeCoord[i].first << "," << volgordeCoord[i].second << ") ";
   }
-  cout << endl << "Kb: "<<keuzesBlauw << ", " << "Kg: "<< keuzesGeel << endl;
 
 }
 
@@ -293,46 +293,53 @@ pair<int,int> Territorium::bepaalZet (int j)
 
 bool Territorium::doeZet (int rij, int kolom)
 {
-  cout << rij << kolom << ", " << aanBeurt << "|" << zetten << endl;
-  if ((keuzesBlauw + keuzesGeel) >= volgorde_eind){
-    keuzesBlauw = 0;
-    keuzesGeel = 0;
-    zetten = 0;
-  }
-  // TODO: implementeer deze memberfunctie
   if (aanBeurt == 0 && rij != -1 && kolom != -1){
     for (int i = 0; i < keuzeAantalGeel; i++){
-      if (bord[rij][kolom] == volgorde[i+keuzesBlauw+keuzesGeel-zetten] && inArray(volgordeCoord[i+keuzesBlauw+keuzesGeel-zetten], vakjeKeuzes, keuzeAantalGeel)){
+      if (bord[rij][kolom] == volgorde[i+keuzesBlauw+keuzesGeel-zetten]
+          && inArray(volgordeCoord[i+keuzesBlauw+keuzesGeel-zetten], vakjeKeuzes, keuzeAantalGeel)){
         bord[rij][kolom] = 1;
 
         verwijderKeuze(i+keuzesBlauw+keuzesGeel-zetten);
         zetten++;
         keuzesGeel+=keuzeAantalGeel;
-        cout << keuzesGeel << ", "  << true << endl;
         aanBeurt = !aanBeurt;
+        if ((keuzesBlauw + keuzesGeel-zetten) >= volgorde_eind){
+          keuzesBlauw = 0;
+          keuzesGeel = 0;
+          zetten = 0;
+        }
         return true;
       } else if (bord[rij][kolom] > 0){
-        cout << keuzesGeel << ", "  << false << endl;
         return false;
       }
     }
+    if ((keuzesBlauw + keuzesGeel) >= volgorde_eind){
+      keuzesBlauw = 0;
+      keuzesGeel = 0;
+      zetten = 0;
+    }
   }else if (aanBeurt == 1 && rij != -1 && kolom != -1){
     for (int i = 0; i < keuzeAantalBlauw; i++){
-      if (bord[rij][kolom] == volgorde[i+keuzesBlauw+keuzesGeel-zetten] && inArray(volgordeCoord[i+keuzesBlauw+keuzesGeel-zetten], vakjeKeuzes, keuzeAantalBlauw)){
+      if (bord[rij][kolom] == volgorde[i+keuzesBlauw+keuzesGeel-zetten] && 
+          inArray(volgordeCoord[i+keuzesBlauw+keuzesGeel-zetten], vakjeKeuzes, keuzeAantalBlauw)){
         bord[rij][kolom] = 2;
 
         verwijderKeuze(i+keuzesBlauw+keuzesGeel-zetten);
         zetten++;
         keuzesBlauw+=keuzeAantalBlauw;
-        cout << keuzesBlauw << ", "  << true << endl;
         aanBeurt = !aanBeurt;
+        if ((keuzesBlauw + keuzesGeel-zetten) >= volgorde_eind){
+          keuzesBlauw = 0;
+          keuzesGeel = 0;
+          zetten = 0;
+        }
         return true;
       } else if (bord[rij][kolom] > 0){
-        cout << keuzesBlauw << ", "  << false << endl;
         return false;
       }
     }
-  } 
+  }
+
   return false;
 }  // doeZet
 
@@ -377,10 +384,10 @@ int Territorium::besteScore (pair<int,int> &besteZet,
           }
       }
     }
-    for (int j =0; j++){
-      doeZet (vakjesKeuze[j]);
+    for (int j =0; j < volgorde_eind ;j++){
+      doeZet (volgordeCoord[j].first, volgordeCoord[j].second);
       //score = - besteScore ();
-      unDoeZet (vakjesKeuze[j]);
+      unDoeZet ();
      // onthoud beste score en bijbehorende zet
     }
   }
