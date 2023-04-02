@@ -344,16 +344,17 @@ int Territorium::besteScore (pair<int,int> &besteZet,
 
 int blauwstand=0;
 int geelstand=0;
-int bestescore=0; 
+int bestescore=0;
+int score;
 
   // berekent eerst de stand van de spelers
   if (eindstand()){
-    for (int rij =0 ; rij ++){
-      for (int kolom=0; kolom ++){
-        if(bord[rij][kolom]==1 && aanBeurt==0){
+    for (int r =0; r++;){
+      for (int k=0; k++;){
+        if(bord[r][k]==1 && aanBeurt==0){
           geelstand++;
         }
-        else if (bord[rij][kolom]==2 && aanBeurt==1){
+        else if (bord[r][k]==2 && aanBeurt==1){
           blauwstand++;
         }
       }
@@ -387,16 +388,15 @@ int bestescore=0;
 
     // de recursie 
     for (int j =0; j++){
-      doeZet (vakjesKeuze[j]);
+      doeZet (vakjeKeuzes[j].first, vakjeKeuzes[j].second);
       aantalStanden++;
-      besteZet= vakjesKeuze[j]
       score = - besteScore (besteZet, aantalStanden);
       if (score > bestescore){
         bestescore = score;
-        besteZet= vakjesKeuze[j];
+        besteZet= vakjeKeuzes[j];
       }
       // komt terug van de recursie
-      unDoeZet (vakjesKeuze[j]);
+      unDoeZet (vakjeKeuzes[j].first, vakjeKeuzes[j].second);
     }
   } // else
   return score;
