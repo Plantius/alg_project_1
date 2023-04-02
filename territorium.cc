@@ -291,39 +291,36 @@ pair<int,int> Territorium::bepaalZet (int j)
 
 //*************************************************************************
 
-bool Territorium::doeZet (int rij, int kolom)
-{
-  cout << rij << kolom << ", " << aanBeurt << "|" << zetten << endl;
-  // TODO: implementeer deze memberfunctie
-  if (aanBeurt == 0 && rij != -1 && kolom != -1){
-    for (int i = 0; i < keuzeAantalGeel; i++){
-      if (bord[rij][kolom] == volgorde[i+keuzesBlauw+keuzesGeel-zetten] && inArray(volgordeCoord[i+keuzesBlauw+keuzesGeel-zetten], vakjeKeuzes, keuzeAantalGeel)){
+bool Territorium::zetSpeler(int speler, int keuzeAantal, int rij, int kolom){
+  for (int i = 0; i < keuzeAantal; i++){
+      if (bord[rij][kolom] == volgorde[i+keuzesBlauw+keuzesGeel-zetten]
+          && inArray(volgordeCoord[i+keuzesBlauw+keuzesGeel-zetten], vakjeKeuzes, keuzeAantal)){
+        bord[rij][kolom] = 1;
+
         verwijderKeuze(i+keuzesBlauw+keuzesGeel-zetten);
         zetten++;
-        keuzesGeel+=keuzeAantalGeel;
-        cout << keuzesGeel << ", "  << true << endl;
-        aanBeurt = !aanBeurt;
-        return true;
-      } else if (bord[rij][kolom] > 0){
-        cout << keuzesGeel << ", "  << false << endl;
-        return false;
-      }
-    }
-  }else if (aanBeurt == 1 && rij != -1 && kolom != -1){
-    for (int i = 0; i < keuzeAantalBlauw; i++){
-      if (bord[rij][kolom] == volgorde[i+keuzesBlauw+keuzesGeel-zetten] && inArray(volgordeCoord[i+keuzesBlauw+keuzesGeel-zetten], vakjeKeuzes, keuzeAantalBlauw)){
-        verwijderKeuze(i+keuzesBlauw+keuzesGeel-zetten);
-        zetten++;
-        keuzesBlauw+=keuzeAantalBlauw;
-        cout << keuzesBlauw << ", "  << true << endl;
+        if (speler == 0){
+          keuzesGeel+=keuzeAantalGeel;
+        } else if (speler == 1){
+          keuzesBlauw+=keuzeAantalBlauw;
+        }
         aanBeurt = !aanBeurt;
         return true;
       } else if (bord[rij][kolom] > 0){
         cout << keuzesBlauw << ", "  << false << endl;
         return false;
       }
-    }
-  } 
+  }
+  return false;
+}
+
+bool Territorium::doeZet (int rij, int kolom)
+{
+  if (aanBeurt == 0 && rij != -1 && kolom != -1){
+    return zetSpeler(aanBeurt, keuzeAantalGeel, rij, kolom);
+  }else if (aanBeurt == 1 && rij != -1 && kolom != -1){
+    return zetSpeler(aanBeurt, keuzeAantalBlauw, rij, kolom);
+  }
   return false;
 }  // doeZet
 

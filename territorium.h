@@ -178,6 +178,7 @@ class Territorium
     void vulBord();
 
     void vakjesMogelijk();
+    bool zetSpeler(int speler, int keuzeAantal, int rij, int kolom);
 
     void vulVolgorde();
     void verwijderKeuze(int keuze);
