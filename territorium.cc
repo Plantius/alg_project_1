@@ -192,7 +192,7 @@ void Territorium::vakjesMogelijk(){
 
   int g=0;
   if (aanBeurt == 0){
-      for (int i=keuzesGeel+keuzesBlauw; i < volgorde_eind ; i++){
+      for (int i=keuzesGeel+keuzesBlauw-zetten; i < volgorde_eind ; i++){
         if (volgordeCoord[i] != make_pair(-1, -1) && g < keuzeAantalGeel){
           cout << "(" << volgordeCoord[i].first << "," << volgordeCoord[i].second << ") ";
           vakjeKeuzes[g] = volgordeCoord[i];
@@ -200,7 +200,7 @@ void Territorium::vakjesMogelijk(){
         }
       }
   } if (aanBeurt == 1){
-      for (int i=keuzesGeel+keuzesBlauw; i < volgorde_eind ; i++){
+      for (int i=keuzesGeel+keuzesBlauw-zetten; i < volgorde_eind ; i++){
         if (volgordeCoord[i] != make_pair(-1, -1) && g < keuzeAantalBlauw){
           cout << "(" << volgordeCoord[i].first << "," << volgordeCoord[i].second << ") ";
           vakjeKeuzes[g] = volgordeCoord[i];
