@@ -71,6 +71,15 @@ void Territorium::vulBord(){
   }
 }
 
+bool Territorium::inArray(pair<int, int> element, pair<int, int> arr[], int size){
+  for (int i = 0; i < size; i++){
+    if(element == arr[i]){
+      return true;
+    }
+  }
+  return false;
+}
+
 void Territorium::vulVolgorde(){
   pair<int, int> tempPair;
   int temp_item;
@@ -176,29 +185,25 @@ void Territorium::vakjesMogelijk(){
   
   //  welke vakjes nog mogelijk
   cout << "Mogelijke keuzes: ";
+
   int g=0;
   int h = -1, b = -1;
   if (aanBeurt == 0){
-      for (int i=0; i < volgorde_eind ; i++){
+      for (int i=keuzesGeel+keuzesBlauw; i < volgorde_eind ; i++){
         if (volgordeCoord[i] != make_pair(-1, -1) && g < keuzeAantalGeel){
           cout << "(" << volgordeCoord[i].first << "," << volgordeCoord[i].second << ") ";
+          vakjeKeuzes[g] = volgordeCoord[i];
           g++;
         }
       }
-
-    if (doeZet(h, b)){
-      keuzesGeel+=keuzeAantalGeel;
-    }
   } if (aanBeurt == 1){
-      for (int i=0; i < volgorde_eind ; i++){
+      for (int i=keuzesGeel+keuzesBlauw; i < volgorde_eind ; i++){
         if (volgordeCoord[i] != make_pair(-1, -1) && g < keuzeAantalBlauw){
           cout << "(" << volgordeCoord[i].first << "," << volgordeCoord[i].second << ") ";
+          vakjeKeuzes[g] = volgordeCoord[i];
           g++;
         }
       }
-    if (doeZet(h, b)){  
-      keuzesBlauw+=keuzeAantalBlauw;
-    }
   } cout << keuzesBlauw << ", " << keuzesGeel << endl;
 
 }
@@ -281,18 +286,36 @@ pair<int,int> Territorium::bepaalZet (int j)
 
 bool Territorium::doeZet (int rij, int kolom)
 {
+  cout << rij << kolom << ", " << aanBeurt << endl;
   // TODO: implementeer deze memberfunctie
-
-
-  for (int i = 0; i++){
-    if (bord[rij][kolom] = volgorde[i] && volgordeCoord[i] <= keuzeAantalGeel){
-      return true;
+  if (aanBeurt == 0 && rij != -1 && kolom != -1){
+    for (int i = 0; i < keuzeAantalGeel; i++){
+      if (bord[rij][kolom] == volgorde[i+keuzesBlauw+keuzesGeel] && inArray(volgordeCoord[i+keuzesBlauw+keuzesGeel], vakjeKeuzes, keuzeAantalGeel)){
+    
+        keuzesGeel+=keuzeAantalGeel;
+        cout << keuzesGeel << ", "  << true << endl;
+        aanBeurt = !aanBeurt;
+        return true;
+      } else {
+        cout << keuzesGeel << ", "  << false << endl;
+        return false;
+      }
     }
-  }
-  if (bord[rij][kolom] > 0){
-    return false;
-  }
-
+  }else if (aanBeurt == 1 && rij != -1 && kolom != -1){
+    for (int i = 0; i < keuzeAantalBlauw; i++){
+      if (bord[rij][kolom] == volgorde[i+keuzesBlauw+keuzesGeel] && inArray(volgordeCoord[i+keuzesBlauw+keuzesGeel], vakjeKeuzes, keuzeAantalBlauw)){
+    
+        keuzesBlauw+=keuzeAantalBlauw;
+        cout << keuzesBlauw << ", "  << true << endl;
+        aanBeurt = !aanBeurt;
+        return true;
+      } else {
+        cout << keuzesBlauw << ", "  << false << endl;
+        return false;
+      }
+    }
+  } 
+  return false;
 }  // doeZet
 
 //*************************************************************************

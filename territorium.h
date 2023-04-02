@@ -161,6 +161,8 @@ class Territorium
 
     // Array voor de vulvolgorde
     pair<int, int> volgordeCoord[MaxDimensie*MaxDimensie];
+    pair<int, int> vakjeKeuzes[MaxDimensie*MaxDimensie];
+
     int volgorde[MaxDimensie*MaxDimensie];
     int breedte, hoogte,  // van het bord
         keuzeAantalGeel,  // aantal vakjes waaruit Geel/Blauw steeds
@@ -171,6 +173,7 @@ class Territorium
         keuzesGeel, keuzesBlauw;
 
     // TODO: uw eigen memberfuncties en -variabelen
+    bool inArray(pair<int, int> element, pair<int, int> arr[], int size);
     void vulBord();
 
     void vakjesMogelijk();
