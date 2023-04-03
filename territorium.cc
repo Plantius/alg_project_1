@@ -367,7 +367,7 @@ int score;
     }
   }// als er geen eindstand is, worden alle zetten gespeeld
 
-  else{ // alle mogelijke zetten z
+  else{ // alle mogelijke zetten z 
     // kijken welke keuzes iedereen heeft
     int g=0;
     if (aanBeurt == 0){ // geel
