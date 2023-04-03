@@ -18,7 +18,7 @@ Territorium::Territorium ()
   keuzeAantalGeel=2;
   keuzeAantalBlauw=2;
   keuzesGeel = 0, keuzesBlauw = 0;
-  zetten = 0;
+  zetten_ronde = 0;
 
 }  // default constructor
 
@@ -192,7 +192,7 @@ void Territorium::vakjesMogelijk(){
 
   int g=0;
   if (aanBeurt == 0){
-      for (int i=keuzesGeel+keuzesBlauw-zetten; i < volgorde_eind ; i++){
+      for (int i=keuzesGeel+keuzesBlauw-zetten_ronde; i < volgorde_eind ; i++){
         if (volgordeCoord[i] != make_pair(-1, -1) && g < keuzeAantalGeel){
           cout << "(" << volgordeCoord[i].first << "," << volgordeCoord[i].second << ") ";
           vakjeKeuzes[g] = volgordeCoord[i];
@@ -200,7 +200,7 @@ void Territorium::vakjesMogelijk(){
         }
       }
   } if (aanBeurt == 1){
-      for (int i=keuzesGeel+keuzesBlauw-zetten; i < volgorde_eind ; i++){
+      for (int i=keuzesGeel+keuzesBlauw-zetten_ronde; i < volgorde_eind ; i++){
         if (volgordeCoord[i] != make_pair(-1, -1) && g < keuzeAantalBlauw){
           cout << "(" << volgordeCoord[i].first << "," << volgordeCoord[i].second << ") ";
           vakjeKeuzes[g] = volgordeCoord[i];
@@ -292,15 +292,13 @@ pair<int,int> Territorium::bepaalZet (int j)
 //*************************************************************************
 
 bool Territorium::zetSpeler(int speler, int keuzeAantal, int rij, int kolom){
-  cout << speler << " | " << keuzeAantal << " | " << rij << " | " << kolom << endl;
-  cout << bord[rij][kolom] << endl;
   for (int i = 0; i < keuzeAantal; i++){
-      if (bord[rij][kolom] == volgorde[i+keuzesBlauw+keuzesGeel-zetten]
-          && inArray(volgordeCoord[i+keuzesBlauw+keuzesGeel-zetten], vakjeKeuzes, keuzeAantal)){
+      if (bord[rij][kolom] == volgorde[i+keuzesBlauw+keuzesGeel-zetten_ronde]
+          && inArray(volgordeCoord[i+keuzesBlauw+keuzesGeel-zetten_ronde], vakjeKeuzes, keuzeAantal)){
         bord[rij][kolom] = 1;
 
-        verwijderKeuze(i+keuzesBlauw+keuzesGeel-zetten);
-        zetten++;
+        verwijderKeuze(i+keuzesBlauw+keuzesGeel-zetten_ronde);
+        zetten_ronde++;
         if (speler == 0){
           keuzesGeel+=keuzeAantalGeel;
         } else if (speler == 1){
@@ -367,9 +365,9 @@ int score=0;
     else{
       return blauwstand;
     }
-  }// als er geen eindstand is, worden alle zetten gespeeld
+  }// als er geen eindstand is, worden alle zetten_ronde gespeeld
 
-  else{ // alle mogelijke zetten z
+  else{ // alle mogelijke zetten_ronde z
     // kijken welke keuzes iedereen heeft
     int g=0;
     if (aanBeurt == 0){ // geel
