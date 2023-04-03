@@ -433,14 +433,14 @@ int score=0;
     // kijken welke keuzes iedereen heeft
     int g=0;
     if (aanBeurt == 0){ // geel
-      for (int i=keuzesGeel+keuzesBlauw-zetten; i < volgorde_eind ; i++){
+      for (int i=keuzesGeel+keuzesBlauw-zetten_ronde; i < volgorde_eind ; i++){
         if (volgordeCoord[i] != make_pair(-1, -1) && g < keuzeAantalGeel){
           vakjeKeuzes[g] = volgordeCoord[i];
           g++;
         }
       }
     }else if (aanBeurt == 1){ // blauw
-      for (int i=keuzesGeel+keuzesBlauw-zetten; i < volgorde_eind ; i++){
+      for (int i=keuzesGeel+keuzesBlauw-zetten_ronde; i < volgorde_eind ; i++){
         if (volgordeCoord[i] != make_pair(-1, -1) && g < keuzeAantalBlauw){
           vakjeKeuzes[g] = volgordeCoord[i];
           g++;
