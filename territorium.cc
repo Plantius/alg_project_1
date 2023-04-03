@@ -308,7 +308,7 @@ pair<int,int> Territorium::bepaalZet (int j)
     }      
   }
   else{
-    return make_pair(11,11);
+    return make_pair(MaxDimensie+1,MaxDimensie+1);
   }
 }  // bepaalZet
 
@@ -329,6 +329,8 @@ void Territorium::zettenArray(pair<int, int> zet, int keuze){
 }
 
 bool Territorium::zetSpeler(int speler, int keuzeAantal, int rij, int kolom){
+  cout << speler << " | " << keuzeAantal << " | " << rij << " | " << kolom << endl;
+  cout << bord[rij][kolom] << endl;
   for (int i = 0; i < keuzeAantal; i++){
       if (bord[rij][kolom] == volgorde[i+keuzesBlauw+keuzesGeel-zetten_ronde]
           && inArray(volgordeCoord[i+keuzesBlauw+keuzesGeel-zetten_ronde], vakjeKeuzes, keuzeAantal)){
@@ -405,7 +407,7 @@ int Territorium::besteScore (pair<int,int> &besteZet,
 int blauwstand=0;
 int geelstand=0;
 int bestescore=0;
-int score;
+int score=0;
 
   // berekent eerst de stand van de spelers
   if (eindstand()){
@@ -428,16 +430,17 @@ int score;
   }// als er geen eindstand is, worden alle zetten gespeeld
 
   else{ // alle mogelijke zetten z
-    for (int i =0; i++ ; i < keuzeAantalGeel){
+    for (int i = 0; i < keuzeAantalGeel; i++){
       // kijken welke keuzes iedereen heeft
       int g=0;
       if (aanBeurt == 0){ // geel
           for (int i=keuzesGeel+keuzesBlauw-zetten_ronde; i < volgorde_eind ; i++){
             if (volgordeCoord[i] != make_pair(-1, -1) && g < keuzeAantalGeel){
-                            vakjeKeuzes[g] = volgordeCoord[i];
+              vakjeKeuzes[g] = volgordeCoord[i];
               g++;
             }
           }
+          sorteerVolgorde();
       } if (aanBeurt == 1){ // blauw
           for (int i=keuzesGeel+keuzesBlauw-zetten_ronde; i < volgorde_eind ; i++){
             if (volgordeCoord[i] != make_pair(-1, -1) && g < keuzeAantalBlauw){
@@ -445,11 +448,17 @@ int score;
               g++;
             }
           }
+          sorteerVolgorde();
       }
     }
     for (int j =0; j < volgorde_eind ;j++){
-      doeZet (volgordeCoord[j].first, volgordeCoord[j].second);
-      //score = - besteScore ();
+      doeZet (vakjeKeuzes[j].first, vakjeKeuzes[j].second);
+      aantalStanden ++;
+      score = - besteScore (besteZet, aantalStanden);
+      if (score > bestescore){
+        score = bestescore;
+        besteZet= vakjeKeuzes[j];
+      }
       unDoeZet ();
      // onthoud beste score en bijbehorende zet
     }
