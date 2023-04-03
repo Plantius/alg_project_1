@@ -163,6 +163,9 @@ class Territorium
     pair<int, int> volgordeCoord[MaxDimensie*MaxDimensie];
     pair<int, int> vakjeKeuzes[MaxDimensie*MaxDimensie];
 
+    pair<int, int> zetten[MaxDimensie*MaxDimensie];
+    int zettenVolgorde[MaxDimensie*MaxDimensie];
+
     int volgorde[MaxDimensie*MaxDimensie];
     int breedte, hoogte,  // van het bord
         keuzeAantalGeel,  // aantal vakjes waaruit Geel/Blauw steeds
@@ -171,17 +174,20 @@ class Territorium
         hoeveelNietBeschikbaar, // percentage hoeveel niet beschikbare vakjes
         volgorde_eind,
         keuzesGeel, keuzesBlauw,
-        zetten;
+        zetten_ronde, totale_zetten;
 
     // TODO: uw eigen memberfuncties en -variabelen
     bool inArray(pair<int, int> element, pair<int, int> arr[], int size); // Checkt of een element in een array zit
     void vulBord();
+    void sorteerVolgorde();
 
     void vakjesMogelijk();
     bool zetSpeler(int speler, int keuzeAantal, int rij, int kolom);
+    void zettenArray(pair<int, int> zet, int keuze);
 
     void vulVolgorde();
     void verwijderKeuze(int keuze);
+    void voegKeuzeToe(pair<int, int> coord);
 
 };
 
