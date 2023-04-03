@@ -285,13 +285,15 @@ pair<int,int> Territorium::bepaalZet (int j)
     }      
   }
   else{
-    return make_pair(11,11);
+    return make_pair(MaxDimensie+1,MaxDimensie+1);
   }
 }  // bepaalZet
 
 //*************************************************************************
 
 bool Territorium::zetSpeler(int speler, int keuzeAantal, int rij, int kolom){
+  cout << speler << " | " << keuzeAantal << " | " << rij << " | " << kolom << endl;
+  cout << bord[rij][kolom] << endl;
   for (int i = 0; i < keuzeAantal; i++){
       if (bord[rij][kolom] == volgorde[i+keuzesBlauw+keuzesGeel-zetten]
           && inArray(volgordeCoord[i+keuzesBlauw+keuzesGeel-zetten], vakjeKeuzes, keuzeAantal)){
@@ -345,7 +347,7 @@ int Territorium::besteScore (pair<int,int> &besteZet,
 int blauwstand=0;
 int geelstand=0;
 int bestescore=0;
-int score;
+int score=0;
 
   // berekent eerst de stand van de spelers
   if (eindstand()){
@@ -371,32 +373,30 @@ int score;
     // kijken welke keuzes iedereen heeft
     int g=0;
     if (aanBeurt == 0){ // geel
-      for (int i=keuzesGeel+keuzesBlauw-zetten; i < volgorde_eind ; i++){
+      for (int i=keuzesGeel+keuzesBlauw-zetten_ronde; i < volgorde_eind ; i++){
         if (volgordeCoord[i] != make_pair(-1, -1) && g < keuzeAantalGeel){
           vakjeKeuzes[g] = volgordeCoord[i];
           g++;
         }
       }
     }else if (aanBeurt == 1){ // blauw
-      for (int i=keuzesGeel+keuzesBlauw-zetten; i < volgorde_eind ; i++){
+      for (int i=keuzesGeel+keuzesBlauw-zetten_ronde; i < volgorde_eind ; i++){
         if (volgordeCoord[i] != make_pair(-1, -1) && g < keuzeAantalBlauw){
           vakjeKeuzes[g] = volgordeCoord[i];
           g++;
          }
       }
     }
-
-    // de recursie 
-    for (int j =0; j <= g; j++){
+    for (int j =0; j < volgorde_eind ;j++){
       doeZet (vakjeKeuzes[j].first, vakjeKeuzes[j].second);
-      aantalStanden++;
+      aantalStanden ++;
       score = - besteScore (besteZet, aantalStanden);
       if (score > bestescore){
-        bestescore = score;
+        score = bestescore;
         besteZet= vakjeKeuzes[j];
       }
-      // komt terug van de recursie
-      unDoeZet (vakjeKeuzes[j].first, vakjeKeuzes[j].second);
+      unDoeZet ();
+     // onthoud beste score en bijbehorende zet
     }
   } // else
   return score;

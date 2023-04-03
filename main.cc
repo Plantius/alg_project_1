@@ -126,7 +126,7 @@ void doeSpel (Territorium *ter1)
       j,        // nummer van een mogelijke zet (>= 1)
       score;
   pair<int,int> zet;
-  long long aantalStanden;  // aantal bekeken standen bij aanroep besteScore
+  long long aantalStanden=0;  // aantal bekeken standen bij aanroep besteScore
 
   hoogte = ter1->getHoogte();
   breedte = ter1->getBreedte();
