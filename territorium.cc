@@ -429,26 +429,22 @@ int score=0;
     }
   }// als er geen eindstand is, worden alle zetten gespeeld
 
-  else{ // alle mogelijke zetten z
-    for (int i = 0; i < keuzeAantalGeel; i++){
-      // kijken welke keuzes iedereen heeft
-      int g=0;
-      if (aanBeurt == 0){ // geel
-          for (int i=keuzesGeel+keuzesBlauw-zetten_ronde; i < volgorde_eind ; i++){
-            if (volgordeCoord[i] != make_pair(-1, -1) && g < keuzeAantalGeel){
-              vakjeKeuzes[g] = volgordeCoord[i];
-              g++;
-            }
-          }
-          sorteerVolgorde();
-      } if (aanBeurt == 1){ // blauw
-          for (int i=keuzesGeel+keuzesBlauw-zetten_ronde; i < volgorde_eind ; i++){
-            if (volgordeCoord[i] != make_pair(-1, -1) && g < keuzeAantalBlauw){
-              vakjeKeuzes[g] = volgordeCoord[i];
-              g++;
-            }
-          }
-          sorteerVolgorde();
+  else{ // alle mogelijke zetten z 
+    // kijken welke keuzes iedereen heeft
+    int g=0;
+    if (aanBeurt == 0){ // geel
+      for (int i=keuzesGeel+keuzesBlauw-zetten; i < volgorde_eind ; i++){
+        if (volgordeCoord[i] != make_pair(-1, -1) && g < keuzeAantalGeel){
+          vakjeKeuzes[g] = volgordeCoord[i];
+          g++;
+        }
+      }
+    }else if (aanBeurt == 1){ // blauw
+      for (int i=keuzesGeel+keuzesBlauw-zetten; i < volgorde_eind ; i++){
+        if (volgordeCoord[i] != make_pair(-1, -1) && g < keuzeAantalBlauw){
+          vakjeKeuzes[g] = volgordeCoord[i];
+          g++;
+         }
       }
     }
     for (int j =0; j < volgorde_eind ;j++){
