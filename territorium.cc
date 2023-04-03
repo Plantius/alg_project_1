@@ -229,10 +229,10 @@ void Territorium::vakjesMogelijk(){
         }
       }
   } cout << endl;
-  for (int i = 0; i < volgorde_eind+4; i++){
+  for (int i = 0; i < volgorde_eind; i++){
     cout << i<<"(" << volgordeCoord[i].first << "," << volgordeCoord[i].second << ") ";
   } cout << endl;
-  for (int i = 0; i < volgorde_eind+4; i++){
+  for (int i = 0; i < volgorde_eind; i++){
     cout << volgorde[i] << " ";
   }
   cout << endl << "Kb: "<<keuzesBlauw << ", " << "Kg: "<< keuzesGeel << endl;
@@ -375,14 +375,20 @@ bool Territorium::doeZet (int rij, int kolom)
 
 bool Territorium::unDoeZet ()
 {
-  if(zetten[totale_zetten] != make_pair(-1, -1)){
+  if(zetten[totale_zetten] != make_pair(-1, -1) && totale_zetten >= 0){
+    cout << totale_zetten << endl;
     voegKeuzeToe(zetten[totale_zetten]);
-    
+    if (aanBeurt == 0){
+      keuzesBlauw -= keuzeAantalBlauw;
+    }else if (aanBeurt == 1){
+      keuzesGeel -= keuzeAantalGeel;
+    }
     bord[zetten[totale_zetten].first][zetten[totale_zetten].second] = zettenVolgorde[totale_zetten];
     aanBeurt = !aanBeurt;
     zetten[totale_zetten] = make_pair(-1, -1);
     zettenVolgorde[totale_zetten] = 0;
     totale_zetten--;
+    zetten_ronde--;
     return true;
   }
   return false;
