@@ -380,7 +380,7 @@ int score=0;
     }else if (aanBeurt == 1){ // blauw
       for (int i=keuzesGeel+keuzesBlauw-zetten_ronde; i < volgorde_eind ; i++){
         if (volgordeCoord[i] != make_pair(-1, -1) && g < keuzeAantalBlauw){
-          vakjeKeuzes[g] = volgordeCoord[i];
+          vakjeKeuzes[g] = volgordeCoord[i]; 
           g++;
          }
       }
