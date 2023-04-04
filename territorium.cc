@@ -286,29 +286,29 @@ pair<int,int> Territorium::bepaalZet (int j)
 {
   // TODO: implementeer deze memberfunctie
   // moet alleen er nog voor zorgen dat niet de volgende keuze wordt genomen
-  int g=0;
-  if (aanBeurt==0 && j>=1 && j<= keuzeAantalGeel){ // geel 
+  int g = 0;
+  if (aanBeurt==0 && j>=1 && j<= keuzeAantalGeel && volgordeCoord[0] != make_pair(-1, -1)){ // geel 
     for (int i=0; i < volgorde_eind ; i++){
+        if(g == j-1){
+          return vakjeKeuzes[i];
+        }
         if (volgordeCoord[i] != make_pair(-1, -1) && g < keuzeAantalGeel){
           g++;
         }//if
-        else if(g == j){
-          return make_pair(volgordeCoord[i].first, volgordeCoord[i].second);
-        }
     }
   }
-  else if (aanBeurt==1 && j>=1 && j <= keuzeAantalBlauw){
+  else if (aanBeurt==1 && j>=1 && j <= keuzeAantalBlauw && volgordeCoord[0] != make_pair(-1, -1)){
     for (int i=0; i < volgorde_eind ; i++){
+        if(g == j-1){
+          return vakjeKeuzes[i];
+        }
         if (volgordeCoord[i] != make_pair(-1, -1) && g < keuzeAantalBlauw){
           g++;
         }//if
-        else if(g == j){
-          return make_pair(volgordeCoord[i].first, volgordeCoord[i].second);
-        }
     }      
   }
   else{
-    return make_pair(MaxDimensie+1,MaxDimensie+1);
+    return GeenZet;
   }
 }  // bepaalZet
 
@@ -340,10 +340,10 @@ bool Territorium::zetSpeler(int speler, int keuzeAantal, int rij, int kolom){
         verwijderKeuze(i+keuzesBlauw+keuzesGeel-zetten_ronde);
         zetten_ronde++;
         if (speler == 0){
-          bord[rij][kolom] = 1;
+          bord[rij][kolom] = Geel;
           keuzesGeel+=keuzeAantalGeel;
         } else if (speler == 1){
-          bord[rij][kolom] = 2;
+          bord[rij][kolom] = Blauw;
           keuzesBlauw+=keuzeAantalBlauw;
         }
         aanBeurt = !aanBeurt;
@@ -413,10 +413,10 @@ int score=0;
   if (eindstand()){
     for (int r =0; r <= hoogte ; r++){
       for (int k=0; k <= breedte; k++){
-        if(bord[r][k]==1 && aanBeurt==0){
+        if(bord[r][k]==Geel && aanBeurt==0){
           geelstand++;
         }
-        else if (bord[r][k]==2 && aanBeurt==1){
+        else if (bord[r][k]==Blauw && aanBeurt==1){
           blauwstand++;
         }
       }
@@ -467,7 +467,7 @@ int score=0;
 pair<int,int> Territorium::bepaalGoedeZet ()
 {
 
-// TODO: implementeer deze memberfunctie
+  if (eindstand())
 
   return GeenZet;
 
