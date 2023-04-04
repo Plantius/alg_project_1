@@ -353,11 +353,14 @@ bool Territorium::zetSpeler(int speler, int keuzeAantal, int rij, int kolom){
           keuzesGeel = 0;
           zetten_ronde = 0;
         }
+        cout << "return true" << endl;
         return true;
       } else if (bord[rij][kolom] > 0){
+        cout << "return false want > 0" << endl;
         return false;
       }
   }
+  cout << "returnt laatste false, niet in loop" << endl;
   return false;
 }
 
@@ -437,6 +440,7 @@ int score=0;
         if (volgordeCoord[i] != make_pair(-1, -1) && g < keuzeAantalGeel){
           vakjeKeuzes[g] = volgordeCoord[i];
           g++;
+          cout << "vakje erin geel" << endl;
         }
       }
     }else if (aanBeurt == 1){ // blauw
@@ -444,10 +448,11 @@ int score=0;
         if (volgordeCoord[i] != make_pair(-1, -1) && g < keuzeAantalBlauw){
           vakjeKeuzes[g] = volgordeCoord[i];
           g++;
+          cout << "vakje erin blauw" << endl;
          }
       }
     }
-    for (int j =0; j < volgorde_eind ;j++){
+    for (int j =0; j < keuzeAantalGeel ;j++){
       doeZet (vakjeKeuzes[j].first, vakjeKeuzes[j].second);
       aantalStanden ++;
       cout << endl << "standen: " << aantalStanden << "score: " << score << endl;
