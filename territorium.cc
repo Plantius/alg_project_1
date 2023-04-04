@@ -23,6 +23,9 @@ Territorium::Territorium ()
   fill(volgorde, volgorde+(MaxDimensie*MaxDimensie), 0);
   fill(volgordeCoord, volgordeCoord+(MaxDimensie*MaxDimensie), make_pair(-1, -1));
 
+  teller = 0;
+  copy(bord, bord+(MaxDimensie*MaxDimensie), bordKopie);
+
 }  // default constructor
 
 //*************************************************************************
@@ -411,8 +414,8 @@ int score=0;
 
   // berekent eerst de stand van de spelers
   if (eindstand()){
-    for (int r =0; r <= hoogte ; r++){
-      for (int k=0; k <= breedte; k++){
+    for (int r =0; r < hoogte ; r++){
+      for (int k=0; k < breedte; k++){
         if(bord[r][k]==Geel && aanBeurt==0){
           geelstand++;
         }
@@ -464,11 +467,35 @@ int score=0;
 
 //*************************************************************************
 
+int Territorium::telTerritorium(pair<int, int> loper , int speler){
+  for (int i = 0; i < 4; i++){
+    if (i == 0 && bordKopie[loper.first-1][loper.second] == speler + 1){
+      bordKopie[loper.first][loper.second] = 0;
+      teller ++;
+      telTerritorium(make_pair(loper.first-1, loper.second), speler);
+    }
+    if (i == 1 && bordKopie[loper.first][loper.second + 1] == speler + 1){
+      bordKopie[loper.first][loper.second] = 0;
+      teller ++;
+      telTerritorium(make_pair(loper.first, loper.second+1), speler);
+    }
+    if (i == 2 && bordKopie[loper.first+1][loper.second] == speler + 1){
+      bordKopie[loper.first][loper.second] = 0;
+      teller ++;
+      telTerritorium(make_pair(loper.first+1, loper.second), speler);
+    }
+    if (i == 3 && bordKopie[loper.first][loper.second-1] == speler + 1){
+      bordKopie[loper.first][loper.second] = 0;
+      teller ++;
+      telTerritorium(make_pair(loper.first, loper.second-1), speler);
+    }
+  }
+  return teller;
+}
+
 pair<int,int> Territorium::bepaalGoedeZet ()
 {
-
-  if (eindstand())
-
+  
   return GeenZet;
 
 }  // bepaalGoedeZet

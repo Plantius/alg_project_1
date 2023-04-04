@@ -158,7 +158,7 @@ class Territorium
     int bord[MaxDimensie][MaxDimensie];  // [rij][kolom]: inhoud van bord;
           // rijen genummerd van 0..hoogte-1, van beneden naar boven
           // kolommen genummerd van 0..breedte-1, van links naar rechts;
-
+    int bordKopie[MaxDimensie][MaxDimensie];
     // Array voor de vulvolgorde
     pair<int, int> volgordeCoord[MaxDimensie*MaxDimensie];
     pair<int, int> vakjeKeuzes[MaxDimensie*MaxDimensie];
@@ -176,6 +176,8 @@ class Territorium
         keuzesGeel, keuzesBlauw,
         zetten_ronde, totale_zetten;
 
+    int teller;
+
     // TODO: uw eigen memberfuncties en -variabelen
     bool inArray(pair<int, int> element, pair<int, int> arr[], int size); // Checkt of een element in een array zit
     void vulBord();
@@ -188,6 +190,8 @@ class Territorium
     void vulVolgorde();
     void verwijderKeuze(int keuze);
     void voegKeuzeToe(pair<int, int> coord);
+
+    int telTerritorium(pair<int, int> loper , int speler);
 
 };
 
