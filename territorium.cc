@@ -19,10 +19,11 @@ Territorium::Territorium ()
   keuzeAantalBlauw=2;
   keuzesGeel = 0, keuzesBlauw = 0;
   zetten_ronde = 0;
-  fill(zetten, zetten+(MaxDimensie*MaxDimensie), make_pair(-1, -1) );
+  fill(zetten, zetten+(MaxDimensie*MaxDimensie), make_pair(-1, -1));
+  fill(vakjeKeuzes, vakjeKeuzes+(MaxDimensie*MaxDimensie), make_pair(-1, -1));
   fill(volgorde, volgorde+(MaxDimensie*MaxDimensie), 0);
   fill(volgordeCoord, volgordeCoord+(MaxDimensie*MaxDimensie), make_pair(-1, -1));
-
+  fill(&bord[0][0], &bord[0][0]+(MaxDimensie*MaxDimensie), 0);
   teller = 1;
   
 
@@ -219,7 +220,7 @@ void Territorium::vakjesMogelijk(){
   if (aanBeurt == 0){
       for (int i=keuzesGeel+keuzesBlauw-zetten_ronde; i < volgorde_eind ; i++){
         if (volgordeCoord[i] != make_pair(-1, -1) && g < keuzeAantalGeel){
-          cout << "(" << volgordeCoord[i].first << "," << volgordeCoord[i].second << ") ";
+          cout << "(" << volgordeCoord[i].first << ", " << volgordeCoord[i].second << "), ";
           vakjeKeuzes[g] = volgordeCoord[i];
           g++;
         }
@@ -227,7 +228,7 @@ void Territorium::vakjesMogelijk(){
   } if (aanBeurt == 1){
       for (int i=keuzesGeel+keuzesBlauw-zetten_ronde; i < volgorde_eind ; i++){
         if (volgordeCoord[i] != make_pair(-1, -1) && g < keuzeAantalBlauw){
-          cout << "(" << volgordeCoord[i].first << "," << volgordeCoord[i].second << ") ";
+          cout << "(" << volgordeCoord[i].first << ", " << volgordeCoord[i].second << "), ";
           vakjeKeuzes[g] = volgordeCoord[i];
           g++;
         }
@@ -239,7 +240,6 @@ void Territorium::vakjesMogelijk(){
   for (int i = 0; i < volgorde_eind; i++){
     cout << volgorde[i] << " ";
   }
-  cout << endl << "Kb: "<<keuzesBlauw << ", " << "Kg: "<< keuzesGeel << endl;
 }
 
 //*************************************************************************
@@ -327,9 +327,6 @@ void Territorium::zettenArray(pair<int, int> zet, int keuze){
   }
   zettenVolgorde[totale_zetten] = volgorde[keuze];
   zetten[totale_zetten] = zet;
-  for (int i = 0; i< totale_zetten+1; i++){
-    cout << "("<< zetten[i].first <<", " << zetten[i].second << ")" << " | " << zettenVolgorde[i] << " ";
-  }cout <<endl;
 }
 
 bool Territorium::zetSpeler(int speler, int keuzeAantal, int rij, int kolom){
@@ -338,7 +335,6 @@ bool Territorium::zetSpeler(int speler, int keuzeAantal, int rij, int kolom){
           && inArray(volgordeCoord[i+keuzesBlauw+keuzesGeel-zetten_ronde], vakjeKeuzes, keuzeAantal)){
         
         zettenArray(make_pair(rij, kolom), i+keuzesBlauw+keuzesGeel-zetten_ronde);
-        cout << "TEST " << volgorde[i+keuzesBlauw+keuzesGeel-zetten_ronde] << endl;
         verwijderKeuze(i+keuzesBlauw+keuzesGeel-zetten_ronde);
         zetten_ronde++;
         if (speler == 0){
@@ -382,7 +378,6 @@ bool Territorium::doeZet (int rij, int kolom)
 bool Territorium::unDoeZet ()
 {
   if(zetten[totale_zetten] != make_pair(-1, -1) && totale_zetten >= 0){
-    cout << totale_zetten << endl;
     voegKeuzeToe(zetten[totale_zetten]);
     if (aanBeurt == 0){
       keuzesBlauw -= keuzeAantalBlauw;
@@ -494,27 +489,32 @@ void Territorium::kopie(){
 }
 
 int Territorium::telTerritorium(pair<int, int> loper , int speler){
-  for (int i = 0; i < 4; i++){
-
-    if (i == 0 && bordKopie[loper.first-1][loper.second] == speler + 1 && bordKopie[loper.first][loper.second] == speler+1){
-      bordKopie[loper.first][loper.second] = 0;
-      teller ++;
-      telTerritorium(make_pair(loper.first-1, loper.second), speler);
-    }
-    if (i == 1 && bordKopie[loper.first][loper.second + 1] == speler + 1 && bordKopie[loper.first][loper.second] == speler+1){
-      bordKopie[loper.first][loper.second] = 0;
-      teller ++;
-      telTerritorium(make_pair(loper.first, loper.second+1), speler);
-    }
-    if (i == 2 && bordKopie[loper.first+1][loper.second] == speler + 1 && bordKopie[loper.first][loper.second] == speler+1){
-      bordKopie[loper.first][loper.second] = 0;
-      teller ++;
-      telTerritorium(make_pair(loper.first+1, loper.second), speler);
-    }
-    if (i == 3 && bordKopie[loper.first][loper.second-1] == speler + 1 && bordKopie[loper.first][loper.second] == speler+1){
-      bordKopie[loper.first][loper.second] = 0;
-      teller ++;
-      telTerritorium(make_pair(loper.first, loper.second-1), speler);
+  if(bordKopie[loper.first][loper.second] < 0 && loper.first >= 0 && loper.second >= 0){
+    for (int i = 0; i < 4; i++){
+      if (i == 0 && bordKopie[loper.first-1][loper.second] == speler + 1){
+        cout << "[0]" << endl;
+        bordKopie[loper.first][loper.second] = 0;
+        teller ++;
+        telTerritorium(make_pair(loper.first-1, loper.second), speler);
+      }
+      if (i == 1 && bordKopie[loper.first][loper.second + 1] == speler + 1){
+        cout << "[1]" << endl;
+        bordKopie[loper.first][loper.second] = 0;
+        teller ++;
+        telTerritorium(make_pair(loper.first, loper.second+1), speler);
+      }
+      if (i == 2 && bordKopie[loper.first+1][loper.second] == speler + 1){
+        cout << "[2]" << endl;
+        bordKopie[loper.first][loper.second] = 0;
+        teller ++;
+        telTerritorium(make_pair(loper.first+1, loper.second), speler);
+      }
+      if (i == 3 && bordKopie[loper.first][loper.second-1] == speler + 1){
+        cout << "[3]" << endl;
+        bordKopie[loper.first][loper.second] = 0;
+        teller ++;
+        telTerritorium(make_pair(loper.first, loper.second-1), speler);
+      }
     }
   }
   return teller;
@@ -527,13 +527,26 @@ pair<int,int> Territorium::bepaalGoedeZet ()
   kopie();
   
   if (!eindstand()){
-    for (int i = 0; i< hoogte; i++){
-      for (int j = 0; j< breedte; j++){
-        score = telTerritorium(make_pair(i, j), aanBeurt);
+    if(aanBeurt == 0){
+      for (int i = 0; i< keuzeAantalGeel; i++){
+        cout << vakjeKeuzes[i].first << ", " << vakjeKeuzes[i].second << endl;
+        score = telTerritorium(vakjeKeuzes[i], aanBeurt);
 
         if (score > hoogste_score){
           hoogste_score = score;
-          goedeZet = make_pair(i, j);
+          goedeZet = vakjeKeuzes[i];
+        }
+        kopie();
+        teller = 1;
+      }
+    } if(aanBeurt == 1){
+      for (int i = 0; i< keuzeAantalBlauw; i++){
+        cout << vakjeKeuzes[i].first << ", " << vakjeKeuzes[i].second << endl;
+        score = telTerritorium(vakjeKeuzes[i], aanBeurt);
+
+        if (score > hoogste_score){
+          hoogste_score = score;
+          goedeZet = vakjeKeuzes[i];
         }
         kopie();
         teller = 1;
