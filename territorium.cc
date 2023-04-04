@@ -284,11 +284,11 @@ void Territorium::drukAf ()
 
 
 //*************************************************************************
-//bijna klaar
 pair<int,int> Territorium::bepaalZet (int j)
 {
   // TODO: implementeer deze memberfunctie
-  // moet alleen er nog voor zorgen dat niet de volgende keuze wordt genomen
+
+  // De j-de keuze uit de keuze mogelijkheden lijst wordt genomen
   int g = 0;
   if (aanBeurt==0 && j>=1 && j<= keuzeAantalGeel && volgordeCoord[0] != make_pair(-1, -1)){ // geel 
     for (int i=0; i < volgorde_eind ; i++){
@@ -300,7 +300,7 @@ pair<int,int> Territorium::bepaalZet (int j)
         }//if
     }
   }
-  else if (aanBeurt==1 && j>=1 && j <= keuzeAantalBlauw && volgordeCoord[0] != make_pair(-1, -1)){
+  else if (aanBeurt==1 && j>=1 && j <= keuzeAantalBlauw && volgordeCoord[0] != make_pair(-1, -1)){ // blauw
     for (int i=0; i < volgorde_eind ; i++){
         if(g == j-1){
           return vakjeKeuzes[i];
@@ -310,7 +310,7 @@ pair<int,int> Territorium::bepaalZet (int j)
         }//if
     }      
   }
-  else{
+  else{ //als j niet overeenkomt met de keuze mogelijkheden returnt het GeenZet
     return GeenZet;
   }
 }  // bepaalZet
@@ -453,6 +453,7 @@ int score=0;
     for (int j =0; j < volgorde_eind ;j++){
       doeZet (vakjeKeuzes[j].first, vakjeKeuzes[j].second);
       aantalStanden ++;
+      cout << endl << "standen: " << aantalStanden << "score: " << score << endl;
       score = - besteScore (besteZet, aantalStanden);
       if (score > bestescore){
         score = bestescore;
