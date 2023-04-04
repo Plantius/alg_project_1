@@ -192,6 +192,7 @@ class Territorium
     void voegKeuzeToe(pair<int, int> coord);
 
     int telTerritorium(pair<int, int> loper , int speler);
+    void kopie();
 
 };
 
