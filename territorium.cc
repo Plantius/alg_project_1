@@ -476,6 +476,7 @@ void Territorium::kopie(){
 
 int Territorium::telTerritorium(pair<int, int> loper , int speler){
   for (int i = 0; i < 4; i++){
+
     if (i == 0 && bordKopie[loper.first-1][loper.second] == speler + 1 && bordKopie[loper.first][loper.second] == speler+1){
       bordKopie[loper.first][loper.second] = 0;
       teller ++;
