@@ -281,7 +281,7 @@ void Territorium::drukAf ()
 
 
 //*************************************************************************
-
+//bijna klaar
 pair<int,int> Territorium::bepaalZet (int j)
 {
   // TODO: implementeer deze memberfunctie
@@ -398,7 +398,7 @@ bool Territorium::unDoeZet ()
 }  // unDoeZet
 
 //*************************************************************************
-
+//bijna klaar
 int Territorium::besteScore (pair<int,int> &besteZet,
                              long long &aantalStanden)
 {
