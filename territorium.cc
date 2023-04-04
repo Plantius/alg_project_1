@@ -435,16 +435,27 @@ int score=0;
 
   else{ // alle mogelijke zetten z 
     // kijken welke keuzes iedereen heeft
+    /*
     int g=0;
     if (aanBeurt == 0){ // geel
       for (int i=keuzesGeel+keuzesBlauw-zetten_ronde; i < volgorde_eind ; i++){
-        if (volgordeCoord[i] != make_pair(-1, -1) && g < keuzeAantalGeel){
+        if (volgordeCoord[i] != GeenZet && g < keuzeAantalGeel){
           vakjeKeuzes[g] = volgordeCoord[i];
           g++;
-          cout << "vakje erin geel" << endl;
+          cout << "vakje " << vakjeKeuzes[g].first << vakjeKeuzes[g].second << endl;
         }
       }
-    }else if (aanBeurt == 1){ // blauw
+    }
+    */
+
+    if (aanBeurt==0){
+      for (int i =1; i <= keuzeAantalGeel; i++){
+        vakjeKeuzes[i] = bepaalZet(i);
+        cout << "vakje " << vakjeKeuzes[i].first << vakjeKeuzes[i].second << endl;
+      }
+    }
+    /*
+    if (aanBeurt == 1){ // blauw
       for (int i=keuzesGeel+keuzesBlauw-zetten_ronde; i < volgorde_eind ; i++){
         if (volgordeCoord[i] != make_pair(-1, -1) && g < keuzeAantalBlauw){
           vakjeKeuzes[g] = volgordeCoord[i];
@@ -453,7 +464,9 @@ int score=0;
          }
       }
     }
-    for (int j =0; j < keuzeAantalGeel ;j++){
+    
+    for (int j =0; j < g ;j++){
+      cout << "vakje: " << vakjeKeuzes[j].first <<  vakjeKeuzes[j].second << endl;
       doeZet (vakjeKeuzes[j].first, vakjeKeuzes[j].second);
       aantalStanden ++;
       cout << endl << "standen: " << aantalStanden << "score: " << score << endl;
@@ -465,8 +478,9 @@ int score=0;
       unDoeZet ();
      // onthoud beste score en bijbehorende zet
     }
+    */
   } // else
-  return score;
+  return 0; //return score;
 }  // besteScore
 
 //*************************************************************************
