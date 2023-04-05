@@ -516,7 +516,7 @@ pair<int,int> Territorium::bepaalGoedeZet ()
         score = telTerritorium(vakjeKeuzes[i], aanBeurt);
 
         if (score > hoogste_score){
-          hoogste_score = score;
+          hoogste_score = score;  
           goedeZet = vakjeKeuzes[i];
         }
         kopie();
@@ -537,7 +537,7 @@ pair<int,int> Territorium::bepaalGoedeZet ()
     }
     cout << "Beste score: " << hoogste_score << ", (" << goedeZet.first << ", " << goedeZet.second << ") Speler: "<< aanBeurt << endl;
     return goedeZet;
-  }    
+  }
   return GeenZet;
 
 }  // bepaalGoedeZet
