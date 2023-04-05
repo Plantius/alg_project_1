@@ -24,7 +24,7 @@ Territorium::Territorium ()
   fill(volgorde, volgorde+(MaxDimensie*MaxDimensie), 0);
   fill(volgordeCoord, volgordeCoord+(MaxDimensie*MaxDimensie), make_pair(-1, -1));
   fill(&bord[0][0], &bord[0][0]+(MaxDimensie*MaxDimensie), 0);
-  teller = 1;
+  teller = 0;
   
 
 }  // default constructor
@@ -109,8 +109,6 @@ void Territorium::sorteerVolgorde(){
 
 // haalt alle volgordes uit bord
 void Territorium::vulVolgorde(){
-  pair<int, int> tempPair;
-  int temp_item;
   volgorde_eind = 0;
 
   for (int i = 0; i< hoogte; i++){
@@ -430,36 +428,42 @@ bool Territorium::unDoeZet ()
 }  // unDoeZet
 
 //*************************************************************************
+
+int Territorium::grootsteTerritorium(int speler){
+  int score = 0, hoogste_score = 0;
+  kopie();
+  for (int i = 0; i< hoogte; i++){
+    for (int j = 0; j < breedte; j++){
+      if (bord[i][j] == speler+1){
+        score = telTerritorium(make_pair(i, j), speler);
+        
+        if (score > hoogste_score){
+          hoogste_score = score;
+        }
+      }
+      kopie();
+      teller=0;
+    }
+  }
+  return hoogste_score;
+}
+
 //bijna klaar
 int Territorium::besteScore (pair<int,int> &besteZet,
                              long long &aantalStanden)
 {
 // TODO: implementeer deze memberfunctie
-int bestescore=0;
-int score=0;
-pair<int, int> mogelijk;
+  int hoogste_score=0;
+  int score=0;
+  pair<int, int> zet;
+  pair<int, int> mogelijk[MaxDimensie*MaxDimensie];
 
   // berekent eerst de stand van de spelers
   kopie();
   if (eindstand()){
-    if (aanBeurt==0){
-      for (int i = 0; i< keuzeAantalGeel; i++){
-        cout << vakjeKeuzes[i].first << ", " << vakjeKeuzes[i].second << endl;
-        score = telTerritorium(vakjeKeuzes[i], aanBeurt);
-        kopie();
-        teller=1;
-      }
-    }
-    else if (aanBeurt==1){
-      for (int i = 0; i< keuzeAantalBlauw; i++){
-        cout << vakjeKeuzes[i].first << ", " << vakjeKeuzes[i].second << endl;
-        score = telTerritorium(vakjeKeuzes[i], aanBeurt);
-        kopie();
-        teller=1;
-      }
-    }
+    cout << "Score: "<< grootsteTerritorium(aanBeurt) - grootsteTerritorium(!aanBeurt) << endl;
+    return -1; 
   }// als er geen eindstand is, worden alle zetten gespeeld
-
   else{  // kijken welke keuzes iedereen heeft
     if (aanBeurt==0){ // geel
       for (int i =1; i <= keuzeAantalGeel; i++){
@@ -480,18 +484,18 @@ pair<int, int> mogelijk;
       cout << "vakje: " << mogelijk[j].first <<  mogelijk[j].second << endl;
       aantalStanden ++;
       score = - besteScore (besteZet, aantalStanden); //hij eindigt niet, geen eindstand
-      if (score > bestescore){
-        score = bestescore;
+      if (score > hoogste_score){
+        score = hoogste_score;
         besteZet= mogelijk[j];
       // }
       // cout << endl << "standen: " << aantalStanden << "score: " << score << endl;
       unDoeZet ();
-    } 
-  } // else
-  return score; 
-}  // besteScore
-}
-
+      } 
+    } // else
+    return score; 
+  } 
+  return score;
+}// besteScore
 //*************************************************************************
 
 void Territorium::kopie(){
@@ -503,7 +507,6 @@ void Territorium::kopie(){
 }
 
 int Territorium::telTerritorium(pair<int, int> loper , int speler){
-  cout << loper.first << loper.second << endl;
   if(loper.first >= 0 && loper.second >= 0 && loper.first < hoogte && loper.second < breedte){
     for (int i = 0; i < 4; i++){
       if (i == 0 && bordKopie[loper.first-1][loper.second] == speler + 1){
@@ -552,7 +555,7 @@ pair<int,int> Territorium::bepaalGoedeZet ()
           goedeZet = vakjeKeuzes[i];
         }
         kopie();
-        teller = 1;
+        teller = 0;
       }
     } if(aanBeurt == 1){
       for (int i = 0; i< keuzeAantalBlauw; i++){
@@ -564,7 +567,7 @@ pair<int,int> Territorium::bepaalGoedeZet ()
           goedeZet = vakjeKeuzes[i];
         }
         kopie();
-        teller = 1;
+        teller = 0;
       }
     }
     cout << "Beste score: " << hoogste_score << ", (" << goedeZet.first << ", " << goedeZet.second << ") Speler: "<< aanBeurt << endl;
