@@ -173,6 +173,7 @@ class Territorium
         aanBeurt,       // speler die aan de beurt is
         hoeveelNietBeschikbaar, // percentage hoeveel niet beschikbare vakjes
         volgorde_eind,
+        positie,
         keuzesGeel, keuzesBlauw,
         zetten_ronde, totale_zetten;
 
