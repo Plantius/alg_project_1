@@ -324,17 +324,17 @@ pair<int,int> Territorium::bepaalZet (int j)
 
   // De j-de keuze uit de keuze mogelijkheden lijst wordt genomen
   int g = 0;
-  if (aanBeurt==0 && j>=1 && j<= keuzeAantalGeel && volgordeCoord[0] != make_pair(-1, -1)){ // geel 
+  if (aanBeurt==0 && j>=1 && j<= keuzeAantalGeel && volgordeCoord[0] != GeenZet){ // geel 
     for (int i=0; i < volgorde_eind ; i++){
         if(g == j-1){
           return vakjeKeuzes[i];
         }
-        if (volgordeCoord[i] != make_pair(-1, -1) && g < keuzeAantalGeel){
+        if (volgordeCoord[i] != GeenZet && g < keuzeAantalGeel){
           g++;
         }//if
     }
   }
-  else if (aanBeurt==1 && j>=1 && j <= keuzeAantalBlauw && volgordeCoord[0] != make_pair(-1, -1)){ // blauw
+  else if (aanBeurt==1 && j>=1 && j <= keuzeAantalBlauw && volgordeCoord[0] != GeenZet){ // blauw
     for (int i=0; i < volgorde_eind ; i++){
         if(g == j-1){
           return vakjeKeuzes[i];
@@ -437,7 +437,7 @@ int Territorium::besteScore (pair<int,int> &besteZet,
 // TODO: implementeer deze memberfunctie
 int bestescore=0;
 int score=0;
-int mogelijk pair<int, int>;
+pair<int, int> mogelijk;
 
   // berekent eerst de stand van de spelers
   kopie();
@@ -578,10 +578,10 @@ pair<int,int> Territorium::bepaalGoedeZet ()
 
 int Territorium::bepaalGoedeScore ()
 {
-// TODO: implementeer deze memberfunctie
-zet1 pair<int, int>;
-zet2 pair<int, int>;
-besteZet= make_pair(0,0);
+  // TODO: implementeer deze memberfunctie
+  pair<int, int> zet1;
+  pair<int, int> zet2;
+  pair<int, int> besteZet;
 
   while (eindstand()){
     zet1 = bepaalGoedeZet();
