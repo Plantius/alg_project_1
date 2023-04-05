@@ -80,8 +80,8 @@ void Territorium::vulBord(){
   }
 }
 
-bool Territorium::inArray(pair<int, int> element, pair<int, int> arr[], int size){
-  for (int i = 0; i < size; i++){
+bool Territorium::inArray(pair<int, int> element, pair<int, int> arr[]){
+  for (int i = 0; i < MaxDimensie*MaxDimensie; i++){
     if(element == arr[i]){
       return true;
     }
@@ -218,37 +218,55 @@ void Territorium::vakjesMogelijk(){
 
   int g=0;
   if (aanBeurt == 0){
+    if (sizeArray(volgordeCoord) < keuzeAantalGeel){
+        for (int k = 0; k < sizeArray(volgordeCoord); k++){
+          cout << "(" << volgordeCoord[k].first << ", " << volgordeCoord[k].second << "), ";
+          vakjeKeuzes[k+g] = volgordeCoord[k];
+        }
+      }
+    else {
       for (int i=keuzesGeel+keuzesBlauw-zetten_ronde; i < volgorde_eind ; i++){
-        //cout << "G "<< i <<", "<< volgorde_eind << " | " << g << " "<< ((volgorde_eind - i) < keuzeAantalGeel) << endl;
+        //cout << "B "<< i <<", "<< volgordeCoord[i].first << volgordeCoord[i].second << " | " << g << endl;
         if (volgordeCoord[i] != make_pair(-1, -1) && g < keuzeAantalGeel){
           cout << "(" << volgordeCoord[i].first << ", " << volgordeCoord[i].second << "), ";
           vakjeKeuzes[g] = volgordeCoord[i];
           g++;
         }
       }
+      cout << sizeArray(volgordeCoord) << endl;
+      
       for (int k = 0; k < volgorde_eind; k++){
-        cout << vakjeKeuzes[k].first << ", "<< vakjeKeuzes[k].second << endl;
         if(keuzeAantalGeel-k-g > 0){
           cout << "(" << volgordeCoord[k].first << ", " << volgordeCoord[k].second << "), ";
           vakjeKeuzes[k+g] = volgordeCoord[k];
         }
       }
+    }
   } if (aanBeurt == 1){
+    if (sizeArray(volgordeCoord) < keuzeAantalBlauw){
+        for (int k = 0; k < sizeArray(volgordeCoord); k++){
+          cout << "(" << volgordeCoord[k].first << ", " << volgordeCoord[k].second << "), ";
+          vakjeKeuzes[k+g] = volgordeCoord[k];
+        }
+      }
+    else {
       for (int i=keuzesGeel+keuzesBlauw-zetten_ronde; i < volgorde_eind ; i++){
-        //cout << "G "<< i <<", "<< volgorde_eind << " | " << g << " "<< ((volgorde_eind - i) < keuzeAantalBlauw) << endl;
+        //cout << "B "<< i <<", "<< volgordeCoord[i].first << volgordeCoord[i].second << " | " << g << endl;
         if (volgordeCoord[i] != make_pair(-1, -1) && g < keuzeAantalBlauw){
           cout << "(" << volgordeCoord[i].first << ", " << volgordeCoord[i].second << "), ";
           vakjeKeuzes[g] = volgordeCoord[i];
           g++;
         }
       }
+      cout << sizeArray(volgordeCoord) << endl;
+      
       for (int k = 0; k < volgorde_eind; k++){
-        cout << vakjeKeuzes[k].first << ", "<< vakjeKeuzes[k].second << endl;
         if(keuzeAantalBlauw-k-g > 0){
           cout << "(" << volgordeCoord[k].first << ", " << volgordeCoord[k].second << "), ";
           vakjeKeuzes[k+g] = volgordeCoord[k];
         }
       }
+    }
   } cout << endl;
   for (int i = 0; i < volgorde_eind; i++){
     cout << i<<"(" << volgordeCoord[i].first << "," << volgordeCoord[i].second << ") ";
@@ -266,12 +284,10 @@ void Territorium::drukAf ()
   for (int i=0; i < hoogte; i++){
     cout << i << " | " ;
     for (int j=0; j < breedte; j++){
-      if (bord[i][j] > 9 || bord[i][j] < -9){
-        cout << bord[i][j] << " " ;
-      } else if (bord[i][j] < 0 && bord[i][j] > -10){
-        cout << " " << bord[i][j] << " " ;
+      if (bord[i][j] < 0 ){
+        cout << 0 << " " ;
       } else {
-        cout << "  " << bord[i][j] << " " ;
+        cout << bord[i][j] << " " ;
       }
     } // for
     cout << " " << endl;
@@ -280,11 +296,11 @@ void Territorium::drukAf ()
   // breedte nummering
   cout << "    ";
   for (int z=0; z < breedte; z++){
-    cout << "\u2014\u2014\u2014" << " ";
+    cout << "\u2014\u2014";
   }
   cout << endl << "    ";
   for (int k=0; k < breedte; k++){
-    cout << "  " << k << " "; 
+    cout << k << " "; 
   }
   cout << endl;
 
@@ -334,47 +350,46 @@ pair<int,int> Territorium::bepaalZet (int j)
 
 //*************************************************************************
 
-void Territorium::zettenArray(pair<int, int> zet, int keuze){
+int Territorium::sizeArray(pair<int, int> arr[]){
   for (int i = 0; i < MaxDimensie*MaxDimensie; i++){
-    if (zetten[i] == make_pair(-1, -1)){
-      totale_zetten = i;
-      break;
+    if (arr[i] == make_pair(-1, -1)){
+      return i;
     }
-  }
-  zettenVolgorde[totale_zetten] = volgorde[keuze];
-  zetten[totale_zetten] = zet;
+  }return -1;
 }
 
 bool Territorium::zetSpeler(int speler, int keuzeAantal, int rij, int kolom){
   for (int i = 0; i < keuzeAantal; i++){
-    cout << volgordeCoord[i+keuzesBlauw+keuzesGeel-zetten_ronde].first << "-" << volgordeCoord[i+keuzesBlauw+keuzesGeel-zetten_ronde].second << endl;
-    if (bord[rij][kolom] == volgorde[i+keuzesBlauw+keuzesGeel-zetten_ronde]
-        && inArray(volgordeCoord[i+keuzesBlauw+keuzesGeel-zetten_ronde], vakjeKeuzes, keuzeAantal)){
-      
-      zettenArray(make_pair(rij, kolom), i+keuzesBlauw+keuzesGeel-zetten_ronde);
-      verwijderKeuze(i+keuzesBlauw+keuzesGeel-zetten_ronde);
-      zetten_ronde++;
-      if (speler == 0){
-        bord[rij][kolom] = Geel;
-        keuzesGeel+=keuzeAantalGeel;
-      } else if (speler == 1){
-        bord[rij][kolom] = Blauw;
-        keuzesBlauw+=keuzeAantalBlauw;
+    cout << vakjeKeuzes[i].first << ", " << vakjeKeuzes[i].second << endl;
+    if (inArray(make_pair(rij, kolom), volgordeCoord) && make_pair(rij, kolom) == vakjeKeuzes[i]){
+      for (int k = 0; k < volgorde_eind; k++){
+        if(volgordeCoord[k] == vakjeKeuzes[i]){
+          verwijderKeuze(k); 
+          zetten_ronde++;
+
+          if (speler == 0){
+            bord[rij][kolom] = Geel;
+            keuzesGeel+=keuzeAantalGeel;
+          } else if (speler == 1){
+            bord[rij][kolom] = Blauw;
+            keuzesBlauw+=keuzeAantalBlauw;
+          }
+
+          aanBeurt = !aanBeurt;
+          if ((keuzesBlauw + keuzesGeel-zetten_ronde) >= volgorde_eind){
+            keuzesBlauw = 0;
+            keuzesGeel = 0;
+            zetten_ronde = 0;
+          }
+          cout << "return true" << endl;
+        
+          return true;
+        }
       }
-      aanBeurt = !aanBeurt;
-      if ((keuzesBlauw + keuzesGeel-zetten_ronde) >= volgorde_eind && volgordeCoord[i+keuzesBlauw+keuzesGeel-zetten_ronde] == make_pair(-1, -1)){
-        keuzesBlauw = 0;
-        keuzesGeel = 0;
-        zetten_ronde = 0;
-      }
-      cout << "return true" << endl;
-      return true;
-    } else if (bord[rij][kolom] > 0){
-      cout << "return false want > 0" << endl;
-      return false;
     }
   }
-  cout << "returnt laatste false, niet in loop" << endl;
+  
+  cout << "return false" << endl;
   return false;
 }
 
@@ -489,6 +504,7 @@ void Territorium::kopie(){
 }
 
 int Territorium::telTerritorium(pair<int, int> loper , int speler){
+  cout << loper.first << loper.second << endl;
   if(loper.first >= 0 && loper.second >= 0 && loper.first < hoogte && loper.second < breedte){
     for (int i = 0; i < 4; i++){
       if (i == 0 && bordKopie[loper.first-1][loper.second] == speler + 1){
