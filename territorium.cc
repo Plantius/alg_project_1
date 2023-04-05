@@ -475,6 +475,7 @@ int mogelijk pair<int, int>;
   } // else
   return score; 
 }  // besteScore
+}
 
 //*************************************************************************
 
