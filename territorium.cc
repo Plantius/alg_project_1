@@ -472,7 +472,7 @@ void Territorium::kopie(){
 }
 
 int Territorium::telTerritorium(pair<int, int> loper , int speler){
-  if(bordKopie[loper.first][loper.second] < 0 && loper.first >= 0 && loper.second >= 0){
+  if(loper.first >= 0 && loper.second >= 0 && loper.first < hoogte && loper.second < breedte){
     for (int i = 0; i < 4; i++){
       if (i == 0 && bordKopie[loper.first-1][loper.second] == speler + 1){
         cout << "[0]" << endl;
