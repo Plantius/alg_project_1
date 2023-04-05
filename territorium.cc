@@ -107,6 +107,7 @@ void Territorium::sorteerVolgorde(){
   }
 }
 
+// haalt alle volgordes uit bord
 void Territorium::vulVolgorde(){
   pair<int, int> tempPair;
   int temp_item;
@@ -434,61 +435,58 @@ int Territorium::besteScore (pair<int,int> &besteZet,
                              long long &aantalStanden)
 {
 // TODO: implementeer deze memberfunctie
-
-int blauwstand=0;
-int geelstand=0;
 int bestescore=0;
 int score=0;
+int mogelijk pair<int, int>;
 
   // berekent eerst de stand van de spelers
+  kopie();
   if (eindstand()){
-    for (int r =0; r < hoogte ; r++){
-      for (int k=0; k < breedte; k++){
-        if(bord[r][k]==Geel && aanBeurt==0){
-          geelstand++;
-        }
-        else if (bord[r][k]==Blauw && aanBeurt==1){
-          blauwstand++;
-        }
-      }
-    }
     if (aanBeurt==0){
-      return geelstand;
-    }
-    else{
-      return blauwstand;
-    }
-  }// als er geen eindstand is, worden alle zetten gespeeld
-
-  else{ // alle mogelijke zetten z 
-    // kijken welke keuzes iedereen heeft
-    if (aanBeurt==0){
-      for (int i =1; i <= keuzeAantalGeel; i++){
-        vakjeKeuzes[i-1] = bepaalZet(i);
-        cout << "vakje " << vakjeKeuzes[i-1].first << vakjeKeuzes[i-1].second << endl;
+      for (int i = 0; i< keuzeAantalGeel; i++){
+        cout << vakjeKeuzes[i].first << ", " << vakjeKeuzes[i].second << endl;
+        score = telTerritorium(vakjeKeuzes[i], aanBeurt);
+        kopie();
+        teller=1;
       }
     }
     else if (aanBeurt==1){
+      for (int i = 0; i< keuzeAantalBlauw; i++){
+        cout << vakjeKeuzes[i].first << ", " << vakjeKeuzes[i].second << endl;
+        score = telTerritorium(vakjeKeuzes[i], aanBeurt);
+        kopie();
+        teller=1;
+      }
+    }
+  }// als er geen eindstand is, worden alle zetten gespeeld
+
+  else{  // kijken welke keuzes iedereen heeft
+    if (aanBeurt==0){ // geel
       for (int i =1; i <= keuzeAantalGeel; i++){
-          vakjeKeuzes[i-1] = bepaalZet(i);
-          cout << "vakje " << vakjeKeuzes[i-1].first << vakjeKeuzes[i-1].second << endl;
+        mogelijk[i-1] = bepaalZet(i);
+        cout << "vakje " << mogelijk[i-1].first << mogelijk[i-1].second << endl;
+      }
+    }
+    else if (aanBeurt==1){ //blauw
+      for (int i =1; i <= keuzeAantalBlauw; i++){
+        mogelijk[i-1] = bepaalZet(i);
+        cout << "vakje " << mogelijk[i-1].first << mogelijk[i-1].second << endl;
       }
     }
     
+    // recursie 
     for (int j =0; j < keuzeAantalGeel ;j++){
-      doeZet (vakjeKeuzes[j].first, vakjeKeuzes[j].second);
-      cout << "vakje: " << vakjeKeuzes[j].first <<  vakjeKeuzes[j].second << endl; //doet hij dit echt 
+      doeZet (mogelijk[j].first, mogelijk[j].second);
+      cout << "vakje: " << mogelijk[j].first <<  mogelijk[j].second << endl;
       aantalStanden ++;
       score = - besteScore (besteZet, aantalStanden); //hij eindigt niet, geen eindstand
       if (score > bestescore){
         score = bestescore;
-        besteZet= vakjeKeuzes[j];
-      }
-      cout << endl << "standen: " << aantalStanden << "score: " << score << endl;
+        besteZet= mogelijk[j];
+      // }
+      // cout << endl << "standen: " << aantalStanden << "score: " << score << endl;
       unDoeZet ();
-     // onthoud beste score en bijbehorende zet
-    }
-    
+    } 
   } // else
   return score; 
 }  // besteScore
@@ -579,9 +577,18 @@ pair<int,int> Territorium::bepaalGoedeZet ()
 
 int Territorium::bepaalGoedeScore ()
 {
-
 // TODO: implementeer deze memberfunctie
+zet1 pair<int, int>;
+zet2 pair<int, int>;
+besteZet= make_pair(0,0);
 
+  while (eindstand()){
+    zet1 = bepaalGoedeZet();
+    doeZet(zet1);
+    aantalStanden=0;
+    zet2 = besteScore(besteZet, aantalStanden);
+    doeZet(zet2);
+  }
   return 0;
 
 }  // bepaalGoedeScore
