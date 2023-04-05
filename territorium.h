@@ -185,6 +185,7 @@ class Territorium
     void sorteerVolgorde();
 
     void vakjesMogelijk();
+    void keuzeSpeler(int speler, int keuzeAantal);
     bool zetSpeler(int speler, int keuzeAantal, int rij, int kolom);
     int sizeArray(pair<int, int> arr[]);
 
