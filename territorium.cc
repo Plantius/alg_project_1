@@ -434,9 +434,9 @@ int Territorium::grootsteTerritorium(int speler){
     for (int j = 0; j < breedte; j++){
       if (bordKopie[i][j] == speler + 1){
         score = telTerritorium(make_pair(i, j), speler);
-        cout << "SCORE " <<speler << ": "<< score << " | "<< i << ", " << j << endl;
         if (score > hoogste_score){
           hoogste_score = score;
+          cout << "SCORE " <<speler << ": "<< hoogste_score << " | "<< i << ", " << j << endl;
         }
         kopie();
         teller=0;
@@ -507,26 +507,29 @@ int Territorium::telTerritorium(pair<int, int> loper , int speler){
   if(loper.first >= 0 && loper.second >= 0 && loper.first < hoogte && loper.second < breedte){
     for (int i = 0; i < 4; i++){
       if (i == 0 && loper.first > 0 && bordKopie[loper.first-1][loper.second] == speler + 1){
+        cout << "[0]" << loper.first << ", " <<loper.second << endl;
         bordKopie[loper.first][loper.second] = 0;
-        teller ++;
         telTerritorium(make_pair(loper.first-1, loper.second), speler);
       }
       if (i == 1 && loper.second < breedte-1 && bordKopie[loper.first][loper.second + 1] == speler + 1){
+        cout << "[1] " << loper.first << ", " <<loper.second << endl;
         bordKopie[loper.first][loper.second] = 0;
-        teller ++;
         telTerritorium(make_pair(loper.first, loper.second+1), speler);
       }
       if (i == 2 && loper.first < hoogte-1 && bordKopie[loper.first+1][loper.second] == speler + 1){
+        cout << "[2]" << loper.first << ", " <<loper.second << endl;
         bordKopie[loper.first][loper.second] = 0;
-        teller ++;
         telTerritorium(make_pair(loper.first+1, loper.second), speler);
       }
-      if (i == 3 && loper.second > 0 && bordKopie[loper.first][loper.second-1] == speler + 1){
+      if (i == 3 && loper.second > 0 && bordKopie[loper.first][loper.second - 1] == speler + 1){
+        cout << "[3]" << loper.first << ", " <<loper.second << endl;
         bordKopie[loper.first][loper.second] = 0;
-        teller ++;
         telTerritorium(make_pair(loper.first, loper.second-1), speler);
       }
+      
     }
+    teller ++;
+    
   }
   return teller;
 }
