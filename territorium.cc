@@ -476,7 +476,7 @@ int Territorium::besteScore (pair<int,int> &besteZet,
     }
     
     // recursie 
-    for (int j =0; j < keuzeAantalGeel ;j++){
+    for (int j =0; j < keuzeAantalGeel; j++){
       doeZet (mogelijk[j].first, mogelijk[j].second);
       cout << "vakje: " << mogelijk[j].first <<  mogelijk[j].second << endl;
       aantalStanden ++;
@@ -575,7 +575,32 @@ pair<int,int> Territorium::bepaalGoedeZet ()
 int Territorium::bepaalGoedeScore ()
 {
   // TODO: implementeer deze memberfunctie
+  pair<int, int> zet1;
+  pair<int, int> zet2;
+  pair<int, int> besteZet;
+  pair<int, int> zettengedaan[MaxDimensie*MaxDimensie];
+  int score=0;
+  int i =0;
 
-  return 0;
+  while (eindstand()){
+    zet1 = bepaalGoedeZet();
+    doeZet(zet1.first, zet1.second);
+    zettengedaan[i]=zet1;
+    i++;
+
+    long long aantalStanden=0;
+    besteScore(besteZet, aantalStanden);
+    zet2= besteZet;
+    doeZet(zet2.first, zet2.second);
+    zettengedaan[i]=zet2;
+    i++;
+  }
+  score= grootsteTerritorium(aanBeurt) - grootsteTerritorium(!aanBeurt);
+  while (i != 0){
+    unDoeZet();
+    i--;
+  }
+  
+  return score;
 
 }  // bepaalGoedeScore
