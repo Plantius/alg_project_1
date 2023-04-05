@@ -219,18 +219,34 @@ void Territorium::vakjesMogelijk(){
   int g=0;
   if (aanBeurt == 0){
       for (int i=keuzesGeel+keuzesBlauw-zetten_ronde; i < volgorde_eind ; i++){
+        //cout << "G "<< i <<", "<< volgorde_eind << " | " << g << " "<< ((volgorde_eind - i) < keuzeAantalGeel) << endl;
         if (volgordeCoord[i] != make_pair(-1, -1) && g < keuzeAantalGeel){
           cout << "(" << volgordeCoord[i].first << ", " << volgordeCoord[i].second << "), ";
           vakjeKeuzes[g] = volgordeCoord[i];
           g++;
         }
       }
+      for (int k = 0; k < volgorde_eind; k++){
+        cout << vakjeKeuzes[k].first << ", "<< vakjeKeuzes[k].second << endl;
+        if(keuzeAantalGeel-k-g > 0){
+          cout << "(" << volgordeCoord[k].first << ", " << volgordeCoord[k].second << "), ";
+          vakjeKeuzes[k+g] = volgordeCoord[k];
+        }
+      }
   } if (aanBeurt == 1){
       for (int i=keuzesGeel+keuzesBlauw-zetten_ronde; i < volgorde_eind ; i++){
+        //cout << "G "<< i <<", "<< volgorde_eind << " | " << g << " "<< ((volgorde_eind - i) < keuzeAantalBlauw) << endl;
         if (volgordeCoord[i] != make_pair(-1, -1) && g < keuzeAantalBlauw){
           cout << "(" << volgordeCoord[i].first << ", " << volgordeCoord[i].second << "), ";
           vakjeKeuzes[g] = volgordeCoord[i];
           g++;
+        }
+      }
+      for (int k = 0; k < volgorde_eind; k++){
+        cout << vakjeKeuzes[k].first << ", "<< vakjeKeuzes[k].second << endl;
+        if(keuzeAantalBlauw-k-g > 0){
+          cout << "(" << volgordeCoord[k].first << ", " << volgordeCoord[k].second << "), ";
+          vakjeKeuzes[k+g] = volgordeCoord[k];
         }
       }
   } cout << endl;
@@ -331,31 +347,32 @@ void Territorium::zettenArray(pair<int, int> zet, int keuze){
 
 bool Territorium::zetSpeler(int speler, int keuzeAantal, int rij, int kolom){
   for (int i = 0; i < keuzeAantal; i++){
-      if (bord[rij][kolom] == volgorde[i+keuzesBlauw+keuzesGeel-zetten_ronde]
-          && inArray(volgordeCoord[i+keuzesBlauw+keuzesGeel-zetten_ronde], vakjeKeuzes, keuzeAantal)){
-        
-        zettenArray(make_pair(rij, kolom), i+keuzesBlauw+keuzesGeel-zetten_ronde);
-        verwijderKeuze(i+keuzesBlauw+keuzesGeel-zetten_ronde);
-        zetten_ronde++;
-        if (speler == 0){
-          bord[rij][kolom] = Geel;
-          keuzesGeel+=keuzeAantalGeel;
-        } else if (speler == 1){
-          bord[rij][kolom] = Blauw;
-          keuzesBlauw+=keuzeAantalBlauw;
-        }
-        aanBeurt = !aanBeurt;
-        if ((keuzesBlauw + keuzesGeel-zetten_ronde) >= volgorde_eind){
-          keuzesBlauw = 0;
-          keuzesGeel = 0;
-          zetten_ronde = 0;
-        }
-        cout << "return true" << endl;
-        return true;
-      } else if (bord[rij][kolom] > 0){
-        cout << "return false want > 0" << endl;
-        return false;
+    cout << volgordeCoord[i+keuzesBlauw+keuzesGeel-zetten_ronde].first << "-" << volgordeCoord[i+keuzesBlauw+keuzesGeel-zetten_ronde].second << endl;
+    if (bord[rij][kolom] == volgorde[i+keuzesBlauw+keuzesGeel-zetten_ronde]
+        && inArray(volgordeCoord[i+keuzesBlauw+keuzesGeel-zetten_ronde], vakjeKeuzes, keuzeAantal)){
+      
+      zettenArray(make_pair(rij, kolom), i+keuzesBlauw+keuzesGeel-zetten_ronde);
+      verwijderKeuze(i+keuzesBlauw+keuzesGeel-zetten_ronde);
+      zetten_ronde++;
+      if (speler == 0){
+        bord[rij][kolom] = Geel;
+        keuzesGeel+=keuzeAantalGeel;
+      } else if (speler == 1){
+        bord[rij][kolom] = Blauw;
+        keuzesBlauw+=keuzeAantalBlauw;
       }
+      aanBeurt = !aanBeurt;
+      if ((keuzesBlauw + keuzesGeel-zetten_ronde) >= volgorde_eind && volgordeCoord[i+keuzesBlauw+keuzesGeel-zetten_ronde] == make_pair(-1, -1)){
+        keuzesBlauw = 0;
+        keuzesGeel = 0;
+        zetten_ronde = 0;
+      }
+      cout << "return true" << endl;
+      return true;
+    } else if (bord[rij][kolom] > 0){
+      cout << "return false want > 0" << endl;
+      return false;
+    }
   }
   cout << "returnt laatste false, niet in loop" << endl;
   return false;
