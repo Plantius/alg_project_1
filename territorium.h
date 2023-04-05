@@ -179,13 +179,13 @@ class Territorium
     int teller;
 
     // TODO: uw eigen memberfuncties en -variabelen
-    bool inArray(pair<int, int> element, pair<int, int> arr[], int size); // Checkt of een element in een array zit
+    bool inArray(pair<int, int> element, pair<int, int> arr[]); // Checkt of een element in een array zit
     void vulBord();
     void sorteerVolgorde();
 
     void vakjesMogelijk();
     bool zetSpeler(int speler, int keuzeAantal, int rij, int kolom);
-    void zettenArray(pair<int, int> zet, int keuze);
+    int sizeArray(pair<int, int> arr[]);
 
     void vulVolgorde();
     void verwijderKeuze(int keuze);
