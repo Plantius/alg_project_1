@@ -484,7 +484,6 @@ int Territorium::besteScore (pair<int,int> &besteZet,
     }
     
   }     
-  
   return besteScoreHoogst;
 }// besteScore
 //*************************************************************************
