@@ -194,14 +194,39 @@ void doeSpel (Territorium *ter1)
 
 // Voert experiment uit zoals beschreven in de opdracht.
 void doeExperiment ()
-{
-      
-// TODO: implementeer deze functie
-// 2x2, 3x3, 4x4, 5x5. 6x6.7x7, 8x8, 9x9, 10x10
-for (int i=2; i<= 10; i++){
-  
-}
+{   
+  // TODO: implementeer deze functie
+  Territorium *ter1;             
+  int score[100][9];
+  int gem_score[9][4]; //met gem_score[0]= 2x2 van comb (2,2)
+  int tijd[9][4];
+  int totaal=0;
+  clock_t t1, t2;
 
+  // voor elke combi alle borden 100 x, gem tijd en score berekenen
+  // 2x2, 3x3, 4x4, 5x5. 6x6.7x7, 8x8, 9x9, 10x10
+  // (2,2), (3,2), (2,3),(3,3)
+  pair <int, int> keuzes [4] = {make_pair(2,2), make_pair(3,2), make_pair(2,3), make_pair(3,3)};
+  for (int j=0; j <=3; j++){
+    for (int i=2; i<= 10; i++){
+      t1 = clock ();
+      for (int k=0; k<100; k++){
+        if (tijd[i-2][j] > 5*60){ // gaat dit wel werken
+          break;
+        }
+        else{
+          ter1 -> Territorium (i, i, 25, keuzes[j].first, keuzes[j].second);
+          score[k][i-2] = ter1->bepaalGoedeScore();
+        }
+      }
+      t2 = clock ();
+      tijd[i-2][j] = (((double)(t2-t1))/CLOCKS_PER_SEC);
+      for (int a=0; a < 100; a++){
+        totaal += score[a][i-2];
+      }
+      gem_score[i-2][j] = totaal / 100;
+    }
+  }
 
 }  // doeExperiment
 
