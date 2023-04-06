@@ -456,16 +456,19 @@ int Territorium::besteScore (pair<int,int> &besteZet,
     return grootsteTerritorium(aanBeurt) - grootsteTerritorium(!aanBeurt); 
   }// als er geen eindstand is, worden alle zetten gespeeld
   else{  // kijken welke keuzes iedereen heeft
+    cout << "beurt: " << aanBeurt << endl;
     if (aanBeurt == Geel -1){ // geel
       for (int i =1; i <= keuzeAantalGeel; i++){
         mogelijk[i-1] = bepaalZet(i);
-        cout << "vakje " << mogelijk[i-1].first << mogelijk[i-1].second << endl;
+        cout << "geel : "<< i << endl;
+        //cout << "vakje " << mogelijk[i-1].first << mogelijk[i-1].second << endl;
       }
     }
     else if (aanBeurt == Blauw -1){ //blauw
       for (int i =1; i <= keuzeAantalBlauw; i++){
         mogelijk[i-1] = bepaalZet(i);
-        cout << "vakje " << mogelijk[i-1].first << mogelijk[i-1].second << endl;
+        cout << "blauw : "<< i << endl;
+        //cout << "vakje " << mogelijk[i-1].first << mogelijk[i-1].second << endl;
       }
     }
     
