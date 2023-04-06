@@ -101,6 +101,14 @@ bool Territorium::inArray(pair<int, int> element, pair<int, int> arr[]){
   return false;
 }
 
+int Territorium::sizeArray(pair<int, int> arr[]){
+  for (int i = 0; i < hoogte*breedte; i++){
+    if (arr[i] == GeenZet){
+      return i;
+    }
+  }return -1;
+}
+
 void Territorium::sorteerVolgorde(){
   pair<int, int> tempPair;
   int temp_item;
@@ -300,12 +308,28 @@ pair<int,int> Territorium::bepaalZet (int j)
 
 //*************************************************************************
 
-int Territorium::sizeArray(pair<int, int> arr[]){
-  for (int i = 0; i < hoogte*breedte; i++){
-    if (arr[i] == GeenZet){
-      return i;
-    }
-  }return -1;
+void Territorium::verwijderKeuze(int keuze){
+  // Verwijdert de gemaakte keuze uit de volgorde array 
+  for (int i = keuze; i < volgorde_eind ;i++){
+    volgordeCoord[i] = volgordeCoord[i+1];
+    volgorde[i] = volgorde[i+1];
+  }
+  volgordeCoord[volgorde_eind-1] = GeenZet;
+  volgorde[volgorde_eind-1] = 0;
+  volgorde_eind--;
+
+  // Sorteert de volgorde array in oplopende volgorde
+  sorteerVolgorde();
+}
+
+void Territorium::voegKeuzeToe(pair<int, int> coord){
+  // Voegt de keuze toe aan de array van keuzes 
+  volgordeCoord[volgorde_eind] = coord;
+  volgorde[volgorde_eind] = zettenVolgorde[totale_zetten-1];
+  volgorde_eind++;
+
+  // Sorteert de volgorde array in oplopende volgorde
+  sorteerVolgorde();
 }
 
 bool Territorium::zetSpeler(int speler, int keuzeAantal, int rij, int kolom){
@@ -338,32 +362,6 @@ bool Territorium::zetSpeler(int speler, int keuzeAantal, int rij, int kolom){
     }
   }
   return false;
-}
-
-//*************************************************************************
-
-void Territorium::verwijderKeuze(int keuze){
-  // Verwijdert de gemaakte keuze uit de volgorde array 
-  for (int i = keuze; i < volgorde_eind ;i++){
-    volgordeCoord[i] = volgordeCoord[i+1];
-    volgorde[i] = volgorde[i+1];
-  }
-  volgordeCoord[volgorde_eind-1] = GeenZet;
-  volgorde[volgorde_eind-1] = 0;
-  volgorde_eind--;
-
-  // Sorteert de volgorde array in oplopende volgorde
-  sorteerVolgorde();
-}
-
-void Territorium::voegKeuzeToe(pair<int, int> coord){
-  // Voegt de keuze toe aan de array van keuzes 
-  volgordeCoord[volgorde_eind] = coord;
-  volgorde[volgorde_eind] = zettenVolgorde[totale_zetten-1];
-  volgorde_eind++;
-
-  // Sorteert de volgorde array in oplopende volgorde
-  sorteerVolgorde();
 }
 
 bool Territorium::doeZet (int rij, int kolom)
