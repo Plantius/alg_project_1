@@ -72,8 +72,6 @@ Territorium::Territorium (int nwHoogte, int nwBreedte,
 
 //*************************************************************************
 
-
-
 void Territorium::vulBord(){
   int k = -1;
   for (int i = 0; i < hoogte; i++){
@@ -146,71 +144,45 @@ void Territorium::vulVolgorde(){
   sorteerVolgorde();  
 }
 
-void Territorium::verwijderKeuze(int keuze){
-  // Verwijdert de gemaakte keuze uit de volgorde array 
-  for (int i = keuze; i < volgorde_eind ;i++){
-    volgordeCoord[i] = volgordeCoord[i+1];
-    volgorde[i] = volgorde[i+1];
-  }
-  volgordeCoord[volgorde_eind-1] = GeenZet;
-  volgorde[volgorde_eind-1] = 0;
-  volgorde_eind--;
-
-  // Sorteert de volgorde array in oplopende volgorde
-  sorteerVolgorde();
-}
-
-void Territorium::voegKeuzeToe(pair<int, int> coord){
-  // Voegt de keuze toe aan de array van keuzes 
-  volgordeCoord[volgorde_eind] = coord;
-  volgorde[volgorde_eind] = zettenVolgorde[totale_zetten-1];
-  volgorde_eind++;
-
-  // Sorteert de volgorde array in oplopende volgorde
-  sorteerVolgorde();
-}
-
 bool Territorium::leesInBord (const char* invoernaam)
 {
-int getal;
-int getalcount = 0, hoogte_tel = 0, breedte_tel = 0;
-// TODO: implementeer deze memberfunctie
-ifstream file(invoernaam);
-if (file.good()){
-  while (file.good()){
-    file >> getal;
-    if (getalcount == 0){
-      hoogte = getal;
-    } if (getalcount == 1){
-      breedte = getal;
-    } if(getalcount == hoogte*breedte + 2){
-      keuzeAantalGeel = getal;
-    } if(getalcount == hoogte*breedte + 3){
-      keuzeAantalBlauw = getal;
-    } if (getalcount > 1 && getalcount < hoogte*breedte + 2){
-        bord[hoogte_tel][breedte_tel] = getal;
-        if (breedte_tel == breedte - 1) {
-          breedte_tel = 0;
-          hoogte_tel++;
-        }else{
-          breedte_tel++;
-        }
-     }
-    getalcount++;
+  int getal;
+  int getalcount = 0, hoogte_tel = 0, breedte_tel = 0;
+  // TODO: implementeer deze memberfunctie
+  ifstream file(invoernaam);
+  if (file.good()){
+    while (file.good()){
+      file >> getal;
+      if (getalcount == 0){
+        hoogte = getal;
+      } if (getalcount == 1){
+        breedte = getal;
+      } if(getalcount == hoogte*breedte + 2){
+        keuzeAantalGeel = getal;
+      } if(getalcount == hoogte*breedte + 3){
+        keuzeAantalBlauw = getal;
+      } if (getalcount > 1 && getalcount < hoogte*breedte + 2){
+          bord[hoogte_tel][breedte_tel] = getal;
+          if (breedte_tel == breedte - 1) {
+            breedte_tel = 0;
+            hoogte_tel++;
+          }else{
+            breedte_tel++;
+          }
+      }
+      getalcount++;
+    }
+    vulVolgorde();
+    file.close();
+    kopie();
+    return true;
   }
-  vulVolgorde();
+  else{
+    cout << "Deze file is niet leesbaar." << endl;
+    return false;
+  }
+
   file.close();
-  kopie();
-  return true;
-}
-else{
-  cout << "Deze file is niet leesbaar." << endl;
-  return false;
-}
-
-file.close();
-
-// Staat het bord goed?
 
 }  // leesInBord
 
@@ -368,6 +340,32 @@ bool Territorium::zetSpeler(int speler, int keuzeAantal, int rij, int kolom){
   return false;
 }
 
+//*************************************************************************
+
+void Territorium::verwijderKeuze(int keuze){
+  // Verwijdert de gemaakte keuze uit de volgorde array 
+  for (int i = keuze; i < volgorde_eind ;i++){
+    volgordeCoord[i] = volgordeCoord[i+1];
+    volgorde[i] = volgorde[i+1];
+  }
+  volgordeCoord[volgorde_eind-1] = GeenZet;
+  volgorde[volgorde_eind-1] = 0;
+  volgorde_eind--;
+
+  // Sorteert de volgorde array in oplopende volgorde
+  sorteerVolgorde();
+}
+
+void Territorium::voegKeuzeToe(pair<int, int> coord){
+  // Voegt de keuze toe aan de array van keuzes 
+  volgordeCoord[volgorde_eind] = coord;
+  volgorde[volgorde_eind] = zettenVolgorde[totale_zetten-1];
+  volgorde_eind++;
+
+  // Sorteert de volgorde array in oplopende volgorde
+  sorteerVolgorde();
+}
+
 bool Territorium::doeZet (int rij, int kolom)
 {
   if (integerInBereik(rij, 0, hoogte-1) && integerInBereik(kolom, 0, breedte-1) && bord[rij][kolom] < 0){
@@ -380,11 +378,8 @@ bool Territorium::doeZet (int rij, int kolom)
   return false;
 }  // doeZet
 
-//*************************************************************************
-
 bool Territorium::unDoeZet ()
 {
-  cout << totale_zetten << " | " << zetten[totale_zetten-1].first << ", " << zetten[totale_zetten-1].second << endl;
   if(zetten[totale_zetten-1] != GeenZet && totale_zetten > 0){
     voegKeuzeToe(zetten[totale_zetten-1]);
 
@@ -392,20 +387,15 @@ bool Territorium::unDoeZet ()
     zetten[totale_zetten-1] = GeenZet;
     zettenVolgorde[totale_zetten-1] = 0;
     
-    if (aanBeurt == Geel -1){
-      if (keuzesBlauw != 0){
-        keuzesBlauw -= keuzeAantalBlauw;
-      }else {
-        keuzesBlauw = volgorde_eind-2;
-      }
-    }else if (aanBeurt == Blauw -1){
-      if (keuzesGeel != 0){
-        keuzesGeel -= keuzeAantalGeel;
-      }else {
-        keuzesGeel = volgorde_eind-2;
-      } 
+    if (aanBeurt == Geel -1 && keuzesBlauw !=0){
+      keuzesBlauw -= keuzeAantalBlauw;
+    } else if (aanBeurt == Blauw -1 && keuzesGeel !=0){
+      keuzesGeel -= keuzeAantalGeel;
+    } else if (aanBeurt == Geel -1 && keuzesBlauw == 0){
+      keuzesBlauw = volgorde_eind-1;
+    } else if (aanBeurt == Blauw -1 && keuzesGeel == 0){
+      keuzesGeel = volgorde_eind-1;
     }
-
     aanBeurt = !aanBeurt;
     totale_zetten--;
     if (zetten_ronde != 0){
@@ -514,7 +504,7 @@ int Territorium::telTerritorium(pair<int, int> loper , int speler){
       
     }
     teller ++;
-    
+    return teller;
   }
   return teller;
 }
@@ -538,7 +528,7 @@ pair<int,int> Territorium::bepaalGoedeZet ()
         kopie();
         teller = 0;
       }
-    } if(aanBeurt == Blauw -1){
+    } if(aanBeurt == Blauw-1){
       for (int i = 0; i< keuzeAantalBlauw; i++){
         score = telTerritorium(vakjeKeuzes[i], aanBeurt);
 
