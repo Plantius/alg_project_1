@@ -175,7 +175,8 @@ class Territorium
         volgorde_eind,
         positie,
         keuzesGeel, keuzesBlauw,
-        zetten_ronde, totale_zetten;
+        zetten_ronde, totale_zetten,
+        besteScoreHoogst;
 
     int teller;
 
