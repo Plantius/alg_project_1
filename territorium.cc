@@ -240,7 +240,6 @@ void Territorium::keuzeSpeler(int speler, int keuzeAantal){
     }
   else {
     for (int i=keuzesGeel+keuzesBlauw-zetten_ronde; i < volgorde_eind ; i++){
-      cout << "i " << i << ", " << zetten_ronde  << ", G: " << keuzesGeel<< ", B: " << keuzesBlauw << "| EIND "<< volgorde_eind << endl;
       if (volgordeCoord[i] != GeenZet && g < keuzeAantal){
         cout << "(" << volgordeCoord[i].first << ", " << volgordeCoord[i].second << ") " ;
         vakjeKeuzes[g] = volgordeCoord[i];
@@ -249,18 +248,11 @@ void Territorium::keuzeSpeler(int speler, int keuzeAantal){
     }
     
     for (int k = 0; k < volgorde_eind; k++){
-      cout << "k " << k << ", " << g << endl;
       if(keuzeAantal-k-g > 0){
         cout << "(" << volgordeCoord[k].first << ", " << volgordeCoord[k].second << ") ";
         vakjeKeuzes[k+g] = volgordeCoord[k];
       }
     }
-  }cout << endl;
-  for (int i = 0; i< volgorde_eind; i++){
-    cout << "(" << volgordeCoord[i].first << ", " << volgordeCoord[i].second << ") " ;
-  }cout << endl;
-  for (int i = 0; i< volgorde_eind; i++){
-    cout << volgorde[i] << " ";
   }
 }
 
