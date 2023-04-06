@@ -240,6 +240,7 @@ void Territorium::keuzeSpeler(int speler, int keuzeAantal){
     }
   else {
     for (int i=keuzesGeel+keuzesBlauw-zetten_ronde; i < volgorde_eind ; i++){
+      cout << "i " << i << ", " << zetten_ronde  << ", G: " << keuzesGeel<< ", B: " << keuzesBlauw << "| EIND "<< volgorde_eind << endl;
       if (volgordeCoord[i] != GeenZet && g < keuzeAantal){
         cout << "(" << volgordeCoord[i].first << ", " << volgordeCoord[i].second << ") " ;
         vakjeKeuzes[g] = volgordeCoord[i];
@@ -248,11 +249,18 @@ void Territorium::keuzeSpeler(int speler, int keuzeAantal){
     }
     
     for (int k = 0; k < volgorde_eind; k++){
+      cout << "k " << k << ", " << g << endl;
       if(keuzeAantal-k-g > 0){
         cout << "(" << volgordeCoord[k].first << ", " << volgordeCoord[k].second << ") ";
         vakjeKeuzes[k+g] = volgordeCoord[k];
       }
     }
+  }cout << endl;
+  for (int i = 0; i< volgorde_eind; i++){
+    cout << "(" << volgordeCoord[i].first << ", " << volgordeCoord[i].second << ") " ;
+  }cout << endl;
+  for (int i = 0; i< volgorde_eind; i++){
+    cout << volgorde[i] << " ";
   }
 }
 
@@ -384,7 +392,6 @@ bool Territorium::doeZet (int rij, int kolom)
 
 bool Territorium::unDoeZet ()
 {
-  cout << totale_zetten << " | " << zetten[totale_zetten-1].first << ", " << zetten[totale_zetten-1].second << endl;
   if(zetten[totale_zetten-1] != GeenZet && totale_zetten > 0){
     voegKeuzeToe(zetten[totale_zetten-1]);
 
@@ -392,20 +399,15 @@ bool Territorium::unDoeZet ()
     zetten[totale_zetten-1] = GeenZet;
     zettenVolgorde[totale_zetten-1] = 0;
     
-    if (aanBeurt == Geel -1){
-      if (keuzesBlauw != 0){
-        keuzesBlauw -= keuzeAantalBlauw;
-      }else {
-        keuzesBlauw = volgorde_eind-2;
-      }
-    }else if (aanBeurt == Blauw -1){
-      if (keuzesGeel != 0){
-        keuzesGeel -= keuzeAantalGeel;
-      }else {
-        keuzesGeel = volgorde_eind-2;
-      } 
+    if (aanBeurt == Geel -1 && keuzesBlauw !=0){
+      keuzesBlauw -= keuzeAantalBlauw;
+    } else if (aanBeurt == Blauw -1 && keuzesGeel !=0){
+      keuzesGeel -= keuzeAantalGeel;
+    } else if (aanBeurt == Geel -1 && keuzesBlauw == 0){
+      keuzesBlauw = volgorde_eind-1;
+    } else if (aanBeurt == Blauw -1 && keuzesGeel == 0){
+      keuzesGeel = volgorde_eind-1;
     }
-
     aanBeurt = !aanBeurt;
     totale_zetten--;
     if (zetten_ronde != 0){
@@ -535,7 +537,7 @@ pair<int,int> Territorium::bepaalGoedeZet ()
         kopie();
         teller = 0;
       }
-    } if(aanBeurt == Blauw -1){
+    } if(aanBeurt == Blauw-1){
       for (int i = 0; i< keuzeAantalBlauw; i++){
         score = telTerritorium(vakjeKeuzes[i], aanBeurt);
 
