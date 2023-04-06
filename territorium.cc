@@ -102,7 +102,7 @@ bool Territorium::inArray(pair<int, int> element, pair<int, int> arr[]){
 }
 
 int Territorium::sizeArray(pair<int, int> arr[]){
-  for (int i = 0; i < hoogte*breedte; i++){
+  for (int i = 0; i < hoogte*breedte+1; i++){
     if (arr[i] == GeenZet){
       return i;
     }
@@ -219,7 +219,6 @@ void Territorium::keuzeSpeler(int speler, int keuzeAantal){
     }
     }
   else {
-    cout << "Else" << endl;
     for (int i=keuzesGeel+keuzesBlauw-zetten_ronde; i < volgorde_eind ; i++){
       if (volgordeCoord[i] != GeenZet && g < keuzeAantal){
         cout << "(" << volgordeCoord[i].first << ", " << volgordeCoord[i].second << ") " ;
