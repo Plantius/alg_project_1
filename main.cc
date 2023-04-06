@@ -215,7 +215,7 @@ void doeExperiment ()
           break;
         }
         else{
-          ter1 -> Territorium (i, i, 25, keuzes[j].first, keuzes[j].second);
+          ter1 = new Territorium (i, i, 25, keuzes[j].first, keuzes[j].second);
           score[k][i-2] = ter1->bepaalGoedeScore();
         }
       }
