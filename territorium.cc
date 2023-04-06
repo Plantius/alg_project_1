@@ -469,10 +469,9 @@ int Territorium::besteScore (pair<int,int> &besteZet,
       if (score > hoogste_score){
         score = hoogste_score;
         besteZet= mogelijk[j];
-      // }
-      // cout << endl << "standen: " << aantalStanden << "score: " << score << endl;
-      unDoeZet ();
-      } 
+      }
+      cout << endl << "standen: " << aantalStanden << "score: " << score << endl;
+      unDoeZet (); 
     } // else
     return score; 
   } 
