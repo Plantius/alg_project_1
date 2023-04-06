@@ -26,6 +26,7 @@ Territorium::Territorium ()
   fill(&bord[0][0], &bord[0][0]+(MaxDimensie*MaxDimensie), 0);
   kopie();
   teller = 0;
+  besteScoreHoogst = 0;
   
 
 }  // default constructor
@@ -201,7 +202,7 @@ bool Territorium::eindstand ()
 
   for (int i = 0; i < hoogte; i++){
     for (int j = 0; j < breedte; j++){
-      if (bord[i][j] <= 0){
+      if (bord[i][j] < 0){
         return false;
       }
     }
@@ -212,12 +213,14 @@ bool Territorium::eindstand ()
 
 void Territorium::keuzeSpeler(int speler, int keuzeAantal){
   int g = 0;
+  fill(vakjeKeuzes, vakjeKeuzes+(MaxDimensie*MaxDimensie), GeenZet);
+
   if (sizeArray(volgordeCoord) < keuzeAantal){
     for (int k = 0; k < sizeArray(volgordeCoord); k++){
       cout << "(" << volgordeCoord[k].first << ", " << volgordeCoord[k].second << ") ";
-      vakjeKeuzes[k+g] = volgordeCoord[k];
+      vakjeKeuzes[k] = volgordeCoord[k];
     }
-    }
+  }
   else {
     for (int i=keuzesGeel+keuzesBlauw-zetten_ronde; i < volgorde_eind ; i++){
       if (volgordeCoord[i] != GeenZet && g < keuzeAantal){
@@ -335,10 +338,12 @@ void Territorium::voegKeuzeToe(pair<int, int> coord){
 bool Territorium::zetSpeler(int speler, int keuzeAantal, int rij, int kolom){
   for (int i = 0; i < keuzeAantal; i++){
     if (inArray(make_pair(rij, kolom), volgordeCoord) && make_pair(rij, kolom) == vakjeKeuzes[i]){
+      cout<< "DOE " << vakjeKeuzes[i].first << ":" << vakjeKeuzes[i].second << endl;
       for (int k = 0; k < volgorde_eind; k++){
         if(volgordeCoord[k] == vakjeKeuzes[i]){
           zetten[totale_zetten] = volgordeCoord[k];
           zettenVolgorde[totale_zetten] = volgorde[k];
+          
           totale_zetten++;
           zetten_ronde++;
           verwijderKeuze(k); 
@@ -355,7 +360,7 @@ bool Territorium::zetSpeler(int speler, int keuzeAantal, int rij, int kolom){
             keuzesGeel = 0;
             zetten_ronde = 0;
           }
-          aanBeurt = !aanBeurt;      
+          aanBeurt = !aanBeurt;     
           return true;
         }
       }
@@ -379,6 +384,7 @@ bool Territorium::doeZet (int rij, int kolom)
 bool Territorium::unDoeZet ()
 {
   if(zetten[totale_zetten-1] != GeenZet && totale_zetten > 0){
+    cout<<"UNDO " <<zetten[totale_zetten-1].first << ", " << zetten[totale_zetten-1].second << endl;
     voegKeuzeToe(zetten[totale_zetten-1]);
 
     bord[zetten[totale_zetten-1].first][zetten[totale_zetten-1].second] = zettenVolgorde[totale_zetten-1];
@@ -401,8 +407,10 @@ bool Territorium::unDoeZet ()
     }
     
     return true;
+  }else {
+    return false;
   }
-  return false;
+  
 
 }  // unDoeZet
 
@@ -434,47 +442,77 @@ int Territorium::besteScore (pair<int,int> &besteZet,
 {
 // TODO: implementeer deze memberfunctie
   int score = 0;
-  pair<int, int> zet;
   pair<int, int> mogelijk[MaxDimensie*MaxDimensie];
   fill(mogelijk, mogelijk+(MaxDimensie*MaxDimensie), GeenZet);
   vakjesMogelijk();
+  cout << "KLAAR " << eindstand() << endl;
   // berekent eerst de stand van de spelers
-  kopie();
   if (eindstand()){
+    kopie();
     return grootsteTerritorium(aanBeurt) - grootsteTerritorium(!aanBeurt); 
   }// als er geen eindstand is, worden alle zetten gespeeld
-  else{  // kijken welke keuzes iedereen heeft
-    cout << "Speler " << aanBeurt << endl;
+  else {  // kijken welke keuzes iedereen heeft
     if (aanBeurt == Geel -1){
-      for (int i = 0; i < keuzeAantalGeel; i++){
-        mogelijk[i] = bepaalZet(i+1);
-        cout << "bepaal : "<< bepaalZet(i+1).first << ", " << bepaalZet(i+1).second << endl;
+      for (int k = 0; k < keuzeAantalGeel; k++){
+        mogelijk[k] = vakjeKeuzes[k];
+      }
+    }if (aanBeurt == Blauw -1){
+      for (int k = 0; k < keuzeAantalBlauw; k++){
+        mogelijk[k] = vakjeKeuzes[k];
       }
     }
-    if (aanBeurt == Blauw -1){
-      for (int i = 0; i < keuzeAantalBlauw; i++){
-        mogelijk[i] = bepaalZet(i+1);
-        cout << "bepaal : "<< bepaalZet(i+1).first << ", " << bepaalZet(i+1).second << endl;
+    if (aanBeurt == Geel -1){
+      for (int i = 0; i < sizeArray(mogelijk); i++){
+        vakjesMogelijk();
+        fill(mogelijk, mogelijk+(MaxDimensie*MaxDimensie), GeenZet);
+        for (int k = 0; k < keuzeAantalGeel; k++){
+          mogelijk[k] = vakjeKeuzes[k];
+        }
+        cout << "Size1: " << sizeArray(mogelijk) << endl;
+        cout << "TEST1" << endl;
+        cout << mogelijk[i].first << ", " << mogelijk[i].second << endl;
+
+        doeZet(mogelijk[i].first, mogelijk[i].second);
+        aantalStanden++;
+
+        score = - besteScore(mogelijk[i], aantalStanden);
+        cout << "Score: " << score << " Speler: "<< aanBeurt << endl;
+        if (score > besteScoreHoogst){
+          besteScoreHoogst = score;
+          besteZet = mogelijk[i];
+        }
+        //unDoeZet();
+        cout << sizeArray(mogelijk) << " i " << i << endl;
+      }
+    } if (aanBeurt == Blauw -1){
+      for (int i = 0; i < sizeArray(mogelijk); i++){
+        vakjesMogelijk();
+        fill(mogelijk, mogelijk+(MaxDimensie*MaxDimensie), GeenZet);
+        
+        for (int k = 0; k < keuzeAantalBlauw; k++){
+          mogelijk[k] = vakjeKeuzes[k];
+        }
+        cout << "Size2: " << sizeArray(mogelijk) << endl;
+        cout << "TEST2" << endl;
+        cout << mogelijk[i].first << ", " << mogelijk[i].second << endl;
+
+        doeZet(mogelijk[i].first, mogelijk[i].second);
+        aantalStanden++;
+
+        score = - besteScore(mogelijk[i], aantalStanden);
+        cout << "Score: " << score << " Speler: "<< aanBeurt << endl;
+        if (score > besteScoreHoogst){
+          besteScoreHoogst = score;
+          besteZet = mogelijk[i];
+        }
+        unDoeZet();
+        cout << sizeArray(mogelijk) << " i " << i << endl;
       }
     }
-    // recursie 
-    for (int j =0; j < sizeArray(mogelijk); j++){
-      doeZet (mogelijk[j].first, mogelijk[j].second);
-      cout << "vakje: " << mogelijk[j].first <<  mogelijk[j].second << endl;
-      aantalStanden ++;
-      score = - besteScore (mogelijk[j], aantalStanden); //hij eindigt niet, geen eindstand
-      if (score > besteScoreHoogst){
-        besteScoreHoogst = score;
-        besteZet = mogelijk[j];
-      // }
-      cout << endl << "standen: " << aantalStanden << " score: " << besteScoreHoogst << " zetten: " << totale_zetten<< endl;
-      unDoeZet ();
-      } 
-    } // else
-    return score;
-    
-  } 
-  return score;
+      
+    }     
+  
+  return besteScoreHoogst;
 }// besteScore
 //*************************************************************************
 
