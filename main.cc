@@ -205,7 +205,6 @@ void doeExperiment (){
   int rij=2;
   int bord_grootte= 2;
   bool rij_minder = false;
-  bool kolom_minder = false;
   clock_t c1, c2;
   pair <int, int> keuzes [4] = {make_pair(2,2), make_pair(3,2), make_pair(2,3), make_pair(3,3)};
   ofstream Score_data("score_data.txt");
@@ -216,16 +215,18 @@ void doeExperiment (){
   // 2x2, 3x2, 3x3, 4x3, 4x4, 5x4, 5x5, 6x5, 6x6, 7x6, 7x7, 8x7, 8x8, 9x8 , 9x9, 10x9, 10x10
   for (int k=0; k <=3; k++){ // alle keuzes langs
     while (bord_grootte <= 10){
-      if (rij_minder = false){
+      if (rij_minder == false){
         rij = bord_grootte;
       }
-      else if (rij_minder = true){
+      else if (rij_minder == true){
         rij = bord_grootte - 1;
       }
 
       // 100 x spelen voor elke combi & bord
       c1 = clock ();
-      ofstream.open("score_data.txt", std::ofstream::out | std::ofstream::trunc); 
+      Score_data.open("score_data.txt", std::ios::app); 
+      //ofstream.open("score_data.txt", std::ofstream::out | std::ofstream::trunc); 
+
       for (int spel=0; spel<100; spel++){
         ter1 = new Territorium (bord_grootte, rij, 25, keuzes[k].first, keuzes[k].second);
         score= ter1->bepaalGoedeScore();
@@ -238,8 +239,8 @@ void doeExperiment (){
       cout << "tijd " << tijd << endl;
 
       //berekent gem_score per bord
-      while (Score_data.good()){
-        Score_data >> getal;
+      // inlezen heeft error
+      while (Score_data >> getal){
         totaal += getal;
         aantal++;
       }
@@ -247,11 +248,11 @@ void doeExperiment (){
       Gem_score << gem_score;
       Score_data.close();
 
-      if (rij_minder = false){
+      if (rij_minder == false){
         bord_grootte ++;
         rij_minder = true;
       }
-      else if (rij_minder = true){
+      else if (rij_minder == true){
         rij_minder = false;
       }
     } // while bord_grootte
