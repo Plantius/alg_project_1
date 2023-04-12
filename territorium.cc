@@ -374,6 +374,7 @@ bool Territorium::zetSpeler(int speler, int keuzeAantal, int rij, int kolom){
 bool Territorium::doeZet (int rij, int kolom)
 {
   if (integerInBereik(rij, 0, hoogte-1) && integerInBereik(kolom, 0, breedte-1) && bord[rij][kolom] < 0){
+    vakjesMogelijk();   
     if (aanBeurt == Geel -1 && rij != -1 && kolom != -1){
       return zetSpeler(aanBeurt, keuzeAantalGeel, rij, kolom);
     }else if (aanBeurt == Blauw -1 && rij != -1 && kolom != -1){
@@ -422,17 +423,15 @@ bool Territorium::unDoeZet ()
 int Territorium::grootsteTerritorium(int speler){
   int score = 0, hoogste_score = 0;
   teller = 0;
-  kopie();
 
   for (int i = 0; i< hoogte; i++){
     for (int j = 0; j < breedte; j++){
-      if (bordKopie[i][j] == speler + 1){
+      if (bordKopie[i][j] != 0 && bord[i][j] == speler + 1){
         score = telTerritorium(make_pair(i, j), speler);
         if (score > hoogste_score){
           hoogste_score = score;
         }
-        kopie();
-        teller=0;
+        score = 0;
       }
     }
   }
@@ -444,62 +443,27 @@ int Territorium::besteScore (pair<int,int> &besteZet,
                              long long &aantalStanden)
 {
   int score = 0;
-  pair<int, int> mogelijk[MaxDimensie*MaxDimensie];
-  fill(mogelijk, mogelijk+(MaxDimensie*MaxDimensie), GeenZet);
+  pair<int,int> zet = make_pair(0,0);
 
   // berekent eerst de stand van de spelers
   if (eindstand()){
-    kopie();
+    
     return grootsteTerritorium(aanBeurt) - grootsteTerritorium(!aanBeurt); 
   }// als er geen eindstand is, worden alle zetten gespeeld
   else {  // kijken welke keuzes iedereen heeft
-    if (aanBeurt == Geel -1){
-      vakjesMogelijk();
-      for (int k = 0; k < keuzeAantalGeel; k++){
-        mogelijk[k] = vakjeKeuzes[k];
-      }
-      for (int i = 0; i < sizeArray(mogelijk); i++){
-        
-    
-        cout << "Size1: " << sizeArray(mogelijk) << endl;
-        cout << "TEST1" << endl;
-        cout << mogelijk[i].first << ", " << mogelijk[i].second << endl;
-
-        doeZet(mogelijk[i].first, mogelijk[i].second);
-        aantalStanden++;
-
-        score = - besteScore(mogelijk[i], aantalStanden);
-        cout << "Score: " << score << " Speler: "<< aanBeurt << endl;
-        if (score > besteScoreHoogst){
-          besteScoreHoogst = score;
-          besteZet = mogelijk[i];
+    for (int i = 0; i < hoogte; i++){
+      for (int j = 0; j< breedte; j++){
+        if (doeZet(i, j)){
+          aantalStanden++;
+          score = - besteScore(zet, aantalStanden);
+          unDoeZet();
+          if (score > besteScoreHoogst){
+            besteScoreHoogst = score;
+            besteZet = make_pair(i, j);
+          }
+          score = 0;
+          
         }
-        unDoeZet();
-        cout << sizeArray(mogelijk) << " i " << i << endl;
-      }
-    } if (aanBeurt == Blauw -1){
-      vakjesMogelijk();
-      for (int k = 0; k < keuzeAantalBlauw; k++){
-        mogelijk[k] = vakjeKeuzes[k];
-      }
-      for (int i = 0; i < sizeArray(mogelijk); i++){
-  
-        
-        cout << "Size2: " << sizeArray(mogelijk) << endl;
-        cout << "TEST2" << endl;
-        cout << mogelijk[i].first << ", " << mogelijk[i].second << endl;
-
-        doeZet(mogelijk[i].first, mogelijk[i].second);
-        aantalStanden++;
-
-        score = - besteScore(mogelijk[i], aantalStanden);
-        cout << "Score: " << score << " Speler: "<< aanBeurt << endl;
-        if (score > besteScoreHoogst){
-          besteScoreHoogst = score;
-          besteZet = mogelijk[i];
-        }
-        unDoeZet();
-        cout << sizeArray(mogelijk) << " i " << i << endl;
       }
     }
   }     
@@ -508,30 +472,24 @@ int Territorium::besteScore (pair<int,int> &besteZet,
 //*************************************************************************
 
 int Territorium::telTerritorium(pair<int, int> loper , int speler){
-  if(loper.first >= 0 && loper.second >= 0 && loper.first < hoogte && loper.second < breedte){
-    for (int i = 0; i < 4; i++){
-      if (i == 0 && loper.first > 0 && bordKopie[loper.first-1][loper.second] == speler + 1){
-        bordKopie[loper.first][loper.second] = 0;
-        telTerritorium(make_pair(loper.first-1, loper.second), speler);
-      }
-      if (i == 1 && loper.second < breedte-1 && bordKopie[loper.first][loper.second + 1] == speler + 1){
-        bordKopie[loper.first][loper.second] = 0;
-        telTerritorium(make_pair(loper.first, loper.second+1), speler);
-      }
-      if (i == 2 && loper.first < hoogte-1 && bordKopie[loper.first+1][loper.second] == speler + 1){
-        bordKopie[loper.first][loper.second] = 0;
-        telTerritorium(make_pair(loper.first+1, loper.second), speler);
-      }
-      if (i == 3 && loper.second > 0 && bordKopie[loper.first][loper.second - 1] == speler + 1){
-        bordKopie[loper.first][loper.second] = 0;
-        telTerritorium(make_pair(loper.first, loper.second-1), speler);
-      }
-      
-    }
-    teller ++;
-    return teller;
+  teller = 0;
+  if (loper.first-1 >= 0 && bordKopie[loper.first-1][loper.second] != 0 && bord[loper.first-1][loper.second] == speler + 1){
+    bordKopie[loper.first -1][loper.second] = 0;
+    telTerritorium(make_pair(loper.first-1, loper.second), speler);
   }
-  return teller;
+  if (loper.second+1 < breedte && bordKopie[loper.first][loper.second + 1] != 0 && bord[loper.first][loper.second+1] == speler + 1){
+    bordKopie[loper.first][loper.second+1] = 0;
+    telTerritorium(make_pair(loper.first, loper.second+1), speler);
+  }
+  if (loper.first+1 < hoogte && bordKopie[loper.first+1][loper.second] != 0 && bord[loper.first+1][loper.second] == speler + 1){
+    bordKopie[loper.first+1][loper.second] = 0;
+    telTerritorium(make_pair(loper.first+1, loper.second), speler);
+  }
+  if (loper.second-1 >= 0 && bordKopie[loper.first][loper.second - 1] != 0 && bord[loper.first][loper.second-1] == speler + 1){
+    bordKopie[loper.first][loper.second-1] = 0;
+    telTerritorium(make_pair(loper.first, loper.second-1), speler);
+  } 
+  return teller++;
 }
 
 pair<int,int> Territorium::bepaalGoedeZet ()
