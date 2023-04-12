@@ -205,7 +205,7 @@ void doeExperiment ()
   clock_t c1, c2;
   int alle_borden=0;
   pair <int, int> keuzes [4] = {make_pair(2,2), make_pair(3,2), make_pair(2,3), make_pair(3,3)};
-
+  string myText;
   ofstream Score_data("score_data.txt");
   ofstream Time_data("time_data.txt");
 
@@ -232,10 +232,7 @@ void doeExperiment ()
         cout << tijd << endl;
       } // for z
     //berekent gem_scor
-    while (getline (Score_data, myText)) {
-      // Output the text from the file
-      cout << myText;
-      }
+  
 
 
 
@@ -243,7 +240,7 @@ void doeExperiment ()
 
     } // for i
   } // for j
-  cout << "gem score:" <<  gem_score[0][0] << " gem tijd: " << tijd[1][1] << endl;
+  cout << "gem score:" <<  gem_score[0][0] << " gem tijd: " << tijd << endl;
 
   Score_data.close();
   Time_data.close();
