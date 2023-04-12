@@ -197,54 +197,65 @@ void doeSpel (Territorium *ter1)
 void doeExperiment (){   
   Territorium *ter1;             
   int score = 0;
-  int gem_score;
-  int tijd;
+  double gem_score = 0;
+  double tijd;
   int getal;
   int aantal =0 ;
   int totaal=0; 
+  int rij=0;
+  int bord_grootte= 2;
+  bool rij_minder = false;
+  bool kolom_minder = false;
   clock_t c1, c2;
   pair <int, int> keuzes [4] = {make_pair(2,2), make_pair(3,2), make_pair(2,3), make_pair(3,3)};
-  string myText;
   ofstream Score_data("score_data.txt");
   ofstream Time_data("time_data.txt");
   ofstream Gem_score("gem_score.txt");
 
   // voor elke combi alle borden 100 x, gem tijd en score berekenen
   // 2x2, 3x2, 3x3, 4x3, 4x4, 5x4, 5x5, 6x5, 6x6, 7x6, 7x7, 8x7, 8x8, 9x8 , 9x9, 10x9, 10x10
-  for (int j=0; j <=3; j++){ // alle keuzes langs
-    for (int i=2; i<= 10; i++){ // alle rij keuzes
-      for(int z=2; z<=10; z++){ //alle kolom keuzes
-        if (z <= i+2){
-          break;
-        }
-        else{
-          c1 = clock ();
-          ofstream.open("score_data.txt", std::ofstream::out | std::ofstream::trunc); 
-          for (int k=0; k<100; k++){
-            ter1 = new Territorium (i, z, 25, keuzes[j].first, keuzes[j].second);
-            score= ter1->bepaalGoedeScore();
-            Score_data << score ; 
-            cout << "score " << score << endl;
-          } //for k/ spel
-          c2 = clock ();
-          tijd = ((double)(c2-c1))/CLOCKS_PER_SEC;
-          Time_data << tijd;
-          cout << "tijd "<< tijd << endl;
-        } // else
+  for (int k=0; k <=3; k++){ // alle keuzes langs
+    while (bord_grootte <= 10){
+      if (rij_minder = false){
+        rij = bord_grootte;
+      }
+      else if (rij_minder = true){
+        rij = bord_grootte - 1;
+      }
 
-        //berekent gem_score per bord
-        while (Score_data.good()){
-          Score_data >> getal;
-          totaal += getal;
-          aantal++;
-        }
-        gem_score = totaal / aantal;
-        Gem_score << gem_score;
+      // de honderd spellen
+      c1 = clock ();
+      ofstream.open("score_data.txt", std::ofstream::out | std::ofstream::trunc); 
+      for (int spel=0; spel<100; spel++){
+        ter1 = new Territorium (bord_grootte, rij, 25, keuzes[k].first, keuzes[k].second);
+        score= ter1->bepaalGoedeScore();
+        Score_data << score ; 
+        cout << "score " << score << endl;
+      } //for spel
+      c2 = clock ();
+      tijd = ((double)(c2-c1))/CLOCKS_PER_SEC;
+      Time_data << tijd;
+      cout << "tijd " << tijd << endl;
 
-        Score_data.close();
-      } // for z /kolom 
-    } // for i / rij
-  } // for j
+      //berekent gem_score per bord
+      while (Score_data.good()){
+        Score_data >> getal;
+        totaal += getal;
+        aantal++;
+      }
+      gem_score = totaal / aantal;
+      Gem_score << gem_score;
+      Score_data.close();
+
+      if (rij_minder = false){
+        bord_grootte ++;
+        rij_minder = true;
+      }
+      else if (rij_minder = true){
+        rij_minder = false;
+      }
+    } // while bord_grootte
+  } // for k
 
   Time_data.close(); // per bord per keuze
   Gem_score.close(); // 17 gem scores
