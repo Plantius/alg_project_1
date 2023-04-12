@@ -25,6 +25,7 @@
 #include <iostream>
 #include <ctime>  // voor clock() en clock_t
 #include "territorium.h"
+#include <fstream>
 using namespace std;
 const int MaxBestandsNaamLengte = 30; // maximale lengte van een bestandsnaam
 
@@ -196,7 +197,8 @@ void doeSpel (Territorium *ter1)
 void doeExperiment ()
 {   
   Territorium *ter1;             
-  int score[100][17]; // bevay alle scores van alle experimenten
+  //int score[100][17]; // bevay alle scores van alle experimenten
+  int score = 0;
   int gem_score[17][4]; //met gem_score[0][0]= 2x2 van comb (2,2)
   int tijd[17][4];
   int totaal=0; 
@@ -204,29 +206,30 @@ void doeExperiment ()
   int alle_borden=0;
   pair <int, int> keuzes [4] = {make_pair(2,2), make_pair(3,2), make_pair(2,3), make_pair(3,3)};
 
+  ofstream Score_data("score_data.txt");
+  ofstream Time_data("time_data.txt");
+
   // voor elke combi alle borden 100 x, gem tijd en score berekenen
   // 2x2, 3x2, 3x3, 4x3, 4x4, 5x4, 5x5, 6x5, 6x6, 7x6, 7x7, 8x7, 8x8, 9x8 , 9x9, 10x9, 10x10
   for (int j=0; j <=3; j++){ // alle keuzes langs
     for (int i=2; i<= 10; i++){ // alle rij keuzes
       for(int z=2; z<=10; z++){ //alle kolom keuzes
-        c1 = clock ();
         if (z <= i+2){
           break;
         }
         else{
+          c1 = clock ();
           for (int k=0; k<100; k++){
             ter1 = new Territorium (i, z, 25, keuzes[j].first, keuzes[j].second);
-            score[k][i-2] = ter1->bepaalGoedeScore();
+            score= ter1->bepaalGoedeScore();
+            Score_data << score << ", "; 
             cout << "score" << endl;
-            alle_borden++;
-          } //for k
+          } //for k/ spel
         } // else
         c2 = clock ();
-        //c1= clock() - c1;
         tijd[alle_borden][j] = ((double)(c2-c1))/CLOCKS_PER_SEC;
-        //tijd[alle_borden][j] = ((float)c1)/CLOCKS_PER_SEC;
       } // for z
-      //berekent gem_score
+      //berekent gem_scor
       for (int a=0; a < 100; a++){
         totaal += score[a][alle_borden];
       } // for a
@@ -234,6 +237,9 @@ void doeExperiment ()
     } // for i
   } // for j
   cout << "gem score:" <<  gem_score[0][0] << " gem tijd: " << tijd[1][1] << endl;
+
+  Score_data.close();
+   
   delete ter1;
 
 }  // doeExperiment
