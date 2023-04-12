@@ -204,7 +204,7 @@ void doeExperiment (){
   int totaal=0; 
   clock_t c1, c2;
   pair <int, int> keuzes [4] = {make_pair(2,2), make_pair(3,2), make_pair(2,3), make_pair(3,3)};
-
+  string myText;
   ofstream Score_data("score_data.txt");
   ofstream Time_data("time_data.txt");
   ofstream Gem_score("gem_score.txt");
