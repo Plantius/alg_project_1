@@ -10,8 +10,6 @@ using namespace std;
 
 Territorium::Territorium ()
 {
-
-// TODO: implementeer deze constructor, voorzover nodig
   hoogte=5;
   breedte=5;
   hoeveelNietBeschikbaar=25;
@@ -38,9 +36,6 @@ Territorium::Territorium (int nwHoogte, int nwBreedte,
                  int kansNietBeschikbaar,
                  int nwKeuzeAantalGeel, int nwKeuzeAantalBlauw)
 {
-
-  // TODO: implementeer deze constructor
-
   if (nwHoogte >= 1 && nwHoogte <= MaxDimensie){
     hoogte = nwHoogte;
   }
@@ -73,6 +68,7 @@ Territorium::Territorium (int nwHoogte, int nwBreedte,
 
 //*************************************************************************
 
+// vult voor een nieuw bord willekeurige getallen
 void Territorium::vulBord(){
   int k = -1;
   for (int i = 0; i < hoogte; i++){
@@ -93,6 +89,7 @@ void Territorium::vulBord(){
   vulVolgorde();
 }
 
+// kijkt of een paar in een array zit
 bool Territorium::inArray(pair<int, int> element, pair<int, int> arr[]){
   for (int i = 0; i < MaxDimensie*MaxDimensie; i++){
     if(element == arr[i]){
@@ -102,6 +99,7 @@ bool Territorium::inArray(pair<int, int> element, pair<int, int> arr[]){
   return false;
 }
 
+// geeft grootte van array terug
 int Territorium::sizeArray(pair<int, int> arr[]){
   for (int i = 0; i < hoogte*breedte+1; i++){
     if (arr[i] == GeenZet){
@@ -110,6 +108,7 @@ int Territorium::sizeArray(pair<int, int> arr[]){
   }return -1;
 }
 
+// sorteert de vul volgorde
 void Territorium::sorteerVolgorde(){
   pair<int, int> tempPair;
   int temp_item;
@@ -128,6 +127,7 @@ void Territorium::sorteerVolgorde(){
   }
 }
 
+// maakt kopie van bord
 void Territorium::kopie(){
   for(int i = 0; i < hoogte; i++){
     for (int j = 0; j < breedte; j++){
@@ -153,11 +153,12 @@ void Territorium::vulVolgorde(){
   sorteerVolgorde();  
 }
 
+// leest een file in over bord informatie
 bool Territorium::leesInBord (const char* invoernaam)
 {
   int getal;
   int getalcount = 0, hoogte_tel = 0, breedte_tel = 0;
-  // TODO: implementeer deze memberfunctie
+
   ifstream file(invoernaam);
   if (file.good()){
     while (file.good()){
@@ -197,9 +198,10 @@ bool Territorium::leesInBord (const char* invoernaam)
 
 //*************************************************************************
 
+// kijkt of het spel klaar is
 bool Territorium::eindstand ()
 {
-
+  // geen eindstand wanneer nog een ongevuld vakje is
   for (int i = 0; i < hoogte; i++){
     for (int j = 0; j < breedte; j++){
       if (bord[i][j] < 0){
@@ -255,7 +257,6 @@ void Territorium::vakjesMogelijk(){
 
 void Territorium::drukAf ()
 {
-  // TODO: implementeer deze memberfunctie
   for (int i=0; i < hoogte; i++){
     cout << i << " | " ;
     for (int j=0; j < breedte; j++){
@@ -292,6 +293,7 @@ void Territorium::drukAf ()
 
 
 //*************************************************************************
+// geeft mogelijke j-de zet
 pair<int,int> Territorium::bepaalZet (int j)
 {
   // De j-de keuze uit de keuze mogelijkheden lijst wordt genomen
@@ -417,6 +419,7 @@ bool Territorium::unDoeZet ()
 
 //*************************************************************************
 
+// kiest het grootste territorium 
 int Territorium::grootsteTerritorium(int speler){
   int score = 0, hoogste_score = 0;
   teller = 0;
@@ -439,7 +442,6 @@ int Territorium::grootsteTerritorium(int speler){
 int Territorium::besteScore (pair<int,int> &besteZet,
                              long long &aantalStanden)
 {
-// TODO: implementeer deze memberfunctie
   int score = 0;
   pair<int,int> zet = make_pair(0,0);
 
@@ -531,7 +533,6 @@ pair<int,int> Territorium::bepaalGoedeZet ()
 
 int Territorium::bepaalGoedeScore ()
 {
-  // TODO: implementeer deze memberfunctie
   pair<int, int> zet1;
   pair<int, int> zet2;
   pair<int, int> besteZet;

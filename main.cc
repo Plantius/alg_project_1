@@ -195,22 +195,20 @@ void doeSpel (Territorium *ter1)
 // Voert experiment uit zoals beschreven in de opdracht.
 void doeExperiment ()
 {   
-  // TODO: implementeer deze functie
   Territorium *ter1;             
-  int score[100][17];
-  int gem_score[17][4]; //met gem_score[0]= 2x2 van comb (2,2)
+  int score[100][17]; // bevay alle scores van alle experimenten
+  int gem_score[17][4]; //met gem_score[0][0]= 2x2 van comb (2,2)
   int tijd[17][4];
-  int totaal=0;
+  int totaal=0; 
   clock_t c1, c2;
   int alle_borden=0;
+  pair <int, int> keuzes [4] = {make_pair(2,2), make_pair(3,2), make_pair(2,3), make_pair(3,3)};
 
   // voor elke combi alle borden 100 x, gem tijd en score berekenen
   // 2x2, 3x2, 3x3, 4x3, 4x4, 5x4, 5x5, 6x5, 6x6, 7x6, 7x7, 8x7, 8x8, 9x8 , 9x9, 10x9, 10x10
-  // (2,2), (3,2), (2,3),(3,3)
-  pair <int, int> keuzes [4] = {make_pair(2,2), make_pair(3,2), make_pair(2,3), make_pair(3,3)};
-  for (int j=0; j <=3; j++){
-    for (int i=2; i<= 10; i++){
-      for(int z=2; z<=10; z++){
+  for (int j=0; j <=3; j++){ // alle keuzes langs
+    for (int i=2; i<= 10; i++){ // alle rij keuzes
+      for(int z=2; z<=10; z++){ //alle kolom keuzes
         c1 = clock ();
         if (z <= i+2){
           break;
@@ -228,6 +226,7 @@ void doeExperiment ()
         tijd[alle_borden][j] = ((double)(c2-c1))/CLOCKS_PER_SEC;
         //tijd[alle_borden][j] = ((float)c1)/CLOCKS_PER_SEC;
       } // for z
+      //berekent gem_score
       for (int a=0; a < 100; a++){
         totaal += score[a][alle_borden];
       } // for a
