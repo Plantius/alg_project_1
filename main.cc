@@ -200,7 +200,7 @@ void doeExperiment ()
   //int score[100][17]; // bevay alle scores van alle experimenten
   int score = 0;
   int gem_score[17][4]; //met gem_score[0][0]= 2x2 van comb (2,2)
-  int tijd[17][4];
+  int tijd;
   int totaal=0; 
   clock_t c1, c2;
   int alle_borden=0;
@@ -227,18 +227,26 @@ void doeExperiment ()
           } //for k/ spel
         } // else
         c2 = clock ();
-        tijd[alle_borden][j] = ((double)(c2-c1))/CLOCKS_PER_SEC;
+        tijd = ((double)(c2-c1))/CLOCKS_PER_SEC;
+        Time_data << tijd << ", ";
+        cout << tijd << endl;
       } // for z
-      //berekent gem_scor
-      for (int a=0; a < 100; a++){
-        totaal += score[a][alle_borden];
-      } // for a
-      gem_score[alle_borden][j] = totaal / 100;
+    //berekent gem_scor
+    while (getline (Score_data, myText)) {
+      // Output the text from the file
+      cout << myText;
+      }
+
+
+
+
+
     } // for i
   } // for j
   cout << "gem score:" <<  gem_score[0][0] << " gem tijd: " << tijd[1][1] << endl;
 
   Score_data.close();
+  Time_data.close();
    
   delete ter1;
 
