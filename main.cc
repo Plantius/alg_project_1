@@ -202,7 +202,7 @@ void doeExperiment (){
   int getal;
   int aantal =0 ;
   int totaal=0; 
-  int rij=0;
+  int rij=2;
   int bord_grootte= 2;
   bool rij_minder = false;
   bool kolom_minder = false;
@@ -223,7 +223,7 @@ void doeExperiment (){
         rij = bord_grootte - 1;
       }
 
-      // de honderd spellen
+      // 100 x spelen voor elke combi & bord
       c1 = clock ();
       ofstream.open("score_data.txt", std::ofstream::out | std::ofstream::trunc); 
       for (int spel=0; spel<100; spel++){
