@@ -194,20 +194,20 @@ void doeSpel (Territorium *ter1)
 //*************************************************************************
 
 // Voert experiment uit zoals beschreven in de opdracht.
-void doeExperiment ()
-{   
+void doeExperiment (){   
   Territorium *ter1;             
-  //int score[100][17]; // bevay alle scores van alle experimenten
   int score = 0;
-  int gem_score[17][4]; //met gem_score[0][0]= 2x2 van comb (2,2)
+  int gem_score;
   int tijd;
+  int getal;
+  int aantal =0 ;
   int totaal=0; 
   clock_t c1, c2;
-  int alle_borden=0;
   pair <int, int> keuzes [4] = {make_pair(2,2), make_pair(3,2), make_pair(2,3), make_pair(3,3)};
 
   ofstream Score_data("score_data.txt");
   ofstream Time_data("time_data.txt");
+  ofstream Gem_score("gem_score.txt");
 
   // voor elke combi alle borden 100 x, gem tijd en score berekenen
   // 2x2, 3x2, 3x3, 4x3, 4x4, 5x4, 5x5, 6x5, 6x6, 7x6, 7x7, 8x7, 8x8, 9x8 , 9x9, 10x9, 10x10
@@ -219,34 +219,35 @@ void doeExperiment ()
         }
         else{
           c1 = clock ();
+          ofstream.open("score_data.txt", std::ofstream::out | std::ofstream::trunc); 
           for (int k=0; k<100; k++){
             ter1 = new Territorium (i, z, 25, keuzes[j].first, keuzes[j].second);
             score= ter1->bepaalGoedeScore();
-            Score_data << score << ", "; 
-            cout << "score" << endl;
+            Score_data << score ; 
+            cout << "score " << score << endl;
           } //for k/ spel
+          c2 = clock ();
+          tijd = ((double)(c2-c1))/CLOCKS_PER_SEC;
+          Time_data << tijd;
+          cout << "tijd "<< tijd << endl;
         } // else
-        c2 = clock ();
-        tijd = ((double)(c2-c1))/CLOCKS_PER_SEC;
-        Time_data << tijd << ", ";
-        cout << tijd << endl;
-      } // for z
-    //berekent gem_scor
-    while (getline (Score_data, myText)) {
-      // Output the text from the file
-      cout << myText;
-      }
 
+        //berekent gem_score per bord
+        while (Score_data.good()){
+          Score_data >> getal;
+          totaal += getal;
+          aantal++;
+        }
+        gem_score = totaal / aantal;
+        Gem_score << gem_score;
 
-
-
-
-    } // for i
+        Score_data.close();
+      } // for z /kolom 
+    } // for i / rij
   } // for j
-  cout << "gem score:" <<  gem_score[0][0] << " gem tijd: " << tijd[1][1] << endl;
 
-  Score_data.close();
-  Time_data.close();
+  Time_data.close(); // per bord per keuze
+  Gem_score.close(); // 17 gem scores
    
   delete ter1;
 
