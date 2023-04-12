@@ -22,8 +22,6 @@ Territorium::Territorium ()
   fill(volgorde, volgorde+(MaxDimensie*MaxDimensie), 0);
   fill(volgordeCoord, volgordeCoord+(MaxDimensie*MaxDimensie), GeenZet);
   fill(&bord[0][0], &bord[0][0]+(MaxDimensie*MaxDimensie), 0);
-  kopie();
-  teller = 0;
   besteScoreHoogst = 0;
   
 
@@ -63,7 +61,6 @@ Territorium::Territorium (int nwHoogte, int nwBreedte,
   fill(&bord[0][0], &bord[0][0]+(MaxDimensie*MaxDimensie), 0);
 
   vulBord();
-  kopie();
 }  // constructor met parameters
 
 //*************************************************************************
@@ -127,14 +124,6 @@ void Territorium::sorteerVolgorde(){
   }
 }
 
-// maakt kopie van bord
-void Territorium::kopie(){
-  for(int i = 0; i < hoogte; i++){
-    for (int j = 0; j < breedte; j++){
-      bordKopie[i][j] = bord[i][j];
-    }
-  }
-}
 
 // haalt alle volgordes uit bord
 void Territorium::vulVolgorde(){
@@ -184,7 +173,6 @@ bool Territorium::leesInBord (const char* invoernaam)
     }
     vulVolgorde();
     file.close();
-    kopie();
     return true;
   }
   else{
@@ -432,7 +420,6 @@ bool Territorium::unDoeZet ()
 // kiest het grootste territorium 
 int Territorium::grootsteTerritorium(int speler){
   int score = 0, hoogste_score = 0;
-  teller = 0;
 
   for (int i = 0; i< hoogte; i++){
     for (int j = 0; j < breedte; j++){
@@ -503,8 +490,8 @@ pair<int,int> Territorium::bepaalGoedeZet ()
 {
   int hoogste_score = 0, score = 0;
   pair<int, int> goedeZet;
-  teller = 0;
-  kopie();
+  int teller = 0;
+
   
   if (!eindstand()){
     if(aanBeurt == Geel -1){
@@ -515,7 +502,6 @@ pair<int,int> Territorium::bepaalGoedeZet ()
           hoogste_score = score;  
           goedeZet = vakjeKeuzes[i];
         }
-        kopie();
         teller = 0;
       }
     } if(aanBeurt == Blauw-1){
@@ -526,7 +512,6 @@ pair<int,int> Territorium::bepaalGoedeZet ()
           hoogste_score = score;
           goedeZet = vakjeKeuzes[i];
         }
-        kopie();
         teller = 0;
       }
     }
