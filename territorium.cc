@@ -15,7 +15,7 @@ Territorium::Territorium ()
   hoeveelNietBeschikbaar=25;
   keuzeAantalGeel=2;
   keuzeAantalBlauw=2;
-  keuzesGeel = 0, keuzesBlauw = 0;
+  keuzesTotaal = 0;
   totale_zetten = 0, zetten_ronde = 0;
   fill(zetten, zetten+(MaxDimensie*MaxDimensie), GeenZet);
   fill(vakjeKeuzes, vakjeKeuzes+(MaxDimensie*MaxDimensie), GeenZet);
@@ -219,13 +219,15 @@ void Territorium::keuzeSpeler(int speler, int keuzeAantal){
 
   if (sizeArray(volgordeCoord) < keuzeAantal){
     for (int k = 0; k < sizeArray(volgordeCoord); k++){
+      cout<< k << endl;
       cout << "(" << volgordeCoord[k].first << ", " << volgordeCoord[k].second << ") ";
       vakjeKeuzes[k] = volgordeCoord[k];
     }
   }
   else {
-    for (int i=keuzesGeel+keuzesBlauw-zetten_ronde; i < volgorde_eind ; i++){
+    for (int i=keuzesTotaal-zetten_ronde; i < volgorde_eind ; i++){
       if (volgordeCoord[i] != GeenZet && g < keuzeAantal){
+        cout<< "ELSE 1: " <<i << " | " << keuzesTotaal << "; " << speler << endl;
         cout << "(" << volgordeCoord[i].first << ", " << volgordeCoord[i].second << ") " ;
         vakjeKeuzes[g] = volgordeCoord[i];
         g++;
@@ -234,10 +236,14 @@ void Territorium::keuzeSpeler(int speler, int keuzeAantal){
     
     for (int k = 0; k < volgorde_eind; k++){
       if(keuzeAantal-k-g > 0){
+        cout<< "ELSE 2: " <<k << " | " << keuzesTotaal << "; " << speler << endl;
         cout << "(" << volgordeCoord[k].first << ", " << volgordeCoord[k].second << ") ";
         vakjeKeuzes[k+g] = volgordeCoord[k];
       }
     }
+  }
+  for (int i = 0; i < volgorde_eind; i++){
+    cout << volgordeCoord[i].first << ", " << volgordeCoord[i].second << endl;
   }
 }
 
@@ -247,7 +253,7 @@ void Territorium::vakjesMogelijk(){
   cout << "Mogelijke keuzes: ";
   if (aanBeurt == Geel -1){
     keuzeSpeler(aanBeurt, keuzeAantalGeel);
-  } if (aanBeurt == Blauw -1){
+  }else if (aanBeurt == Blauw -1){
     keuzeSpeler(aanBeurt, keuzeAantalBlauw);
   } cout << endl;
   
@@ -350,16 +356,16 @@ bool Territorium::zetSpeler(int speler, int keuzeAantal, int rij, int kolom){
           zetten_ronde++;
           verwijderKeuze(k); 
 
-          if (speler == 0){
+          if (speler == Geel -1){
             bord[rij][kolom] = Geel;
-            keuzesGeel+=keuzeAantalGeel;
-          } else if (speler == 1){
+            keuzesTotaal+=keuzeAantalGeel;
+          } else if (speler == Blauw -1){
             bord[rij][kolom] = Blauw;
-            keuzesBlauw+=keuzeAantalBlauw;
+            keuzesTotaal+=keuzeAantalBlauw;
           }
-          if ((keuzesBlauw + keuzesGeel-zetten_ronde) >= volgorde_eind){
-            keuzesBlauw = 0;
-            keuzesGeel = 0;
+          cout<< "Doezet: " <<i << " | " << keuzesTotaal << "; " << volgorde_eind << endl;
+          if ((keuzesTotaal-zetten_ronde) >= volgorde_eind){
+            keuzesTotaal = 0;
             zetten_ronde = 0;
           }
           aanBeurt = !aanBeurt;     
@@ -388,27 +394,31 @@ bool Territorium::unDoeZet ()
 {
   if(zetten[totale_zetten-1] != GeenZet && totale_zetten > 0){
     cout<<"UNDO " <<zetten[totale_zetten-1].first << ", " << zetten[totale_zetten-1].second << endl;
+    if (aanBeurt == Geel -1 && keuzesTotaal != 0){
+      keuzesTotaal -= keuzeAantalBlauw;
+    } else if (aanBeurt == Blauw -1 && keuzesTotaal != 0){
+      keuzesTotaal -= keuzeAantalGeel;
+    } else if (aanBeurt == Geel -1 && keuzesTotaal == 0){
+      keuzesTotaal = volgorde_eind-1;
+    } else if (aanBeurt == Blauw -1 && keuzesTotaal == 0){
+      keuzesTotaal = volgorde_eind-1;
+    }
+
     voegKeuzeToe(zetten[totale_zetten-1]);
 
     bord[zetten[totale_zetten-1].first][zetten[totale_zetten-1].second] = zettenVolgorde[totale_zetten-1];
     zetten[totale_zetten-1] = GeenZet;
     zettenVolgorde[totale_zetten-1] = 0;
-    
-    if (aanBeurt == Geel -1 && keuzesBlauw !=0){
-      keuzesBlauw -= keuzeAantalBlauw;
-    } else if (aanBeurt == Blauw -1 && keuzesGeel !=0){
-      keuzesGeel -= keuzeAantalGeel;
-    } else if (aanBeurt == Geel -1 && keuzesBlauw == 0){
-      keuzesBlauw = volgorde_eind-1;
-    } else if (aanBeurt == Blauw -1 && keuzesGeel == 0){
-      keuzesGeel = volgorde_eind-1;
-    }
+
+
+
+
     aanBeurt = !aanBeurt;
     totale_zetten--;
     if (zetten_ronde != 0){
       zetten_ronde--;
     }
-    
+    vakjesMogelijk();
     return true;
   }else {
     return false;
@@ -456,13 +466,13 @@ int Territorium::besteScore (pair<int,int> &besteZet,
         if (doeZet(i, j)){
           aantalStanden++;
           score = - besteScore(zet, aantalStanden);
-          unDoeZet();
+          
           if (score > besteScoreHoogst){
             besteScoreHoogst = score;
             besteZet = make_pair(i, j);
           }
           score = 0;
-          
+          unDoeZet();
         }
       }
     }
@@ -472,22 +482,19 @@ int Territorium::besteScore (pair<int,int> &besteZet,
 //*************************************************************************
 
 int Territorium::telTerritorium(pair<int, int> loper , int speler){
-  teller = 0;
-  if (loper.first-1 >= 0 && bordKopie[loper.first-1][loper.second] != 0 && bord[loper.first-1][loper.second] == speler + 1){
-    bordKopie[loper.first -1][loper.second] = 0;
-    telTerritorium(make_pair(loper.first-1, loper.second), speler);
+  bordKopie[loper.first][loper.second] = true;
+  int teller = 0;
+  if (loper.first-1 >= 0 && !bordKopie[loper.first-1][loper.second] && bord[loper.first-1][loper.second] == speler + 1){
+    teller += telTerritorium(make_pair(loper.first-1, loper.second), speler);
   }
-  if (loper.second+1 < breedte && bordKopie[loper.first][loper.second + 1] != 0 && bord[loper.first][loper.second+1] == speler + 1){
-    bordKopie[loper.first][loper.second+1] = 0;
-    telTerritorium(make_pair(loper.first, loper.second+1), speler);
+  if (loper.second+1 < breedte && !bordKopie[loper.first][loper.second + 1] && bord[loper.first][loper.second+1] == speler + 1){
+    teller += telTerritorium(make_pair(loper.first, loper.second+1), speler);
   }
-  if (loper.first+1 < hoogte && bordKopie[loper.first+1][loper.second] != 0 && bord[loper.first+1][loper.second] == speler + 1){
-    bordKopie[loper.first+1][loper.second] = 0;
-    telTerritorium(make_pair(loper.first+1, loper.second), speler);
+  if (loper.first+1 < hoogte && !bordKopie[loper.first+1][loper.second] && bord[loper.first+1][loper.second] == speler + 1){
+    teller += telTerritorium(make_pair(loper.first+1, loper.second), speler);
   }
-  if (loper.second-1 >= 0 && bordKopie[loper.first][loper.second - 1] != 0 && bord[loper.first][loper.second-1] == speler + 1){
-    bordKopie[loper.first][loper.second-1] = 0;
-    telTerritorium(make_pair(loper.first, loper.second-1), speler);
+  if (loper.second-1 >= 0 && !bordKopie[loper.first][loper.second - 1] && bord[loper.first][loper.second-1] == speler + 1){
+    teller += telTerritorium(make_pair(loper.first, loper.second-1), speler);
   } 
   return teller++;
 }

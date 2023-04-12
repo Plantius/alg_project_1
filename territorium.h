@@ -174,7 +174,7 @@ class Territorium
         hoeveelNietBeschikbaar, // percentage hoeveel niet beschikbare vakjes
         volgorde_eind,
         positie,
-        keuzesGeel, keuzesBlauw,
+        keuzesTotaal,
         zetten_ronde, totale_zetten,
         besteScoreHoogst;
 
