@@ -224,8 +224,8 @@ void doeExperiment (){
 
       // 100 x spelen voor elke combi & bord
       c1 = clock ();
-      Score_data.open("score_data.txt", std::ios::app); 
-      //ofstream.open("score_data.txt", std::ofstream::out | std::ofstream::trunc); 
+      //Score_data.open("score_data.txt", std::ios::app); 
+      Score_data.open("score_data.txt", std::ofstream::out | std::ofstream::trunc); 
 
       for (int spel=0; spel<100; spel++){
         ter1 = new Territorium (bord_grootte, rij, 25, keuzes[k].first, keuzes[k].second);
@@ -239,9 +239,9 @@ void doeExperiment (){
       cout << "tijd " << tijd << endl;
 
       //berekent gem_score per bord
-      // inlezen heeft error
+      ifstream Score_data("score_data.txt");
       while (Score_data.good()){
-        
+        Score_data >> getal;
         totaal += getal;
         aantal++;
       }
