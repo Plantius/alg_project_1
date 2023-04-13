@@ -5,6 +5,7 @@
 
 #include <vector>
 #include <string>
+#include <set>
 #include "constantes.h"
 using namespace std;
 
@@ -161,7 +162,6 @@ class Territorium
     bool bordKopie[MaxDimensie][MaxDimensie];
     // Array voor de vulvolgorde
     pair<int, int> volgordeCoord[MaxDimensie*MaxDimensie];
-    pair<int, int> vakjeKeuzes[MaxDimensie*MaxDimensie];
 
     pair<int, int> zetten[MaxDimensie*MaxDimensie];
     int zettenVolgorde[MaxDimensie*MaxDimensie];
@@ -178,6 +178,14 @@ class Territorium
         zetten_ronde, totale_zetten,
         besteScoreHoogst;
 
+    struct volgordeBord {
+        int volgorde_nr;
+        pair<int, int> volgorde_coord;
+
+        bool operator < (const volgordeBord &other) const { return volgorde_nr > other.volgorde_nr; }
+    };
+    set<volgordeBord> volgordeSet;
+    set<volgordeBord> vakjeKeuzes;
     // TODO: uw eigen memberfuncties en -variabelen
     bool inArray(pair<int, int> element, pair<int, int> arr[]); // Checkt of een element in een array zit
     void vulBord();
@@ -194,6 +202,7 @@ class Territorium
 
     int telTerritorium(pair<int, int> loper , int speler);
     int grootsteTerritorium(int speler);
+    
 
 };
 

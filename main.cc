@@ -240,7 +240,8 @@ void doeExperiment (){
 
       //berekent gem_score per bord
       // inlezen heeft error
-      while (Score_data >> getal){
+      while (Score_data.good()){
+        
         totaal += getal;
         aantal++;
       }

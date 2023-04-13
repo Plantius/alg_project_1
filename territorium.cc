@@ -4,6 +4,7 @@
 #include "standaard.h"
 #include <fstream>   // voor inlezen van bord
 #include <iostream>
+#include <set>
 using namespace std;
 
 //*************************************************************************
@@ -132,6 +133,10 @@ void Territorium::vulVolgorde(){
   for (int i = 0; i< hoogte; i++){
     for (int j = 0; j< breedte; j++){
       if (bord[i][j] < 0 && volgorde_eind < MaxDimensie*MaxDimensie){
+        volgordeBord temp;
+        temp.volgorde_nr = bord[i][j];
+        temp.volgorde_coord = make_pair(i, j);
+        volgordeSet.insert(temp);
         volgorde[volgorde_eind] = bord[i][j];
         volgordeCoord[volgorde_eind] = make_pair(i, j);
         volgorde_eind++;
@@ -203,13 +208,14 @@ bool Territorium::eindstand ()
 
 void Territorium::keuzeSpeler(int speler, int keuzeAantal){
   int g = 0;
-  fill(vakjeKeuzes, vakjeKeuzes+(MaxDimensie*MaxDimensie), GeenZet);
 
-  if (sizeArray(volgordeCoord) < keuzeAantal){
-    for (int k = 0; k < sizeArray(volgordeCoord); k++){
-      cout<< k << endl;
-      cout << "(" << volgordeCoord[k].first << ", " << volgordeCoord[k].second << ") ";
-      vakjeKeuzes[k] = volgordeCoord[k];
+  if (volgordeSet.size() < keuzeAantal){
+    for (auto k = volgordeSet.begin(); k != volgordeSet.end(); k++){
+      cout << "(" << k->volgorde_coord.first << ", " << k->volgorde_coord.second << ") ";
+      volgordeBord temp;
+      temp.volgorde_nr = k->volgorde_nr;
+      temp.volgorde_coord = k->volgorde_coord;
+      vakjeKeuzes.insert(temp);
     }
   }
   else {
@@ -283,6 +289,10 @@ void Territorium::drukAf ()
   }
 
   vakjesMogelijk();
+
+  for (auto i = volgordeSet.begin(); i != volgordeSet.end(); i++){
+    cout << i->volgorde_nr << ": " << i->volgorde_coord.first <<"," << i->volgorde_coord.second << " ";
+  }
 }  // drukAf
 
 
