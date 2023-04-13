@@ -442,15 +442,19 @@ int Territorium::bepaalGoedeScore ()
   while (eindstand()){
     zet1 = bepaalGoedeZet();
     doeZet(zet1.first, zet1.second);
+    //cout << "zet1: " << zet1 << endl;
     i++;
 
     long long aantalStanden=0;
     besteScore(besteZet, aantalStanden);
     zet2= besteZet;
+    //cout << "zet 2: " << zet2 << endl;
     doeZet(zet2.first, zet2.second);
     i++;
   }
   score= grootsteTerritorium(aanBeurt) - grootsteTerritorium(!aanBeurt);
+  // score cancelt elkaar uit, kan dit ???
+  cout << "1: " << grootsteTerritorium(aanBeurt) << " 2: " << grootsteTerritorium(!aanBeurt) << endl;
   while (i != 0){
     unDoeZet();
     i--;
