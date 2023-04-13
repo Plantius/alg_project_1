@@ -435,19 +435,18 @@ int Territorium::grootsteTerritorium(int speler){
   return hoogste_score;
 }
 
-//bijna klaar
+// kijkt wat de hoogst haalbare score is met de beste zet
 int Territorium::besteScore (pair<int,int> &besteZet,
                              long long &aantalStanden)
 {
   int score = 0;
   pair<int,int> zet = make_pair(0,0);
 
-  // berekent eerst de stand van de spelers
+  // bij het einde van het spel wordt de score berekend
   if (eindstand()){
-    
     return grootsteTerritorium(aanBeurt) - grootsteTerritorium(!aanBeurt); 
-  }// als er geen eindstand is, worden alle zetten gespeeld
-  else {  // kijken welke keuzes iedereen heeft
+  }
+  else {  // als er geen eindstand is, worden alle zetten gespeeld
     for (int i = 0; i < hoogte; i++){
       for (int j = 0; j< breedte; j++){
         if (doeZet(i, j)){
@@ -486,12 +485,11 @@ int Territorium::telTerritorium(pair<int, int> loper , int speler){
   return teller++;
 }
 
+// bepaalt een goede zet op basis van de hoogste score
 pair<int,int> Territorium::bepaalGoedeZet ()
 {
   int hoogste_score = 0, score = 0;
   pair<int, int> goedeZet;
-  int teller = 0;
-
   
   if (!eindstand()){
     if(aanBeurt == Geel -1){
@@ -502,7 +500,7 @@ pair<int,int> Territorium::bepaalGoedeZet ()
           hoogste_score = score;  
           goedeZet = vakjeKeuzes[i];
         }
-        teller = 0;
+        score = 0;
       }
     } if(aanBeurt == Blauw-1){
       for (int i = 0; i< keuzeAantalBlauw; i++){
@@ -512,37 +510,35 @@ pair<int,int> Territorium::bepaalGoedeZet ()
           hoogste_score = score;
           goedeZet = vakjeKeuzes[i];
         }
-        teller = 0;
+        score = 0;
       }
     }
     return goedeZet;
   }
   return GeenZet;
-
 }  // bepaalGoedeZet
 
 //*************************************************************************
 
+// Speelt een spel met bestescore tegen bepaalgoedezet
 int Territorium::bepaalGoedeScore ()
 {
   pair<int, int> zet1;
   pair<int, int> zet2;
   pair<int, int> besteZet;
-  pair<int, int> zettengedaan[MaxDimensie*MaxDimensie];
   int score=0;
   int i =0;
 
+  // zolang het spel niet klaar is worden er zetten gedaan
   while (eindstand()){
     zet1 = bepaalGoedeZet();
     doeZet(zet1.first, zet1.second);
-    zettengedaan[i]=zet1;
     i++;
 
     long long aantalStanden=0;
     besteScore(besteZet, aantalStanden);
     zet2= besteZet;
     doeZet(zet2.first, zet2.second);
-    zettengedaan[i]=zet2;
     i++;
   }
   score= grootsteTerritorium(aanBeurt) - grootsteTerritorium(!aanBeurt);
@@ -552,5 +548,4 @@ int Territorium::bepaalGoedeScore ()
   }
   
   return score;
-
 }  // bepaalGoedeScore
