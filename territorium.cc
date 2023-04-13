@@ -19,7 +19,7 @@ Territorium::Territorium ()
   keuzesTotaal = 0;
   totale_zetten = 0, zetten_ronde = 0;
   fill(&bord[0][0], &bord[0][0]+(MaxDimensie*MaxDimensie), 0);
-  fill(&bordKopie[0][0], &bordKopie[0][0]+(MaxDimensie*MaxDimensie), 0);
+  fill(&bordKopie[0][0], &bordKopie[0][0]+(MaxDimensie*MaxDimensie), false);
   besteScoreHoogst = 0;
   
 
@@ -53,7 +53,7 @@ Territorium::Territorium (int nwHoogte, int nwBreedte,
     keuzeAantalBlauw = nwKeuzeAantalBlauw;
   }
   fill(&bord[0][0], &bord[0][0]+(MaxDimensie*MaxDimensie), 0);
-  fill(&bordKopie[0][0], &bordKopie[0][0]+(MaxDimensie*MaxDimensie), 0);
+  fill(&bordKopie[0][0], &bordKopie[0][0]+(MaxDimensie*MaxDimensie), false);
   vulBord();
 }  // constructor met parameters
 
@@ -197,6 +197,9 @@ void Territorium::vakjesMogelijk(){
   }else if (aanBeurt == Blauw -1){
     keuzeSpeler(keuzeAantalBlauw);
   } 
+  for (auto i = volgordeSet.begin(); i != volgordeSet.end(); i++){
+    cout  << i->volgorde_coord.first << "," << i->volgorde_coord.second << " ";
+  }
 }
 
 //*************************************************************************
@@ -235,10 +238,12 @@ void Territorium::drukAf ()
   }
 
   vakjesMogelijk();
-  cout << "Mogelijke keuzes: ";
-  for (auto i = vakjeKeuzes.begin(); i != vakjeKeuzes.end(); i++){
-    cout << "(" << i->volgorde_coord.first << ", " << i->volgorde_coord.second << ") ";
-  }cout << endl;
+  if (!eindstand()){
+    cout << "Mogelijke keuzes: ";
+    for (auto i = vakjeKeuzes.begin(); i != vakjeKeuzes.end(); i++){
+      cout << "(" << i->volgorde_coord.first << ", " << i->volgorde_coord.second << ") ";
+    }cout << endl;
+  }
 }  // drukAf
 
 
@@ -277,7 +282,7 @@ bool Territorium::zetSpeler(int speler, int keuzeAantal, int rij, int kolom){
       keuzesTotaal+=keuzeAantalBlauw;
     }
 
-    if (keuzesTotaal >= volgordeSet.size()){
+    if (keuzesTotaal >= volgordeSet.size()-1){
       keuzesTotaal = 0;
       zetten_ronde = 0;
     }
@@ -321,7 +326,7 @@ bool Territorium::unDoeZet ()
 
     aanBeurt = !aanBeurt;
     totale_zetten--;
-    if (zetten_ronde != 0){
+    if (zetten_ronde > 0){
       zetten_ronde--;
     }
     vakjesMogelijk();
@@ -338,17 +343,19 @@ bool Territorium::unDoeZet ()
 // kiest het grootste territorium 
 int Territorium::grootsteTerritorium(int speler){
   int score = 0, hoogste_score = 0;
-  fill(&bordKopie[0][0], &bordKopie[0][0]+(MaxDimensie*MaxDimensie), 0);
+  fill(&bordKopie[0][0], &bordKopie[0][0]+(MaxDimensie*MaxDimensie), false);
 
   for (int i = 0; i< hoogte; i++){
     for (int j = 0; j < breedte; j++){
       if (!bordKopie[i][j] && bord[i][j] == speler + 1){
         score = telTerritorium(make_pair(i, j), speler);
-        if (score > hoogste_score){
-          hoogste_score = score;
-        }
-        score = 0;
       }
+      
+      if (score > hoogste_score){
+        hoogste_score = score;
+      }
+      bordKopie[i][j] = true;
+      score = 0;
     }
   }
   return hoogste_score;
