@@ -156,6 +156,12 @@ class Territorium
 
   private:
       // membervariabelen
+    struct volgordeBord {
+        int volgorde_nr;
+        pair<int, int> volgorde_coord;
+
+        bool operator < (const volgordeBord &other) const { return volgorde_nr > other.volgorde_nr; }
+    };
     int bord[MaxDimensie][MaxDimensie];  // [rij][kolom]: inhoud van bord;
           // rijen genummerd van 0..hoogte-1, van beneden naar boven
           // kolommen genummerd van 0..breedte-1, van links naar rechts;
@@ -163,7 +169,7 @@ class Territorium
     // Array voor de vulvolgorde
     pair<int, int> volgordeCoord[MaxDimensie*MaxDimensie];
 
-    pair<int, int> zetten[MaxDimensie*MaxDimensie];
+    vector<volgordeBord> zetten;
     int zettenVolgorde[MaxDimensie*MaxDimensie];
 
     int volgorde[MaxDimensie*MaxDimensie];
@@ -178,12 +184,7 @@ class Territorium
         zetten_ronde, totale_zetten,
         besteScoreHoogst;
 
-    struct volgordeBord {
-        int volgorde_nr;
-        pair<int, int> volgorde_coord;
 
-        bool operator < (const volgordeBord &other) const { return volgorde_nr > other.volgorde_nr; }
-    };
     set<volgordeBord> volgordeSet;
     set<volgordeBord> vakjeKeuzes;
     // TODO: uw eigen memberfuncties en -variabelen
