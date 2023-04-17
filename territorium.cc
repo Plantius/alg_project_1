@@ -157,6 +157,9 @@ bool Territorium::eindstand ()
 
 void Territorium::keuzeSpeler(int keuzeAantal){
   vakjeKeuzes.clear();
+  if (keuzesTotaal > volgordeSet.size()-1){
+    keuzesTotaal = 0;
+  }
   if (volgordeSet.size() < keuzeAantal){
     for (auto k = volgordeSet.begin(); k != volgordeSet.end(); k++){
       volgordeBord temp = {k->volgorde_nr, k->volgorde_coord};
@@ -197,9 +200,7 @@ void Territorium::vakjesMogelijk(){
   }else if (aanBeurt == Blauw -1){
     keuzeSpeler(keuzeAantalBlauw);
   } 
-  for (auto i = volgordeSet.begin(); i != volgordeSet.end(); i++){
-    cout  << i->volgorde_coord.first << "," << i->volgorde_coord.second << " ";
-  }
+
 }
 
 //*************************************************************************
@@ -282,10 +283,6 @@ bool Territorium::zetSpeler(int speler, int keuzeAantal, int rij, int kolom){
       keuzesTotaal+=keuzeAantalBlauw;
     }
 
-    if (keuzesTotaal >= volgordeSet.size()-1){
-      keuzesTotaal = 0;
-      zetten_ronde = 0;
-    }
     aanBeurt = !aanBeurt;     
     return true;
   }
