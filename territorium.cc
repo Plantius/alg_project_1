@@ -157,9 +157,11 @@ bool Territorium::eindstand ()
 
 void Territorium::keuzeSpeler(int keuzeAantal){
   vakjeKeuzes.clear();
-  if (keuzesTotaal > volgordeSet.size()-1){
+  if (keuzesTotaal < 0){
+    keuzesTotaal = keuzesTotaal + volgordeSet.size()-1;
+  } else if (keuzesTotaal > volgordeSet.size()-1){
     keuzesTotaal = 0;
-  }
+  } 
   if (volgordeSet.size() < keuzeAantal){
     for (auto k = volgordeSet.begin(); k != volgordeSet.end(); k++){
       volgordeBord temp = {k->volgorde_nr, k->volgorde_coord};
@@ -241,9 +243,12 @@ void Territorium::drukAf ()
   vakjesMogelijk();
   if (!eindstand()){
     cout << "Mogelijke keuzes: ";
+    for (auto i = volgordeSet.begin(); i != volgordeSet.end(); i++){
+      cout  << i->volgorde_coord.first << "," << i->volgorde_coord.second << "  ";
+    }cout << endl;
     for (auto i = vakjeKeuzes.begin(); i != vakjeKeuzes.end(); i++){
       cout << "(" << i->volgorde_coord.first << ", " << i->volgorde_coord.second << ") ";
-    }cout << endl;
+    }cout << keuzesTotaal << " : "<< volgordeSet.size() << endl;
   }
 }  // drukAf
 
@@ -305,16 +310,11 @@ bool Territorium::doeZet (int rij, int kolom)
 bool Territorium::unDoeZet ()
 {
   if(zetten.size() > 0){
-    //cout<<"UNDO " << zetten.back().volgorde_coord.first << ", " << zetten.back().volgorde_coord.second << endl;
-    if (aanBeurt == Geel -1 && keuzesTotaal != 0){
+    if (aanBeurt == Geel -1){
       keuzesTotaal -= keuzeAantalBlauw;
-    } else if (aanBeurt == Blauw -1 && keuzesTotaal != 0){
+    } if (aanBeurt == Blauw -1){
       keuzesTotaal -= keuzeAantalGeel;
-    } else if (aanBeurt == Geel -1 && keuzesTotaal == 0){
-      keuzesTotaal = volgordeSet.size()-1;
-    } else if (aanBeurt == Blauw -1 && keuzesTotaal == 0){
-      keuzesTotaal = volgordeSet.size()-1;
-    }
+    } 
 
     volgordeSet.insert(zetten.back());
 
