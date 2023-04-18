@@ -197,10 +197,8 @@ void doeSpel (Territorium *ter1)
 void doeExperiment (){   
   Territorium *ter1;             
   double tijd;
-  int totaal = 0; 
   int score[100];
-  int gem_score=0;
-  int rij = 2, bord_grootte= 2;
+  int gem_score=0, rij = 2, bord_grootte= 2, totaal =0;
   bool rij_minder = false;
   clock_t c1, c2;
   pair <int, int> keuzes [4] = {make_pair(2,2), make_pair(3,2), make_pair(2,3), make_pair(3,3)};
@@ -226,7 +224,7 @@ void doeExperiment (){
       c2 = clock ();
       tijd = ((double)(c2-c1))/CLOCKS_PER_SEC;
       Time_data << "tijd: " << tijd << endl;
-      cout << "tijd " << tijd << endl;
+      //cout << "tijd " << tijd << endl;
 
       //berekent gem_score per bord
       for (int i=0; i < 100; i++){
@@ -246,10 +244,9 @@ void doeExperiment (){
     cout << "keuze " << k << endl;
     bord_grootte=2;
   } // for k
-
+  cout << "done " << endl;
   Time_data.close(); // per bord per keuze
   Gem_score.close(); // 17 gem scores
-   
   delete ter1;
 }  // doeExperiment
 

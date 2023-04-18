@@ -436,14 +436,21 @@ pair<int,int> Territorium::bepaalGoedeZet ()
 // Speelt een spel met bestescore tegen bepaalgoedezet
 int Territorium::bepaalGoedeScore ()
 {
-  pair<int, int> zet1;
-  pair<int, int> zet2;
+  pair<int, int> zet1, zet2;
   pair<int, int> besteZet;
+  clock_t c1, c2;
   int score=0;
   int i =0;
 
   // zolang het spel niet klaar is worden er zetten gedaan
-  while (eindstand()){
+  c1 = clock ();
+  while (!eindstand()){
+    c2 = clock ();
+    // als bij het runnen het te lang duurt
+    if ((((double)(c2-c1))/CLOCKS_PER_SEC) > (300*CLOCKS_PER_SEC)){
+      return -100;
+    }
+
     zet1 = bepaalGoedeZet();
     doeZet(zet1.first, zet1.second);
     //cout << "zet1: " << zet1 << endl;
@@ -457,7 +464,6 @@ int Territorium::bepaalGoedeScore ()
     i++;
   }
   score= grootsteTerritorium(aanBeurt) - grootsteTerritorium(!aanBeurt);
-  // score cancelt elkaar uit, kan dit ???
   cout << "1: " << grootsteTerritorium(aanBeurt) << " 2: " << grootsteTerritorium(!aanBeurt) << endl;
   while (i != 0){
     unDoeZet();
