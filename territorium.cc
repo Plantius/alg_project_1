@@ -458,18 +458,21 @@ int Territorium::bepaalGoedeScore ()
     if ((((double)(c2-c1))/CLOCKS_PER_SEC) > (300*CLOCKS_PER_SEC)){
       return -100;
     }
+    if (aanBeurt == Geel -1){
+      zet1 = bepaalGoedeZet();
+      doeZet(zet1.first, zet1.second);
+      cout << "zet1: " << zet1.first << zet1.second << endl;
+      i++;
+    }
 
-    zet1 = bepaalGoedeZet();
-    doeZet(zet1.first, zet1.second);
-    //cout << "zet1: " << zet1 << endl;
-    i++;
-
-    long long aantalStanden=0;
-    besteScore(besteZet, aantalStanden);
-    zet2= besteZet;
-    //cout << "zet 2: " << zet2 << endl;
-    doeZet(zet2.first, zet2.second);
-    i++;
+    else{
+      long long aantalStanden=0;
+      besteScore(besteZet, aantalStanden);
+      zet2= besteZet;
+      cout << "zet 2: " << zet2.first << zet2.second << endl;
+      doeZet(zet2.first, zet2.second);
+      i++;
+    }
   }
   score= grootsteTerritorium(aanBeurt) - grootsteTerritorium(!aanBeurt);
   cout << "1: " << grootsteTerritorium(aanBeurt) << " 2: " << grootsteTerritorium(!aanBeurt) << endl;
