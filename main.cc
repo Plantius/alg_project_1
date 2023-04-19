@@ -219,11 +219,20 @@ void doeExperiment (){
       for (int spel=0; spel<100; spel++){
         ter1 = new Territorium (bord_grootte, rij, 25, keuzes[k].first, keuzes[k].second);
         score[spel]= ter1->bepaalGoedeScore();
+
+        // als een spel te lang duurt, stopt het voor de bord 
+        if (score[spel]==-100){
+          score[100]= {-100};
+          break;
+        }
         cout << "score " << score[spel] << endl;
       } //for spel
       c2 = clock ();
       tijd = ((double)(c2-c1))/CLOCKS_PER_SEC;
-      Time_data << "tijd: " << tijd << endl;
+      if (score[0]==-100){
+        Time_data << "tijd " << bord_grootte << "x" << rij << ":" " te lang" << endl;
+      }
+      else{Time_data << "tijd: " << tijd << endl;}
       //cout << "tijd " << tijd << endl;
 
       //berekent gem_score per bord

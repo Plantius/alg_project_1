@@ -259,7 +259,7 @@ pair<int,int> Territorium::bepaalZet (int j)
 {
   // De j-de keuze uit de keuze mogelijkheden lijst wordt genomen
   if (((aanBeurt == Geel-1 && j>=1 && j<= keuzeAantalGeel) || 
-        (aanBeurt == Blauw -1 && j>=1 && j <= keuzeAantalBlauw)) && volgordeSet.size() != 0){ // geel 
+        (aanBeurt == Blauw -1 && j>=1 && j <= keuzeAantalBlauw)) && volgordeSet.size() != 0){ 
       volgordeBord x = *next(vakjeKeuzes.begin(), j-1);
       return x.volgorde_coord;
   }
