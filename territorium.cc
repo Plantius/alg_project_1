@@ -309,6 +309,7 @@ bool Territorium::doeZet (int rij, int kolom)
 
 bool Territorium::unDoeZet ()
 {
+  vakjesMogelijk(); 
   if(zetten.size() > 0){
     if (aanBeurt == Geel -1){
       keuzesTotaal -= keuzeAantalBlauw;
