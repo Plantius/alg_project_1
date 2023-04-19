@@ -279,7 +279,8 @@ bool Territorium::zetSpeler(int speler, int keuzeAantal, int rij, int kolom){
     totale_zetten++;
     zetten_ronde++;
     volgordeSet.erase(zet);
-
+    vakjesMogelijk();   
+    
     if (speler == Geel -1){
       bord[rij][kolom] = Geel;
       keuzesTotaal+=keuzeAantalGeel;
@@ -287,7 +288,7 @@ bool Territorium::zetSpeler(int speler, int keuzeAantal, int rij, int kolom){
       bord[rij][kolom] = Blauw;
       keuzesTotaal+=keuzeAantalBlauw;
     }
-
+    
     aanBeurt = !aanBeurt;     
     return true;
   }
@@ -309,8 +310,7 @@ bool Territorium::doeZet (int rij, int kolom)
 
 bool Territorium::unDoeZet ()
 {
-  vakjesMogelijk(); 
-  if(zetten.size() > 0){
+  if(zetten.size() > 0){ 
     if (aanBeurt == Geel -1){
       keuzesTotaal -= keuzeAantalBlauw;
     } if (aanBeurt == Blauw -1){
@@ -321,13 +321,13 @@ bool Territorium::unDoeZet ()
 
     bord[zetten.back().volgorde_coord.first][zetten.back().volgorde_coord.second] = zetten.back().volgorde_nr;
     zetten.pop_back();
-
+    vakjesMogelijk();
     aanBeurt = !aanBeurt;
     totale_zetten--;
     if (zetten_ronde > 0){
       zetten_ronde--;
     }
-    vakjesMogelijk();
+    
     return true;
   }else {
     return false;
