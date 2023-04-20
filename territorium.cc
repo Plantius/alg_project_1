@@ -160,10 +160,9 @@ void Territorium::keuzeSpeler(int keuzeAantal){
   int size = volgordeSet.size();
   cout << "keuzesTotaal "<< keuzesTotaal << ": Size " <<size << endl;
   if (keuzesTotaal <  0){
-    keuzesTotaal += (size-(keuzeAantal));
-    keuzesTotaal += volgordeSet.rbegin()->keuze_nr - keuzeAantal;
+    keuzesTotaal = (size+keuzesTotaal-1);
   } if (keuzesTotaal >= (size)){
-    keuzesTotaal -= (size);
+    keuzesTotaal -= (size+1);
   } 
   if (size < keuzeAantal){
     for (auto k = volgordeSet.begin(); k != volgordeSet.end(); k++){
@@ -339,12 +338,6 @@ bool Territorium::unDoeZet ()
     }
 
     bord[zetten.back().volgorde_coord.first][zetten.back().volgorde_coord.second] = zetten.back().volgorde_nr;
-
-    // kleine schets?
-    // zetten.volgorde_nr = -2 bv, hier neem ik aan dat die de gepushde zet is.
-    for (int i=0; i < zetten.back().volgorde_nr; i--){
-      
-    }
     
     zetten.pop_back();
     aanBeurt = !aanBeurt;
@@ -438,18 +431,19 @@ pair<int,int> Territorium::bepaalGoedeZet ()
   pair<int, int> goedeZet;
   
   if (!eindstand()){
-    for (auto i = vakjeKeuzes.begin(); i != vakjeKeuzes.end(); i++){
-      doeZet(i->volgorde_coord.first, i->volgorde_coord.second);
-      score = grootsteTerritorium(!aanBeurt);
+    for (auto i = volgordeSet.begin(); i != volgordeSet.end(); i++){
+      if(doeZet(i->volgorde_coord.first, i->volgorde_coord.second)){
+        score = grootsteTerritorium(!aanBeurt);
 
-      if (score >= hoogste_score){
-        hoogste_score = score;  
-        goedeZet = i->volgorde_coord;
+        if (score >= hoogste_score){
+          hoogste_score = score;  
+          goedeZet = i->volgorde_coord;
+        }
+        score = 0;
+        unDoeZet();
       }
-      score = 0;
-      unDoeZet();
+      return goedeZet;
     }
-    return goedeZet;
   }
   return GeenZet;
 }  // bepaalGoedeZet
