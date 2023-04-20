@@ -254,8 +254,8 @@ void Territorium::drukAf ()
   vakjesMogelijk();
   if (!eindstand()){
     cout << "Mogelijke keuzes: ";
-    for (auto i = volgordeSet.begin(); i != volgordeSet.end(); i++){
-      cout  << i->volgorde_coord.first << "," << i->volgorde_coord.second << "  ";
+    for (auto i = vakjeKeuzes.begin(); i != vakjeKeuzes.end(); i++){
+      cout << "(" << i->volgorde_coord.first << "," << i->volgorde_coord.second << ")  ";
     }cout << endl;
   }
 }  // drukAf
