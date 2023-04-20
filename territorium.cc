@@ -339,6 +339,13 @@ bool Territorium::unDoeZet ()
     }
 
     bord[zetten.back().volgorde_coord.first][zetten.back().volgorde_coord.second] = zetten.back().volgorde_nr;
+
+    // kleine schets?
+    // zetten.volgorde_nr = -2 bv, hier neem ik aan dat die de gepushde zet is.
+    for (int i=0; i < zetten.back().volgorde_nr; i--){
+      
+    }
+    
     zetten.pop_back();
     aanBeurt = !aanBeurt;
     
