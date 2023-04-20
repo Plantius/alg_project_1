@@ -40,7 +40,6 @@ Territorium::Territorium (int nwHoogte, int nwBreedte,
     breedte= nwBreedte;
   }
 
-  // kloppen de variabel namen?
   if (kansNietBeschikbaar >= 0 && kansNietBeschikbaar <= 100){
     hoeveelNietBeschikbaar = kansNietBeschikbaar;
   }
@@ -452,9 +451,13 @@ int Territorium::bepaalGoedeScore ()
   pair<int, int> zet1, zet2;
   pair<int, int> besteZet;
   clock_t c1, c2;
-  int score=0;
+  int score=0, speler = 0;
   int i =0;
-
+  if (aanBeurt == Geel -1){
+    speler = 0;
+  }else if (aanBeurt == Blauw -1){
+    speler = 1;
+  }
   // zolang het spel niet klaar is worden er zetten gedaan
   c1 = clock ();
   while (!eindstand()){
@@ -463,13 +466,12 @@ int Territorium::bepaalGoedeScore ()
     if ((((double)(c2-c1))/CLOCKS_PER_SEC) > (300*CLOCKS_PER_SEC)){
       return -100;
     }
-    if (aanBeurt == Geel -1){
+    if (aanBeurt == speler){
       zet1 = bepaalGoedeZet();
       doeZet(zet1.first, zet1.second);
       //cout << "zet1: " << zet1.first << zet1.second << endl;
       i++;
     }
-
     else{
       long long aantalStanden=0;
       besteScore(besteZet, aantalStanden);
