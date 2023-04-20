@@ -77,12 +77,11 @@ void Territorium::vulBord(){
       swap(bord[i][j],bord[randomGetal(0, i)][randomGetal(0, j)]);
     }
   }
+  // zorgt dat het spel een set heeft met een vulvolgorde
   vulVolgorde();
 }
 
-
-
-// haalt alle volgordes uit bord
+// verzamelt alle mogelijke zetten en stopt het in een set.
 void Territorium::vulVolgorde(){
   volgorde_eind = 0;
 
@@ -101,7 +100,8 @@ bool Territorium::leesInBord (const char* invoernaam)
 {
   int getal;
   int getalcount = 0, hoogte_tel = 0, breedte_tel = 0;
-
+  
+  // leest het bord, de hoogte, breedte en keuzeaantallen in
   ifstream file(invoernaam);
   if (file.good()){
     while (file.good()){
@@ -125,17 +125,16 @@ bool Territorium::leesInBord (const char* invoernaam)
       }
       getalcount++;
     }
+    // bepaalt alle lege vakjes
     vulVolgorde();
     file.close();
     return true;
   }
   else{
     cout << "Deze file is niet leesbaar." << endl;
+    file.close();
     return false;
   }
-
-  file.close();
-
 }  // leesInBord
 
 //*************************************************************************
@@ -155,28 +154,33 @@ bool Territorium::eindstand ()
 
 } // eindstand
 
+// bepaalt de precieze keuze volgorde waaruit een speler mag kiezen op basis van een keuzeaantal
 void Territorium::keuzeSpeler(int keuzeAantal){
+  // keuzetotaal=0 aan het begin van een spel
   vakjeKeuzes.clear();
   int size = volgordeSet.size();
   //cout << "keuzesTotaal "<< keuzesTotaal << ": Size " <<size << endl;
+  // als de vorige zet begon aan het einde vd set
   if (keuzesTotaal <  0){
     keuzesTotaal = (size+keuzesTotaal-1);
-  } if (keuzesTotaal >= (size)){
+  } if (keuzesTotaal >= (size)){ // als het aantal keuzes gelijk is aan de size vd volgorde set
     keuzesTotaal -= (size+1);
   } 
-  if (size < keuzeAantal){
+  if (size < keuzeAantal){ // als de size kleiner is dan een keuzeaantal
     for (auto k = volgordeSet.begin(); k != volgordeSet.end(); k++){
       volgordeBord temp = {k->volgorde_nr, k->volgorde_coord};
       vakjeKeuzes.insert(temp);
     }
   }
+
+  // voor andere opties wordt de volgorde van de keuzes bepaald
   else {
     auto beg_it = volgordeSet.begin();
-    for(int i = 0; i < keuzesTotaal; i++){
+    for(int i = 0; i < keuzesTotaal; i++){ // kijkt naar alle keuzes die zijn gemaakt
       beg_it++;
     }
     auto end_it = beg_it;
-    for (int i = 0; i < keuzeAantal; i++){
+    for (int i = 0; i < keuzeAantal; i++){ // kijkt naar alle mogelijke zetten
       if(end_it != volgordeSet.end()){
         end_it++;
       }
@@ -199,9 +203,9 @@ void Territorium::keuzeSpeler(int keuzeAantal){
   }
 }
 
+
+// per speler worden de mogelijke vakjes bepaald
 void Territorium::vakjesMogelijk(){
-  
-  //  welke vakjes nog mogelijk
   if (aanBeurt == Geel -1){
     keuzeSpeler(keuzeAantalGeel);
   }else if (aanBeurt == Blauw -1){
@@ -212,6 +216,7 @@ void Territorium::vakjesMogelijk(){
 
 //*************************************************************************
 
+// drukt het spelbord af
 void Territorium::drukAf ()
 {
   for (int i=0; i < hoogte; i++){
@@ -245,6 +250,7 @@ void Territorium::drukAf ()
     cout << "Blauw" << endl;
   }
 
+  // laat de mogelijke keuzes zien
   vakjesMogelijk();
   if (!eindstand()){
     cout << "Mogelijke keuzes: ";
@@ -274,7 +280,7 @@ pair<int,int> Territorium::bepaalZet (int j)
 
 //*************************************************************************
 
-
+// doet een zet op het bord en returnt true voor de doezet functie
 bool Territorium::zetSpeler(int speler, int keuzeAantal, int rij, int kolom){
   volgordeBord temp = {bord[rij][kolom], make_pair(rij, kolom)};
   auto coord = vakjeKeuzes.find(temp);
@@ -303,6 +309,7 @@ bool Territorium::zetSpeler(int speler, int keuzeAantal, int rij, int kolom){
   return false;
 }
 
+// controleert of een zet mag en doet deze mbv zetSpeler
 bool Territorium::doeZet (int rij, int kolom)
 {
   if (integerInBereik(rij, 0, hoogte-1) && integerInBereik(kolom, 0, breedte-1) && bord[rij][kolom] < 0){
@@ -315,6 +322,7 @@ bool Territorium::doeZet (int rij, int kolom)
   return false;
 }  // doeZet
 
+// kijkt of een zet ongedaan mag worden en doet dat als het mag
 bool Territorium::unDoeZet ()
 {
   int size = zetten.size();
@@ -350,6 +358,8 @@ bool Territorium::unDoeZet ()
 
 // kiest het grootste territorium 
 int Territorium::grootsteTerritorium(int speler){
+  // er wordt een kopie van het bord gemaakt een daarna wordt er gekeken welke score van
+  // alle territoria het grootst is
   int score = 0, hoogste_score = 0;
   fill(&bordKopie[0][0], &bordKopie[0][0]+(MaxDimensie*MaxDimensie), false);
 
@@ -369,6 +379,8 @@ int Territorium::grootsteTerritorium(int speler){
   return hoogste_score;
 }
 
+
+//  telt een territorium en zijn score dmv een teller
 int Territorium::telTerritorium(pair<int, int> loper , int speler){
   bordKopie[loper.first][loper.second] = true;
   int teller = 0;
@@ -463,7 +475,7 @@ int Territorium::bepaalGoedeScore ()
   c1 = clock ();
   while (!eindstand()){
     c2 = clock ();
-    // als bij het runnen het te lang duurt
+    // als bij het runnen het ;anger dan 5 min duurt
     if ((((double)(c2-c1))/CLOCKS_PER_SEC) > (300*CLOCKS_PER_SEC)){
       return -100;
     }
@@ -489,6 +501,5 @@ int Territorium::bepaalGoedeScore ()
     unDoeZet();
     i--;
   }
-  
   return score;
 }  // bepaalGoedeScore
