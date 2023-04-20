@@ -130,11 +130,10 @@ bool Territorium::leesInBord (const char* invoernaam)
     return true;
   }
   else{
+    file.close();
     cout << "Deze file is niet leesbaar." << endl;
     return false;
   }
-
-  file.close();
 
 }  // leesInBord
 
@@ -357,10 +356,9 @@ int Territorium::grootsteTerritorium(int speler){
     for (int j = 0; j < breedte; j++){
       if (!bordKopie[i][j] && bord[i][j] == speler + 1){
         score = telTerritorium(make_pair(i, j), speler);
-      }
-      
-      if (score > hoogste_score){
-        hoogste_score = score;
+        if (score > hoogste_score){
+          hoogste_score = score;
+        }
       }
       bordKopie[i][j] = true;
       score = 0;
@@ -406,13 +404,12 @@ int Territorium::besteScore (pair<int,int> &besteZet,
           aantalStanden++;
           score = - besteScore(zet, aantalStanden);
           
-          if (score >= besteScoreHoogst){
+          if (score > besteScoreHoogst){
             besteScoreHoogst = score;
             besteZet = make_pair(i, j);
             zet = make_pair(i, j);
           }
           score = 0;
-          vakjesMogelijk();
           unDoeZet();
         }
       }
@@ -431,9 +428,8 @@ pair<int,int> Territorium::bepaalGoedeZet ()
   if (!eindstand()){
     vakjesMogelijk();
     for (auto i = vakjeKeuzes.begin(); i != vakjeKeuzes.end(); i++){
-      cout << "Zet: "<< i->volgorde_coord.first <<"," << i->volgorde_coord.second<<" "<< score << endl;
       if(doeZet(i->volgorde_coord.first, i->volgorde_coord.second)){
-        score = grootsteTerritorium(aanBeurt);
+        score = grootsteTerritorium(!aanBeurt);
 
         if (score >= hoogste_score){
           hoogste_score = score;  
