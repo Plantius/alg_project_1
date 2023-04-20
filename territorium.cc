@@ -17,7 +17,7 @@ Territorium::Territorium ()
   keuzeAantalGeel=2;
   keuzeAantalBlauw=2;
   keuzesTotaal = 0;
-  totale_zetten = 0, zetten_ronde = 0;
+  totale_zetten = 0, offset = 0;
   fill(&bord[0][0], &bord[0][0]+(MaxDimensie*MaxDimensie), 0);
   fill(&bordKopie[0][0], &bordKopie[0][0]+(MaxDimensie*MaxDimensie), false);
   besteScoreHoogst = 0;
@@ -162,7 +162,7 @@ void Territorium::keuzeSpeler(int keuzeAantal){
   if (keuzesTotaal <  0){
     keuzesTotaal += (size-(keuzeAantal-1));
   } if (keuzesTotaal >= (size)){
-    keuzesTotaal = 0;
+    keuzesTotaal -= (size);
   } 
   if (size < keuzeAantal){
     for (auto k = volgordeSet.begin(); k != volgordeSet.end(); k++){
@@ -193,6 +193,7 @@ void Territorium::keuzeSpeler(int keuzeAantal){
         if (size_keuzes < keuzeAantal){
           volgordeBord temp = {k->volgorde_nr, k->volgorde_coord};
           vakjeKeuzes.insert(temp);
+          
         }
       }
     }
@@ -293,6 +294,7 @@ bool Territorium::zetSpeler(int speler, int keuzeAantal, int rij, int kolom){
       bord[rij][kolom] = Blauw;
       keuzesTotaal += (keuzeAantalBlauw-1);
     }  
+    offset=0;
     vakjesMogelijk();
     aanBeurt = !aanBeurt;     
     return true;
@@ -330,9 +332,6 @@ bool Territorium::unDoeZet ()
     zetten.pop_back();
     aanBeurt = !aanBeurt;
     totale_zetten--;
-    if (zetten_ronde > 0){
-      zetten_ronde--;
-    }
     
     return true;
   }else {

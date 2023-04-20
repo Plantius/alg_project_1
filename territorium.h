@@ -178,7 +178,7 @@ class Territorium
         volgorde_eind,
         keuzePositie,
         keuzesTotaal,
-        zetten_ronde, totale_zetten,
+        offset, totale_zetten,
         besteScoreHoogst;
 
 
