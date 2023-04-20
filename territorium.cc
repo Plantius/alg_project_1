@@ -193,7 +193,6 @@ void Territorium::keuzeSpeler(int keuzeAantal){
         if (size_keuzes < keuzeAantal){
           volgordeBord temp = {k->volgorde_nr, k->volgorde_coord};
           vakjeKeuzes.insert(temp);
-          
         }
       }
     }
