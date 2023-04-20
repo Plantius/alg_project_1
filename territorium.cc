@@ -159,12 +159,12 @@ void Territorium::keuzeSpeler(int keuzeAantal){
   // keuzetotaal=0 aan het begin van een spel
   vakjeKeuzes.clear();
   int size = volgordeSet.size();
-  //cout << "keuzesTotaal "<< keuzesTotaal << ": Size " <<size << endl;
+
   // als de vorige zet begon aan het einde vd set
   if (keuzesTotaal <  0){
     keuzesTotaal = (size+keuzesTotaal-1);
   } if (keuzesTotaal >= (size)){ // als het aantal keuzes gelijk is aan de size vd volgorde set
-    keuzesTotaal -= (size+1);
+    keuzesTotaal -= (size);
   } 
   if (size < keuzeAantal){ // als de size kleiner is dan een keuzeaantal
     for (auto k = volgordeSet.begin(); k != volgordeSet.end(); k++){
@@ -257,9 +257,6 @@ void Territorium::drukAf ()
     for (auto i = volgordeSet.begin(); i != volgordeSet.end(); i++){
       cout  << i->volgorde_coord.first << "," << i->volgorde_coord.second << "  ";
     }cout << endl;
-    for (auto i = vakjeKeuzes.begin(); i != vakjeKeuzes.end(); i++){
-      cout << "(" << i->volgorde_coord.first << ", " << i->volgorde_coord.second << ") ";
-    }cout << keuzesTotaal << " : "<< volgordeSet.size() << endl;
   }
 }  // drukAf
 
@@ -476,21 +473,19 @@ int Territorium::bepaalGoedeScore ()
   c1 = clock ();
   while (!eindstand()){
     c2 = clock ();
-    // als bij het runnen het ;anger dan 5 min duurt
+    // als bij het runnen het langer dan 5 min duurt returnen wij een error
     if ((((double)(c2-c1))/CLOCKS_PER_SEC) > (300*CLOCKS_PER_SEC)){
       return -100;
     }
     if (aanBeurt == speler){
       zet1 = bepaalGoedeZet();
       doeZet(zet1.first, zet1.second);
-      //cout << "zet1: " << zet1.first << zet1.second << endl;
       i++;
     }
     else{
       long long aantalStanden=0;
       besteScore(besteZet, aantalStanden);
       zet2= besteZet;
-      //cout << "zet 2: " << zet2.first << zet2.second << endl;
       doeZet(zet2.first, zet2.second);
       i++;
     }

@@ -233,7 +233,6 @@ void doeExperiment (){
         Time_data << "tijd " << bord_grootte << "x" << rij << ":" " te lang" << endl;
       }
       else{Time_data << "tijd: " << tijd << endl;}
-      //cout << "tijd " << tijd << endl;
 
       //berekent gem_score per bord
       for (int i=0; i < 100; i++){
