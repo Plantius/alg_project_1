@@ -158,7 +158,7 @@ bool Territorium::eindstand ()
 void Territorium::keuzeSpeler(int keuzeAantal){
   vakjeKeuzes.clear();
   int size = volgordeSet.size();
-  cout << "keuzesTotaal "<< keuzesTotaal << ": Size " <<size << endl;
+  //cout << "keuzesTotaal "<< keuzesTotaal << ": Size " <<size << endl;
   if (keuzesTotaal <  0){
     keuzesTotaal = (size+keuzesTotaal-1);
   } if (keuzesTotaal >= (size)){
@@ -401,21 +401,23 @@ int Territorium::besteScore (pair<int,int> &besteZet,
   else {  // als er geen eindstand is, worden alle zetten gespeeld
     for (int i = 0; i < hoogte; i++){
       for (int j = 0; j< breedte; j++){
+        vakjesMogelijk();
         if (doeZet(i, j)){
           aantalStanden++;
           score = - besteScore(zet, aantalStanden);
           
-          if (score > besteScoreHoogst){
+          if (score >= besteScoreHoogst){
             besteScoreHoogst = score;
             besteZet = make_pair(i, j);
             zet = make_pair(i, j);
           }
           score = 0;
+          vakjesMogelijk();
           unDoeZet();
         }
       }
     }
-  }     
+  }    
   return besteScoreHoogst;
 }// besteScore
 //*************************************************************************
@@ -427,6 +429,7 @@ pair<int,int> Territorium::bepaalGoedeZet ()
   pair<int, int> goedeZet;
   
   if (!eindstand()){
+    vakjesMogelijk();
     for (auto i = vakjeKeuzes.begin(); i != vakjeKeuzes.end(); i++){
       cout << "Zet: "<< i->volgorde_coord.first <<"," << i->volgorde_coord.second<<" "<< score << endl;
       if(doeZet(i->volgorde_coord.first, i->volgorde_coord.second)){
@@ -467,7 +470,7 @@ int Territorium::bepaalGoedeScore ()
     if (aanBeurt == Geel -1){
       zet1 = bepaalGoedeZet();
       doeZet(zet1.first, zet1.second);
-      cout << "zet1: " << zet1.first << zet1.second << endl;
+      //cout << "zet1: " << zet1.first << zet1.second << endl;
       i++;
     }
 
@@ -475,7 +478,7 @@ int Territorium::bepaalGoedeScore ()
       long long aantalStanden=0;
       besteScore(besteZet, aantalStanden);
       zet2= besteZet;
-      cout << "zet 2: " << zet2.first << zet2.second << endl;
+      //cout << "zet 2: " << zet2.first << zet2.second << endl;
       doeZet(zet2.first, zet2.second);
       i++;
     }
