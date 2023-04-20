@@ -159,6 +159,7 @@ class Territorium
     struct volgordeBord {
         int volgorde_nr;
         pair<int, int> volgorde_coord;
+        int keuze_nr;
 
         bool operator < (const volgordeBord &other) const { return volgorde_nr > other.volgorde_nr; }
     };

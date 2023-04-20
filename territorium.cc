@@ -158,7 +158,7 @@ bool Territorium::eindstand ()
 void Territorium::keuzeSpeler(int keuzeAantal){
   vakjeKeuzes.clear();
   int size = volgordeSet.size();
-  
+  cout << "keuzesTotaal "<< keuzesTotaal << ": Size " <<size << endl;
   if (keuzesTotaal <  0){
     keuzesTotaal += (size-(keuzeAantal-1));
   } if (keuzesTotaal >= (size)){
